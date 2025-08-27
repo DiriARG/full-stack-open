@@ -8,19 +8,21 @@ const Header = (props) => {
   );
 };
 
+// Nuevo componente "Part".
+const Part = (props) => {
+  return (
+    <p>
+      {props.name}. Cantidad de ejercicios: {props.excercises}
+    </p>
+  );
+};
 const Content = (props) => {
   return (
     <div>
       <h2>Contenidos:</h2>
-      <p>
-        Parte 1: {props.part1}. Cantidad de ejercicios: {props.exercises1}
-      </p>
-      <p>
-        Parte 2: {props.part2}. Cantidad de ejercicios: {props.exercises2}
-      </p>
-      <p>
-        Parte 3: {props.part3}. Cantidad de ejercicios: {props.exercises3}
-      </p>
+      <Part name={props.part1} excercises={props.exercises1} />
+      <Part name={props.part2} excercises={props.exercises2} />
+      <Part name={props.part3} excercises={props.exercises3} />
     </div>
   );
 };
