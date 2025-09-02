@@ -5,6 +5,11 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const total = good + neutral + bad;
+  // good +1 (voto positivo), neutral 0 (voto neutro) y bad -1 (voto negativo).
+  const promedio =
+    total === 0 ? 0 : (good * 1 + neutral * 0 + bad * -1) / total; // Utilizamos condición ternaria, Si... si no...
+  const positivo = total === 0 ? 0 : ((good / total) * 100).toFixed(1); // "toFixed(1)"" lo redonde a 1 decimal.
 
   return (
     <div>
@@ -16,6 +21,9 @@ const App = () => {
       <p>Bueno: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Malo: {bad}</p>
+      <p>Total: {total} </p>
+      <p>Promedio: {promedio}</p>
+      <p>Positivos: {positivo} %</p>
     </div>
   );
 };
