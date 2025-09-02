@@ -1,5 +1,20 @@
 import { useState } from "react";
 
+// Nuevo componente que contiene las estadísticas.
+const Statistics = ({ good, neutral, bad, total, promedio, positivo }) => {
+  return (
+    <div>
+      <h2>Estadísticas</h2>
+      <p>Bueno: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Malo: {bad}</p>
+      <p>Total: {total} </p>
+      <p>Promedio: {promedio}</p>
+      <p>Positivos: {positivo} %</p>
+    </div>
+  );
+};
+
 const App = () => {
   // guarda los clics de cada botón en su propio estado
   const [good, setGood] = useState(0);
@@ -17,13 +32,14 @@ const App = () => {
       <button onClick={() => setGood(good + 1)}>Bueno</button>
       <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
       <button onClick={() => setBad(bad + 1)}>Malo</button>
-      <h2>Estadísticas</h2>
-      <p>Bueno: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Malo: {bad}</p>
-      <p>Total: {total} </p>
-      <p>Promedio: {promedio}</p>
-      <p>Positivos: {positivo} %</p>
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={total}
+        promedio={promedio}
+        positivo={positivo}
+      />
     </div>
   );
 };
