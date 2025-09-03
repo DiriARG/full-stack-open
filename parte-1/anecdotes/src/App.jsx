@@ -14,33 +14,39 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   //"new Array(anecdotes.length)" crea un array vacío con 8 posiciones, "fill(0), rellena las posiciones con 0".
-  const [votos, setVotos] = useState(new Array(anecdotes.length).fill(0))
+  const [votos, setVotos] = useState(new Array(anecdotes.length).fill(0));
+  // Encuentra el número máximo de votos.
+  const maxVotos = Math.max(...votos);
+  // Encuentra el índice de la anécdota con más votos.
+  const anecdotaMasVotada = votos.indexOf(maxVotos);
 
-  
   // Controlador de evento para cambiar a una anécdota aleatoria.
   const handleClick = () => {
     // Elije el número de una anécdota aleatoria.
     const numeroAleatorio = Math.floor(Math.random() * anecdotes.length);
     setSelected(numeroAleatorio);
   };
-  
 
+  // Controlador de evento para registrar un voto.
   const handleVoto = () => {
     // Crea un copia del array de votos.
     const copiaArray = [...votos];
-    // Incrementa el voto en el índice de la anécdota seleccionada. 
+    // Incrementa el voto en el índice de la anécdota seleccionada.
     copiaArray[selected] += 1;
     // Actualiza el estado con la nueva copia del array de votos.
     setVotos(copiaArray);
-  }
-  
+  };
+
   return (
     <div>
+      <h1>Anécdota del día</h1>
       <p> {anecdotes[selected]} </p>
       <p>Esta anécdota tiene {votos[selected]}</p>
       <button onClick={handleVoto}>Votar</button>
       <button onClick={handleClick}>Siguiente anécdota</button>
-      
+      <h1>Anécdota con más votos</h1>
+      <p>{anecdotes[anecdotaMasVotada]}</p>
+      <p>Con {maxVotos} votos.</p>
     </div>
   );
 };
