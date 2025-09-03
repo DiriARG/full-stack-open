@@ -2,17 +2,21 @@ import { useState } from "react";
 
 // Nuevo componente que contiene las estadísticas.
 const Statistics = ({ good, neutral, bad, total, promedio, positivo }) => {
-  return (
-    <div>
-      <h2>Estadísticas</h2>
-      <p>Bueno: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Malo: {bad}</p>
-      <p>Total: {total} </p>
-      <p>Promedio: {promedio}</p>
-      <p>Positivos: {positivo} %</p>
-    </div>
-  );
+  if (total === 0) {
+    return <p>No hay estadísticas disponibles todavía.</p>;
+  } else {
+    return (
+      <div>
+        <h2>Estadísticas</h2>
+        <p>Bueno: {good}</p>
+        <p>Neutral: {neutral}</p>
+        <p>Malo: {bad}</p>
+        <p>Total: {total} </p>
+        <p>Promedio: {promedio}</p>
+        <p>Positivos: {positivo} %</p>
+      </div>
+    );
+  }
 };
 
 const App = () => {
