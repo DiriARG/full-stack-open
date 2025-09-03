@@ -8,12 +8,16 @@ const Statistics = ({ good, neutral, bad, total, promedio, positivo }) => {
     return (
       <div>
         <h2>Estadísticas</h2>
-        <StatisticLine texto="Bueno" valor={good} />
-        <StatisticLine texto="Neutral" valor={neutral} />
-        <StatisticLine texto="Malo" valor={bad} />
-        <StatisticLine texto="Total" valor={total} />
-        <StatisticLine texto="Promedio" valor={promedio} />
-        <StatisticLine texto="Positivos" valor={`${positivo}%`} />
+        <table>
+          <tbody>
+            <StatisticLine texto="Bueno" valor={good} />
+            <StatisticLine texto="Neutral" valor={neutral} />
+            <StatisticLine texto="Malo" valor={bad} />
+            <StatisticLine texto="Total" valor={total} />
+            <StatisticLine texto="Promedio" valor={promedio} />
+            <StatisticLine texto="Positivos" valor={`${positivo}%`} />
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -26,9 +30,10 @@ const Button = ({ handleClick, opinion }) => (
 
 // Componente "StatisticLine" para mostrar una única estadística, por ejemplo, la puntuación media.
 const StatisticLine = ({ texto, valor }) => (
-  <p>
-    {texto}: {valor}
-  </p>
+  <tr>
+    <td>{texto}</td>
+    <td>{valor}</td>
+  </tr>
 );
 
 const App = () => {
