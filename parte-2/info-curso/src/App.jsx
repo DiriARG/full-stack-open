@@ -1,3 +1,5 @@
+const Header = (props) => <h1>{props.course}</h1>;
+
 const Part = (props) => (
   <p>
     {props.part.name} {props.part.exercises}
@@ -12,16 +14,20 @@ const Content = ({ parts }) => (
   </div>
 );
 
-const Header = (props) => <h1>{props.course}</h1>;
-
+// Nuevo componente "Course", recibe data y la pasa a otros componentes.
 const Course = ({ course }) => (
   <div>
     <Header course={course.name} />
     <Content parts={course.parts} />
+    <Total parts={course.parts} />
   </div>
 );
 
-const Total = (props) => <p>Number of exercises {props.total}</p>;
+const Total = ({ parts }) => {
+  // Se utiliza "reduce" ya que es más directo al devolvernos un único valor.
+  const total = parts.reduce((suma, part) => suma + part.exercises, 0);
+  return <p>Cantidad de ejercicios: {total}</p>;
+};
 
 const App = () => {
   const course = {
