@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> **Información del curso** → Ejercicios 2.1, 2.2, 2.3, 2.4, 2.5 → Carpeta llamada **"info-curso"**.  
+> **La Agenda Telefónica** → Ejercicios 2.6, 2.7, 2.8, 2.9*, 2.10, 2.11, 2.12, 2.13, 2.14, 2.15*, 2.16, 2.17*, 2.18*, 2.19*, 2.20* → Carpeta llamada **agenda-telefonica**.  
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
+
 # Ejercicios 2.1.-2.5.
 
 ## 2.1: Información del curso paso 6
@@ -354,7 +359,7 @@ Extrae el código que maneja la comunicación con el backend en su propio módul
 
 ## 2.14: La Agenda Telefónica paso 9
 
-Permite a los usuarios eliminar entradas de la agenda telefónica. La eliminación se puede hacer a través de un botón dedicado para cada persona en la lista de la agenda telefónica. Puedes confirmar la acción del usuario utilizando el método [window.confirm](https://developer.mozilla.org/es/docs/Web/API/Window/confirm):
+Permite a los usuarios eliminar entradas de la agenda telefónica. La eliminación se puede hacer a través de un botón dedicado para cada persona en la lista de la agenda telefónica. Puedes confirmar la acción del usuario utilizando el método [window.confirm](https://developer.mozilla.org/es/docs/Web/API/Window/confirm):  
 <img src="./imagenes/agenda-telefonica-p9.png" alt="La Agenda Telefónica Paso 9">  
 El recurso asociado a una persona en el backend se puede eliminar haciendo una solicitud HTTP DELETE a la URL del recurso. Si estamos eliminando, por ejemplo, a una persona que tiene el _id_ 2, tendríamos que hacer una solicitud HTTP DELETE a la URL _localhost:3001/persons/2_. No se envía ningún dato con la solicitud.  
 Puedes hacer una solicitud HTTP DELETE con la librería [axios](https://github.com/axios/axios) de la misma manera que hacemos todas las demás solicitudes.  
@@ -385,9 +390,9 @@ Usa el ejemplo de [mensaje de error mejorado](https://fullstackopen.com/es/part2
 
 ## 2.17\*: Agenda Telefónica paso 12
 
-Abre tu aplicación en dos navegadores. **Si eliminas a una persona en el navegador 1** poco antes de intentar _cambiar el número de teléfono de la persona_ en el navegador 2, obtendrás los siguientes mensajes de error:  
+Abre tu aplicación en dos navegadores. **Si eliminas a una persona en el navegador 1** poco antes de intentar _cambiar el número de teléfono de la persona_ en el navegador 2, obtendrás los siguientes mensajes de error:    
 <img src="./imagenes/agenda-telefonica-p12-error.png" alt="La Agenda Telefónica Paso 12 error">  
-Soluciona el problema según el ejemplo mostrado en [promesas y errores](https://fullstackopen.com/es/part2/alterando_datos_en_el_servidor#promesas-y-errores) en la parte 2. Modifica el ejemplo para que se muestre un mensaje cuando la operación no tiene éxito. Los mensajes mostrados para eventos exitosos y no exitosos deben lucir diferentes:
+Soluciona el problema según el ejemplo mostrado en [promesas y errores](https://fullstackopen.com/es/part2/alterando_datos_en_el_servidor#promesas-y-errores) en la parte 2. Modifica el ejemplo para que se muestre un mensaje cuando la operación no tiene éxito. Los mensajes mostrados para eventos exitosos y no exitosos deben lucir diferentes:  
 <img src="./imagenes/agenda-telefonica-p12.png" alt="La Agenda Telefónica Paso 12">  
 **Nota** que incluso si manejas la excepción, el primer mensaje de error "404" todavía se imprime en la consola. Pero no deberías ver "Uncaught (in promise) Error".
 
