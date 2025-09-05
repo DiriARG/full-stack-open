@@ -211,7 +211,7 @@ Emite una advertencia con el comando [alert](https://developer.mozilla.org/es/do
 
 Si la variable **newName** tiene el valor _Arto Hellas_, la expresión de la plantilla de cadena regresa la cadena
 
-```text
+```plaintext
 `Arto Hellas is already added to phonebook`
 ```
 
@@ -421,7 +421,7 @@ Si usas OpenWeatherMap, [aquí](https://openweathermap.org/weather-conditions#Ic
 **NB:** Necesitas una clave API para usar casi todos los servicios meteorológicos. ¡No guardes la clave API en GitHub! Ni codifiques la clave API en tu código fuente. En su lugar, utiliza una [variable de entorno](https://es.vite.dev/guide/env-and-mode.html) para guardar la clave.  
 Suponiendo que la clave API es 54l41n3n4v41m34rv0, cuando la aplicación se inicia de la siguiente manera:
 
-```text
+```plaintext
 export VITE_SOME_KEY=54l41n3n4v41m34rv0 && npm run dev // Para Linux/macOS Bash
 ($env:VITE_SOME_KEY="54l41n3n4v41m34rv0") -and (npm run dev) // Para Windows PowerShell
 set "VITE_SOME_KEY=54l41n3n4v41m34rv0" && npm run dev // Para Windows cmd.exe
@@ -429,7 +429,7 @@ set "VITE_SOME_KEY=54l41n3n4v41m34rv0" && npm run dev // Para Windows cmd.exe
 
 puedes acceder al valor de la clave desde el objeto **import.meta.env**:
 
-```text
+```plaintext
 const api_key = import.meta.env.VITE_SOME_KEY
 // variable api_key ahora tiene el valor configurado
 ```
