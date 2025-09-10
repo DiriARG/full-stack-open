@@ -7,12 +7,18 @@ const App = () => {
   // Controlador de eventos para agregar nuevos nombres.
   const agregarNombre = (evento) => {
     evento.preventDefault();
-    const objetoNombre = {
-      name: newName,
-      id: persons.length + 1,
-    };
-    setPersons(persons.concat(objetoNombre));
-    setNewName("");
+
+    // Verifica si el nombre ya existe en la lista.
+    const nombreExistente = persons.some((persona) => persona.name === newName);
+    if (nombreExistente) {
+      alert(`${newName} ya está agregado a la agenda telefónica.`);
+    } else {
+      const objetoNombre = {
+        name: newName,
+      };
+      setPersons(persons.concat(objetoNombre));
+      setNewName("");
+    }
   };
 
   // Controlador de eventos que actualiza el estado "newName" con el valor del input.
@@ -34,7 +40,7 @@ const App = () => {
       <h2>Números</h2>
       <ul>
         {persons.map((persona) => (
-          <li key={persona.id}>{persona.name}</li>
+          <li key={persona.name}>{persona.name}</li> // Se utiliza el nombre de la persona como valor de la propiedad "key".
         ))}
       </ul>
     </div>
