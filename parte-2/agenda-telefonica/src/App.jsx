@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   // Nuevo estado para manejar el valor del input del número de teléfono.
   const [nuevoNumero, setNuevoNumero] = useState("");
   // Nuevo estado para guardar el término de búsqueda que el usuario escriba.
   const [nuevaBusqueda, setNuevaBusqueda] = useState("");
+
+  // Realizamos una petición GET a la "API" en "/persons" para que nos devuelva  la lista de personas. 
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((respuesta) => {
+      setPersons(respuesta.data);
+    });
+  }, []);
 
   // Controlador de eventos para agregar nuevos nombres.
   const agregarNombre = (evento) => {
