@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -47,7 +50,7 @@ const App = () => {
   const handleCambioDeBusqueda = (evento) => {
     setNuevaBusqueda(evento.target.value);
   };
-  
+
   // Lógica para filtrar los contactos sin distinguir entre mayúsculas y minúsculas.
   const contactosFiltrados = persons.filter((persona) =>
     persona.name.toLowerCase().includes(nuevaBusqueda.toLowerCase())
@@ -56,30 +59,25 @@ const App = () => {
   return (
     <div>
       <h2>Agenda Telefónica</h2>
-      <form onSubmit={agregarNombre}>
-        <div>
-          Filtro mostrado con: 
-          <input value={nuevaBusqueda} onChange={handleCambioDeBusqueda} />
-        </div>
-        <div>
-          <h2>Agregar nuevo contacto</h2>
-          Nombre: <input value={newName} onChange={handleCambioDeNombre} />
-        </div>
-        <div>
-          Número: <input value={nuevoNumero} onChange={handleCambioDeNumero} />
-        </div>
-        <div>
-          <button type="submit">Agregar</button>
-        </div>
-      </form>
-      <h2>Números</h2>
-      <ul>
-        {contactosFiltrados.map((persona) => (
-          <li key={persona.id}>
-            {persona.name} {persona.number}
-          </li>
-        ))}
-      </ul>
+
+      <Filter
+        nuevaBusqueda={nuevaBusqueda}
+        handleCambioDeBusqueda={handleCambioDeBusqueda}
+      />
+
+      <h3>Agregar nuevo contacto</h3>
+
+      <PersonForm
+        agregarNombre={agregarNombre}
+        newName={newName}
+        handleCambioDeNombre={handleCambioDeNombre}
+        nuevoNumero={nuevoNumero}
+        handleCambioDeNumero={handleCambioDeNumero}
+      />
+
+      <h3>Números</h3>
+
+      <Persons personas={contactosFiltrados} />
     </div>
   );
 };
