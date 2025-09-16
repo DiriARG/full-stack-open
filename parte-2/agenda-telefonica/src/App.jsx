@@ -19,22 +19,66 @@ const App = () => {
     });
   }, []);
 
-  // Controlador de eventos para agregar nuevos nombres.
+  // Controlador de eventos para agregar o actualizar contactos.
   const agregarNombre = (evento) => {
-    evento.estadoAnteriorentDefault();
+    // Evita que el formulario recargue la página.
+    evento.preventDefault();
 
-    // Verifica si el nombre ya existe en la lista.
-    const nombreExistente = persons.some((persona) => persona.name === newName);
-    if (nombreExistente) {
-      alert(`${newName} ya está agregado a la agenda telefónica.`);
+    // Elimina espacios en blanco al inicio y al final.
+    const nombreNormalizado = newName.trim();
+
+    // Buscamos si existe una persona con el mismo nombre en la lista "persons" (toLowerCase para no distinguir entre mayus y minus).
+    const personaExistente = persons.find(
+      (p) => p.name.toLowerCase() === nombreNormalizado.toLowerCase()
+    );
+
+    if (personaExistente) {
+      // Pedimos confirmación antes de reemplazar el número.
+      if (
+        window.confirm(
+          `${personaExistente.name} ya está agregado a la agenda telefónica, ¿reemplazar el número antiguo por uno nuevo?`
+        )
+      ) {
+        /* Crea un nuevo objeto con los datos actualizados, utilizando el operador spread (...) para copiar las propiedades del contacto existente
+       y sobrescribiendo solo el número de teléfono con el nuevo valor.*/
+        const personaActualizada = {
+          ...personaExistente,
+          number: nuevoNumero,
+        };
+
+        // Usamos el servicio para actualizar el recurso en el backend (PUT).
+        servicioDePersonas
+          .actualizar(personaExistente.id, personaActualizada) // Se le pasa el ID del contacto a actualizar y el objeto con los nuevos datos.
+          .then((respuesta) => {
+            // Reemplazamos la persona antigua por la que devolvió el servidor.
+            setPersons((estadoAnterior) =>
+              estadoAnterior.map((p) =>
+                p.id !== respuesta.id ? p : respuesta // condicion ? valor_si_true : valor_si_false.
+              )
+            );
+            setNewName("");
+            setNuevoNumero("");
+          })
+          .catch(() => {
+            // Si ocurre un error, muestra un alerta al usuario.
+            alert(
+              `No se pudo actualizar '${personaExistente.name}'. Es posible que ya haya sido eliminada del servidor.`
+            );
+            // Se actualiza el estado local para eliminar el contacto que no se pudo actualizar.
+            setPersons((estadoAnterior) =>
+              estadoAnterior.filter((p) => p.id !== personaExistente.id)
+            );
+          });
+      }
     } else {
+      // Si el nombre no existe, lo creamos.
       const objetoNombre = {
-        name: newName,
+        name: nombreNormalizado,
         number: nuevoNumero,
       };
-      // Usamos el servicio "servicioDePersonas" para guardar el nuevo contacto en el servidor mediante una petición POST.
+
       servicioDePersonas.crear(objetoNombre).then((personaCreada) => {
-        setPersons(persons.concat(personaCreada));
+        setPersons((estadoAnterior) => estadoAnterior.concat(personaCreada));
         setNewName("");
         setNuevoNumero("");
       });
@@ -64,12 +108,16 @@ const App = () => {
         .eliminar(id)
         .then(() => {
           // Actualizamos el state removiendo la persona eliminada.
-          setPersons((estadoAnterior) => estadoAnterior.filter((p) => p.id !== id)); // Crea un nuevo array que contiene todas las personas excepto la que tenga el id que queremos eliminar.
+          setPersons((estadoAnterior) =>
+            estadoAnterior.filter((p) => p.id !== id)
+          ); // Crea un nuevo array que contiene todas las personas excepto la que tenga el id que queremos eliminar.
         })
         .catch((error) => {
           // Si el recurso ya no existe en el servidor, avisamos y actualizamos el state local.
           alert(`La persona '${nombre}' ya fue eliminada del servidor.`);
-          setPersons((estadoAnterior) => estadoAnterior.filter((p) => p.id !== id));
+          setPersons((estadoAnterior) =>
+            estadoAnterior.filter((p) => p.id !== id)
+          );
         });
     }
   };
@@ -100,7 +148,7 @@ const App = () => {
 
       <h3>Números</h3>
 
-      <Persons personas={contactosFiltrados} handleEliminar={handleEliminar}/>
+      <Persons personas={contactosFiltrados} handleEliminar={handleEliminar} />
     </div>
   );
 };

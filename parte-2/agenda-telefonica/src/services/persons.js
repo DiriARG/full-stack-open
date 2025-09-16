@@ -1,9 +1,9 @@
 /* Módulo responsable de manejar la comunicación con el backend para el recurso "persons".
 Exporta un objeto con tres funciones como propiedades:
-- obtenerTodo: obtiene todos los contactos (GET)
-- crear: crea un nuevo contacto (POST)
-- actualizar: actualiza un contacto existente (PUT)
-- eliminar: elimina un contacto (DELETE) */
+- obtenerTodo: obtiene todos los contactos (GET).
+- crear: crea un nuevo contacto (POST).
+- actualizar: actualiza el número de un contacto existente (PUT).
+- eliminar: elimina un contacto (DELETE). */
 import axios from "axios";
 const urlBase = "http://localhost:3001/persons";
 
