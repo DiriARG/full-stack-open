@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import servicioDePersonas from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,10 +12,10 @@ const App = () => {
   // Nuevo estado para guardar el término de búsqueda que el usuario escriba.
   const [nuevaBusqueda, setNuevaBusqueda] = useState("");
 
-  // Realizamos una petición GET a la "API" en "/persons" para que nos devuelva  la lista de personas.
+  // Usamos el servicio "servicioDePersonas" para obtener todos los contactos desde la "API" al cargar el componente "App" (osea, al iniciar la aplicación).
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((respuesta) => {
-      setPersons(respuesta.data);
+    servicioDePersonas.obtenerTodo().then((personasIniciales) => {
+      setPersons(personasIniciales);
     });
   }, []);
 
@@ -32,14 +32,12 @@ const App = () => {
         name: newName,
         number: nuevoNumero,
       };
-      // Realizamos una petición POST a la "API" en "/persons" para guardar el nuevo contacto en el servidor.
-      axios
-        .post("http://localhost:3001/persons", objetoNombre)
-        .then((respuesta) => {
-          setPersons(persons.concat(respuesta.data));
-          setNewName("");
-          setNuevoNumero("");
-        });
+      // Usamos el servicio "servicioDePersonas" para guardar el nuevo contacto en el servidor mediante una petición POST.
+      servicioDePersonas.crear(objetoNombre).then((personaCreada) => {
+        setPersons(persons.concat(personaCreada));
+        setNewName("");
+        setNuevoNumero("");
+      });
     }
   };
 
