@@ -12,7 +12,7 @@ const App = () => {
   // Nuevo estado para guardar el término de búsqueda que el usuario escriba.
   const [nuevaBusqueda, setNuevaBusqueda] = useState("");
 
-  // Realizamos una petición GET a la "API" en "/persons" para que nos devuelva  la lista de personas. 
+  // Realizamos una petición GET a la "API" en "/persons" para que nos devuelva  la lista de personas.
   useEffect(() => {
     axios.get("http://localhost:3001/persons").then((respuesta) => {
       setPersons(respuesta.data);
@@ -31,11 +31,15 @@ const App = () => {
       const objetoNombre = {
         name: newName,
         number: nuevoNumero,
-        id: persons.length + 1,
       };
-      setPersons(persons.concat(objetoNombre));
-      setNewName("");
-      setNuevoNumero("");
+      // Realizamos una petición POST a la "API" en "/persons" para guardar el nuevo contacto en el servidor.
+      axios
+        .post("http://localhost:3001/persons", objetoNombre)
+        .then((respuesta) => {
+          setPersons(persons.concat(respuesta.data));
+          setNewName("");
+          setNuevoNumero("");
+        });
     }
   };
 
