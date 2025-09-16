@@ -21,7 +21,7 @@ const App = () => {
 
   // Controlador de eventos para agregar nuevos nombres.
   const agregarNombre = (evento) => {
-    evento.preventDefault();
+    evento.estadoAnteriorentDefault();
 
     // Verifica si el nombre ya existe en la lista.
     const nombreExistente = persons.some((persona) => persona.name === newName);
@@ -56,6 +56,24 @@ const App = () => {
     setNuevaBusqueda(evento.target.value);
   };
 
+  // Controlador de eventos para eliminar una persona. Se pasa a Persons para ser llamado desde el botón.
+  const handleEliminar = (id, nombre) => {
+    // Confirmación al usuario antes de eliminar.
+    if (window.confirm(`¿Eliminar ${nombre}?`)) {
+      servicioDePersonas
+        .eliminar(id)
+        .then(() => {
+          // Actualizamos el state removiendo la persona eliminada.
+          setPersons((estadoAnterior) => estadoAnterior.filter((p) => p.id !== id)); // Crea un nuevo array que contiene todas las personas excepto la que tenga el id que queremos eliminar.
+        })
+        .catch((error) => {
+          // Si el recurso ya no existe en el servidor, avisamos y actualizamos el state local.
+          alert(`La persona '${nombre}' ya fue eliminada del servidor.`);
+          setPersons((estadoAnterior) => estadoAnterior.filter((p) => p.id !== id));
+        });
+    }
+  };
+
   // Lógica para filtrar los contactos sin distinguir entre mayúsculas y minúsculas.
   const contactosFiltrados = persons.filter((persona) =>
     persona.name.toLowerCase().includes(nuevaBusqueda.toLowerCase())
@@ -82,7 +100,7 @@ const App = () => {
 
       <h3>Números</h3>
 
-      <Persons personas={contactosFiltrados} />
+      <Persons personas={contactosFiltrados} handleEliminar={handleEliminar}/>
     </div>
   );
 };

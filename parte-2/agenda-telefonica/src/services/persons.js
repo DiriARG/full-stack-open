@@ -2,7 +2,8 @@
 Exporta un objeto con tres funciones como propiedades:
 - obtenerTodo: obtiene todos los contactos (GET)
 - crear: crea un nuevo contacto (POST)
-- actualizar: actualiza un contacto existente (PUT) */
+- actualizar: actualiza un contacto existente (PUT)
+- eliminar: elimina un contacto (DELETE) */
 import axios from "axios";
 const urlBase = "http://localhost:3001/persons";
 
@@ -21,8 +22,15 @@ const actualizar = (id, nuevoObjeto) => {
   return peticion.then((respuesta) => respuesta.data);
 };
 
+// No se utiliza delete como nombre de variable, ya que es una palabra reservada en JS.
+const eliminar = (id) => {
+  const peticion = axios.delete(`${urlBase}/${id}`);
+  return peticion.then((respuesta) => respuesta.data);
+};
+
 export default {
   obtenerTodo,
   crear,
   actualizar,
+  eliminar,
 };
