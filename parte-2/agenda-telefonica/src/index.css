@@ -1,5 +1,17 @@
+/* Estilo para notificaciones de éxito. */
 .exito {
   color: rgb(53, 156, 40);
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Estilo para notificaciones de error. */
+.error {
+  color: red;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;

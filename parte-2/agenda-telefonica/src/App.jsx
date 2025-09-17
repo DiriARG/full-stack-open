@@ -12,7 +12,8 @@ const App = () => {
   const [nuevoNumero, setNuevoNumero] = useState("");
   // Nuevo estado para guardar el término de búsqueda que el usuario escriba.
   const [nuevaBusqueda, setNuevaBusqueda] = useState("");
-  const [mensajeExito, setMensajeExito] = useState(null);
+  // Nuevo estado para manejar los mensajes de notificación.
+  const [mensaje, setMensaje] = useState(null);
 
   // Usamos el servicio "servicioDePersonas" para obtener todos los contactos desde la "API" al cargar el componente "App" (osea, al iniciar la aplicación).
   useEffect(() => {
@@ -61,16 +62,21 @@ const App = () => {
             setNewName("");
             setNuevoNumero("");
             // Notificación de éxito al actualizar ✅.
-            setMensajeExito(`Se actualizó el número de ${respuesta.name}`);
+            setMensaje({
+              texto: `Se actualizó el número de ${respuesta.name}`,
+              tipo: "exito",
+            });
             setTimeout(() => {
-              setMensajeExito(null);
+              setMensaje(null);
             }, 5000);
           })
           .catch(() => {
-            // Si ocurre un error, muestra un alerta al usuario.
-            alert(
-              `No se pudo actualizar '${personaExistente.name}'. Es posible que ya haya sido eliminada del servidor.`
-            );
+            // Si ocurre un error, retorna la notificación de error ❌.
+            setMensaje({
+              texto: `La información de ${personaExistente.name} ya fue eliminada del servidor`,
+              tipo: "error",
+            });
+            setTimeout(() => setMensaje(null), 5000);
             // Se actualiza el estado local para eliminar el contacto que no se pudo actualizar.
             setPersons((estadoAnterior) =>
               estadoAnterior.filter((p) => p.id !== personaExistente.id)
@@ -92,8 +98,8 @@ const App = () => {
           setNuevoNumero("");
 
           // Notificación de éxito al crear (tiene que estar dentro del "then" porque "personaCreada" está acá) ✅.
-          setMensajeExito(`Se agregó a ${personaCreada.name}`);
-          setTimeout(() => setMensajeExito(null), 5000);
+          setMensaje({ texto: `Se agregó a ${personaCreada.name}`, tipo: "exito" });
+          setTimeout(() => setMensaje(null), 5000);
         })
         .catch(() => {
           alert("No se pudo crear el contacto. Intentalo nuevamente.");
@@ -147,7 +153,7 @@ const App = () => {
     <div>
       <h2>Agenda Telefónica</h2>
 
-      <Notification mensaje={mensajeExito} />
+      <Notification mensaje={mensaje} />
 
       <Filter
         nuevaBusqueda={nuevaBusqueda}
