@@ -3,6 +3,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import servicioDePersonas from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [nuevoNumero, setNuevoNumero] = useState("");
   // Nuevo estado para guardar el término de búsqueda que el usuario escriba.
   const [nuevaBusqueda, setNuevaBusqueda] = useState("");
+  const [mensajeExito, setMensajeExito] = useState(null);
 
   // Usamos el servicio "servicioDePersonas" para obtener todos los contactos desde la "API" al cargar el componente "App" (osea, al iniciar la aplicación).
   useEffect(() => {
@@ -52,12 +54,17 @@ const App = () => {
           .then((respuesta) => {
             // Reemplazamos la persona antigua por la que devolvió el servidor.
             setPersons((estadoAnterior) =>
-              estadoAnterior.map((p) =>
-                p.id !== respuesta.id ? p : respuesta // condicion ? valor_si_true : valor_si_false.
+              estadoAnterior.map(
+                (p) => (p.id !== respuesta.id ? p : respuesta) // condicion ? valor_si_true : valor_si_false.
               )
             );
             setNewName("");
             setNuevoNumero("");
+            // Notificación de éxito al actualizar ✅.
+            setMensajeExito(`Se actualizó el número de ${respuesta.name}`);
+            setTimeout(() => {
+              setMensajeExito(null);
+            }, 5000);
           })
           .catch(() => {
             // Si ocurre un error, muestra un alerta al usuario.
@@ -77,11 +84,20 @@ const App = () => {
         number: nuevoNumero,
       };
 
-      servicioDePersonas.crear(objetoNombre).then((personaCreada) => {
-        setPersons((estadoAnterior) => estadoAnterior.concat(personaCreada));
-        setNewName("");
-        setNuevoNumero("");
-      });
+      servicioDePersonas
+        .crear(objetoNombre)
+        .then((personaCreada) => {
+          setPersons((estadoAnterior) => estadoAnterior.concat(personaCreada));
+          setNewName("");
+          setNuevoNumero("");
+
+          // Notificación de éxito al crear (tiene que estar dentro del "then" porque "personaCreada" está acá) ✅.
+          setMensajeExito(`Se agregó a ${personaCreada.name}`);
+          setTimeout(() => setMensajeExito(null), 5000);
+        })
+        .catch(() => {
+          alert("No se pudo crear el contacto. Intentalo nuevamente.");
+        });
     }
   };
 
@@ -130,6 +146,8 @@ const App = () => {
   return (
     <div>
       <h2>Agenda Telefónica</h2>
+
+      <Notification mensaje={mensajeExito} />
 
       <Filter
         nuevaBusqueda={nuevaBusqueda}
