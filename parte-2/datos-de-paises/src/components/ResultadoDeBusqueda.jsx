@@ -1,8 +1,10 @@
 // Este componente decide qué mostrar en función de la cantidad de resultados que reciba.
 import DetallesDelPais from "./DetallesDelPais";
 
-const ResultadoDeBusqueda = ({ paises }) => {
-
+const ResultadoDeBusqueda = ({ paises, busqueda }) => {
+  if (busqueda === ""){
+    return <p>Comienza a escribir para buscar un país...</p>
+  }
   if (paises.length > 10) {
     return <p>Demasiadas coincidencias, especifica otro filtro</p>;
   }
