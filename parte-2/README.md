@@ -1,6 +1,6 @@
 > [!IMPORTANT]
 > **Información del curso** → Ejercicios 2.1, 2.2, 2.3, 2.4, 2.5 → Carpeta llamada **"info-curso"**.  
-> **La Agenda Telefónica** → Ejercicios 2.6, 2.7, 2.8, 2.9*, 2.10, 2.11, 2.12, 2.13, 2.14, 2.15*, 2.16, 2.17*, 2.18*, 2.19*, 2.20* → Carpeta llamada **agenda-telefonica**.  
+> **La Agenda Telefónica** → Ejercicios 2.6, 2.7, 2.8, 2.9*, 2.10, 2.11, 2.12, 2.13, 2.14, 2.15*, 2.16, 2.17* → Carpeta llamada **agenda-telefonica**.  
 > **Datos de países** → Ejercicios 2.18*, 2.19*, 2.20* → Carpeta llamada **datos-de-paises**.  
 > La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
 
