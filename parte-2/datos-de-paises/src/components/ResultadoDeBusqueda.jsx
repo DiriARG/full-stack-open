@@ -1,7 +1,7 @@
 // Este componente decide qué mostrar en función de la cantidad de resultados que reciba.
 import DetallesDelPais from "./DetallesDelPais";
 
-const ResultadoDeBusqueda = ({ paises, busqueda }) => {
+const ResultadoDeBusqueda = ({ paises, busqueda, setPaisSeleccionado  }) => {
   if (busqueda === ""){
     return <p>Comienza a escribir para buscar un país...</p>
   }
@@ -14,7 +14,9 @@ const ResultadoDeBusqueda = ({ paises, busqueda }) => {
       <ul>
         {paises.map((pais) => (
           // Se utiliza "cca3" como key, significa "código de 3 letras único", ej: Argentina --> cca3: "ARG".
-          <li key={pais.cca3}>{pais.name.common}</li>
+          <li key={pais.cca3}>{pais.name.common} {" "}
+          <button onClick={() => setPaisSeleccionado(pais)}>Mostrar</button>
+          </li>
         ))}
       </ul>
     );
