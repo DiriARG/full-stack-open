@@ -5,7 +5,7 @@ Exporta un objeto con tres funciones como propiedades:
 - actualizar: actualiza el número de un contacto existente (PUT).
 - eliminar: elimina un contacto (DELETE). */
 import axios from "axios";
-const urlBase = "http://localhost:3001/api/persons";
+const urlBase = "api/persons";
 
 const obtenerTodo = () => {
   const peticion = axios.get(urlBase);
