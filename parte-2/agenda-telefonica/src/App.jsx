@@ -98,11 +98,18 @@ const App = () => {
           setNuevoNumero("");
 
           // Notificación de éxito al crear (tiene que estar dentro del "then" porque "personaCreada" está acá) ✅.
-          setMensaje({ texto: `Se agregó a ${personaCreada.name}`, tipo: "exito" });
+          setMensaje({
+            texto: `Se agregó a ${personaCreada.name}`,
+            tipo: "exito",
+          });
           setTimeout(() => setMensaje(null), 5000);
         })
-        .catch(() => {
-          alert("No se pudo crear el contacto. Intentalo nuevamente.");
+        .catch((error) => {
+          setMensaje({
+            texto: error.response.data.error || "Error al crear el contacto",
+            tipo: "error",
+          });
+          setTimeout(() => setMensaje(null), 5000);
         });
     }
   };
