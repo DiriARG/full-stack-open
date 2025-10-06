@@ -106,7 +106,7 @@ const App = () => {
         })
         .catch((error) => {
           setMensaje({
-            texto: error.response.data.error || "Error al crear el contacto",
+            texto: error.response.data.error || "No se pudo crear el contacto. Intentalo nuevamente.",
             tipo: "error",
           });
           setTimeout(() => setMensaje(null), 5000);
