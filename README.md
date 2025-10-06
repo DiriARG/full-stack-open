@@ -15,6 +15,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 1: Introducción a React](#parte-1-introducción-a-react)
 - [Parte 2: Comunicándose con el servidor](#parte-2-comunicándose-con-el-servidor)
 - [Parte 3: Programando un servidor con NodeJS y Express](#parte-3-programando-un-servidor-con-nodejs-y-express)
+- [Parte 4: Probando servidores Express, administración de usuarios](#parte-4-probando-servidores-express-administración-de-usuarios)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
 
@@ -39,3 +40,9 @@ Continuemos nuestra introducción a React. Primero, veremos cómo representar un
 En esta parte, nuestro enfoque se desplaza hacia el backend, es decir, hacia la implementación de la funcionalidad en el lado del servidor. Implementaremos una API REST simple en Node.js utilizando la librería Express, y los datos de la aplicación se almacenarán en una base de datos MongoDB. Al final de esta parte, desplegaremos nuestra aplicación en Internet.
 
 <img src="./imagenes/parte-3.png" alt="Imagen parte 3" width="250">
+
+## Parte 4: Probando servidores Express, administración de usuarios:
+
+En esta parte, continuaremos nuestro trabajo en el backend. Nuestro primer tema principal será escribir pruebas de unidad e integración para el backend. Una vez que hayamos cubierto las pruebas, analizaremos la implementación de la autenticación y autorización de usuario.
+
+<img src="./imagenes/parte-4.png" alt="Imagen parte 4" width="250">
