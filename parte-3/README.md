@@ -1,3 +1,15 @@
+> [!IMPORTANT]   
+> La resolución de TODOS los ejercicios de esta parte, que menciono a continuación, están en el siguiente repositorio: [full-stack-open-parte-3](https://github.com/DiriARG/full-stack-open-parte-3).  
+> - **Backend de la Agenda Telefónica** → Ejercicios 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8*, 3.9, 3.10.  
+> - **Agenda Telefónica Full Stack** → Ejercicio 3.11.  
+> - **Base de datos de línea de comandos** → Ejercicio 3.12.  
+> - **Base de datos de la Agenda Telefónica** → Ejercicios 3.13, 3.14, 3.15, 3.16, 3.17*, 3.18*, 3.19*, 3.20*.  
+> - **Desplegando el backend con base de datos en producción** → Ejercicio 3.21.  
+> - **Configuración de Lint** → Ejercicio 3.22.    
+>
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
+
+
 # Ejercicios 3.1-3.6.
 
 **NB**: Se recomienda hacer todos los ejercicios de esta parte en un nuevo repositorio de git y colocar tu código fuente directamente en la raíz del repositorio. De lo contrario, tendrás problemas en el ejercicio 3.10.
@@ -88,7 +100,7 @@ Morgan se instala como todas las demás librerías con el comando `npm install`.
 ## 3.8\*: Backend de la Agenda Telefónica, paso 8
 
 Configura morgan para que también muestre los datos enviados en las solicitudes HTTP POST:  
-<img src="./imagenes/backend-agenda-p8.png" alt="3.8*: Backend de la Agenda Telefónica, paso 8">  
+<img src="./imagenes/backend-agenda-p8.png" alt="Backend de la Agenda Telefónica, paso 8">  
 Ten en cuenta que el registro de datos incluso en la consola puede ser peligroso, ya que puede contener datos confidenciales y puede violar la ley de privacidad local (por ejemplo, GDPR en la UE) o el estándar comercial. En este ejercicio, no tienes que preocuparse por los problemas de privacidad, pero en la práctica, intenta no registrar ningún dato sensible.  
 Este ejercicio puede resultar bastante complicado, aunque la solución no requiere mucho código.  
 Este ejercicio se puede completar de diferentes formas. Una de las posibles soluciones utiliza estas dos técnicas:
@@ -220,7 +232,7 @@ Verifica que el frontend funcione después de realizar los cambios.
 
 También actualiza el manejo de las rutas _api/persons/:id e info_ para usar la base de datos, y verifica que funcionen directamente con el navegador, Postman o el cliente REST de VS Code.  
 La inspección de una entrada individual de la agenda telefónica desde el navegador debería verse así:  
-<img src="./imagenes/bd-agenda-p6.png" alt="3.18*: Base de datos de la Agenda Telefónica, paso 6">
+<img src="./imagenes/bd-agenda-p6.png" alt="Base de datos de la Agenda Telefónica, paso 6">
 
 # Ejercicios 3.19.-3.21.
 
