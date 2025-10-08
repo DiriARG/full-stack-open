@@ -63,9 +63,27 @@ const mostBlogs = (blogs) => {
   return _.maxBy(conteoAutores, "blogs");
 };
 
+// Función que devuelve el autor con más "likes" acumulados (utilizando Lodash).
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return null;
+  }
+
+  const agrupacion = _.groupBy(blogs, "author");
+
+  const likesPorAutor = _.map(agrupacion, (blogsDelAutor, nombreAutor) => ({
+    author: nombreAutor,
+    // Suma los likes del array de blogs, osea itera sobre el array "blogsDelAutor" y suma el valor de la propiedad "likes" de cada objeto.
+    likes: _.sumBy(blogsDelAutor, "likes"),
+  }));
+
+  return _.maxBy(likesPorAutor, "likes");
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
