@@ -1,6 +1,7 @@
-const blog = require("../models/blog");
-
 // Archivo que contiene funciones auxiliares para trabajar con listas de blogs.
+// Importamos la libreria "Lodash".
+const _ = require("lodash");
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -30,8 +31,41 @@ const favoriteBlog = (blogs) => {
   };
 };
 
+// Función que devuelve el autor con más blogs (utilizando Lodash).
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return null;
+  }
+
+  /* Se agrupa la lista de blogs en un objeto donde las claves son los nombres de los autores,
+  y los valores son arrays con los blogs de cada uno, osea:
+  {
+    "Michael Chan": [blog1],
+    "Edsger W. Dijkstra": [blog2, blog3],
+    ...
+  }
+  */
+  const agrupacion = _.groupBy(blogs, "author");
+
+  /* Acá se transforma el objeto agrupado a un array de objetos con el formato final desado ej:
+  [
+    { author: "Michael Chan", blogs: 1 },
+    { author: "Edsger W. Dijkstra", blogs: 2 },
+    ...
+  ]
+  */
+  const conteoAutores = _.map(agrupacion, (blogsDelAutor, nombreAutor) => ({
+    author: nombreAutor,
+    blogs: blogsDelAutor.length,
+  }));
+
+  // Devuelve el autor con la cantidad máxima de blogs (mayor valor en la propiedad "blogs").
+  return _.maxBy(conteoAutores, "blogs");
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };
