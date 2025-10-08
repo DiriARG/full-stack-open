@@ -1,0 +1,13 @@
+### Ruta para obtener todos los blogs.
+GET http://localhost:3003/api/blogs
+
+### Agregar un nuevo blog.
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Segundo blog",
+    "author": "Matías",
+    "url": "http://ejemplo.com",
+    "likes": 5
+}

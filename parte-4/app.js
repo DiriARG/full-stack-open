@@ -1,0 +1,32 @@
+// Archivo para centralizar la configuración principal de Express (middlewares, rutas y conexión a MongoDB). No inicia el servidor, simplemente prepara la app para ser usada por index.js. 
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const config = require("./utils/config");
+const logger = require("./utils/logger");
+const blogsRouter = require("./controllers/blogs");
+const middleware = require("./utils/middleware");
+
+const app = express();
+
+logger.info("Conectando a", config.MONGODB_URI);
+
+mongoose
+  .connect(config.MONGODB_URI)
+  .then(() => {
+    console.log("Conectado a MongoDB");
+  })
+  .catch((error) => {
+    console.log("Error al conectar a MongoDB: ", error.message);
+  });
+
+app.use(cors());
+app.use(express.json());
+app.use(middleware.registroDeSolicitudes);
+
+app.use("/api/blogs", blogsRouter);
+
+app.use(middleware.rutaDesconocida);
+app.use(middleware.controladorDeErrores);
+
+module.exports = app;
