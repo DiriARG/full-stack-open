@@ -118,8 +118,34 @@ test("eliminar un blog existente", async () => {
   const ids = blogsDespues.map((blog) => blog.id);
   // El array "ids" NO INCLUYE el id del blog eliminado (blogAEliminar).
   assert.ok(!ids.includes(blogAEliminar.id));
-  
+
   assert.strictEqual(blogsDespues.length, blogsAntes.length - 1);
+});
+
+test("actualiza correctamente los likes de un blog existente", async () => {
+  const blogsAntes = await utilidades.blogsEnBd();
+  const blogAActualizar = blogsAntes[0];
+
+  const blogActualizado = {
+    // Copia todas las propiedades del objeto original (blogAActualizar) en este nuevo objeto.
+    ...blogAActualizar,
+    // Se incrementa en +1 la propiedad de likes, si tiene 7 pasa a 8 likes.
+    likes: blogAActualizar.likes + 1,
+  };
+
+  const respuesta = await api
+    .put(`/api/blogs/${blogAActualizar.id}`)
+    .send(blogActualizado)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  // Se verifica que la respuesta HTTP tenga la misma cantidad de likes que el blog que se envió (blogActualizado).
+  assert.strictEqual(respuesta.body.likes, blogActualizado.likes);
+
+  const blogsDespues = await utilidades.blogsEnBd();
+  // Se busca el blog con el mismo id que el que se actualizó.
+  const blogFinal = blogsDespues.find((blog) => blog.id === blogAActualizar.id);
+  assert.strictEqual(blogFinal.likes, blogActualizado.likes);
 });
 
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
