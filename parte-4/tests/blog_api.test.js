@@ -28,6 +28,17 @@ test("se devuelven todos los blogs iniciales", async () => {
   assert.strictEqual(respuesta.body.length, utilidades.primerosBlogs.length);
 });
 
+test("el identificador único del blog se llama id", async () => {
+  const respuesta = await api.get("/api/blogs");
+
+  // Se toma un blog, en este caso, el primero para comprobar si el formato de salida es el correcto.
+  const blog = respuesta.body[0];
+  // "assert.ok" comprueba que el blog tenga la propiedad id, si no lo tiene dropea el mensaje.
+  assert.ok(blog.id, "El blog no tiene propiedad id");
+  // Verifica que la propiedad "_id" no exista, osea undefined (variable no declarada / sin valor).
+  assert.strictEqual(blog._id, undefined);
+})
+
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
 after(async () => {
   await mongoose.connection.close();

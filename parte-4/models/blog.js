@@ -8,12 +8,14 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
 });
 
-// Sirve para eliminar el campo "__v" al momento de mostrarlo.
+// Transforma la salida de MongoDB antes de convertir a JSON.
 blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
+    // Renombra el campo "_id" a "id" y lo convierte a String.
+    returnedObject.id = returnedObject._id.toString(); 
+    // Elimina los campos "_id" original y "__v".
     delete returnedObject._id;
-    delete returnedObject.__v;
+    delete returnedObject.__v; 
   },
 });
 
