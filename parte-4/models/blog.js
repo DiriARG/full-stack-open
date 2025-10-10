@@ -2,9 +2,15 @@
 const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true,
+  },
   author: String,
-  url: String,
+  url: {
+    type: String,
+    required: true,
+  },
   likes: {
     type: Number,
     // En caso de que la propiedad "likes" falte en la solicitud, tendrá el valor 0 por defecto.

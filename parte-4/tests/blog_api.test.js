@@ -80,6 +80,30 @@ test("si falta la propiedad likes, se asigna 0 por defecto", async () => {
   assert.strictEqual(blogAgregado.likes, 0);
 });
 
+test("falla con código de estado 400 si faltan title o url", async () => {
+  const blogSinTitulo = {
+    author: "SrMaTyD",
+    url: "https://steamcommunity.com/id/SrMaTyD",
+    likes: 5,
+  };
+
+  const blogSinUrl = {
+    title: "Antiguo aka",
+    author: "FeAr*",
+    likes: 2,
+  };
+
+  const blogsAntes = await utilidades.blogsEnBd();
+
+  await api.post("/api/blogs").send(blogSinTitulo).expect(400);
+  await api.post("/api/blogs").send(blogSinUrl).expect(400);
+
+  const blogsDespues = await utilidades.blogsEnBd();
+
+  // Se afirma que no se agregó ningún blog.
+  assert.strictEqual(blogsDespues.length, blogsAntes.length);
+});
+
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
 after(async () => {
   await mongoose.connection.close();
