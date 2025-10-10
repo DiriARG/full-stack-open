@@ -104,6 +104,24 @@ test("falla con código de estado 400 si faltan title o url", async () => {
   assert.strictEqual(blogsDespues.length, blogsAntes.length);
 });
 
+test("eliminar un blog existente", async () => {
+  // Estado inicial de la BD.
+  const blogsAntes = await utilidades.blogsEnBd();
+  // Se agarra el primero para eliminar.
+  const blogAEliminar = blogsAntes[0];
+
+  await api.delete(`/api/blogs/${blogAEliminar.id}`).expect(204);
+
+  const blogsDespues = await utilidades.blogsEnBd();
+
+  // Se crea un nuevo array que contiene solo los id de los blogs que quedaron después de la eliminación.
+  const ids = blogsDespues.map((blog) => blog.id);
+  // El array "ids" NO INCLUYE el id del blog eliminado (blogAEliminar).
+  assert.ok(!ids.includes(blogAEliminar.id));
+  
+  assert.strictEqual(blogsDespues.length, blogsAntes.length - 1);
+});
+
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
 after(async () => {
   await mongoose.connection.close();
