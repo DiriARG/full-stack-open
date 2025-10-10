@@ -40,7 +40,7 @@ test("el identificador único del blog se llama id", async () => {
 });
 
 test("se puede crear un nuevo blog con el POST", async () => {
-  // Estado real actual de la BD. 
+  // Estado real actual de la BD.
   const blogsAntes = await utilidades.blogsEnBd();
 
   // Acá se produce un cambio, osea se agrega un nuevo blog.
@@ -58,6 +58,26 @@ test("se puede crear un nuevo blog con el POST", async () => {
   const titulos = blogsDespues.map((blog) => blog.title);
   // Luego se comprueba que dentro de ese array exista el título del blog que recién se creo.
   assert.ok(titulos.includes(utilidades.blogValido.title));
+});
+
+test("si falta la propiedad likes, se asigna 0 por defecto", async () => {
+  const nuevoBlogSinLikes = {
+    title: "Blog sin likes",
+    author: "Diri - VLLC!",
+    url: "http://nolikes.com",
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(nuevoBlogSinLikes)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogs = await utilidades.blogsEnBd();
+  const blogAgregado = blogs.find((blog) => blog.title === "Blog sin likes");
+
+  // Se verifica que tenga 0 likes.
+  assert.strictEqual(blogAgregado.likes, 0);
 });
 
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
