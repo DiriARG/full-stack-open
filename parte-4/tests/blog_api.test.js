@@ -37,7 +37,28 @@ test("el identificador único del blog se llama id", async () => {
   assert.ok(blog.id, "El blog no tiene propiedad id");
   // Verifica que la propiedad "_id" no exista, osea undefined (variable no declarada / sin valor).
   assert.strictEqual(blog._id, undefined);
-})
+});
+
+test("se puede crear un nuevo blog con el POST", async () => {
+  // Estado real actual de la BD. 
+  const blogsAntes = await utilidades.blogsEnBd();
+
+  // Acá se produce un cambio, osea se agrega un nuevo blog.
+  await api
+    .post("/api/blogs")
+    .send(utilidades.blogValido)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  // Ahora, la BD, ya contiene el nuevo blog.
+  const blogsDespues = await utilidades.blogsEnBd();
+  assert.strictEqual(blogsDespues.length, blogsAntes.length + 1);
+
+  // Verificación, creando un nuevo array con solo los titulos...
+  const titulos = blogsDespues.map((blog) => blog.title);
+  // Luego se comprueba que dentro de ese array exista el título del blog que recién se creo.
+  assert.ok(titulos.includes(utilidades.blogValido.title));
+});
 
 // Cierre de conexión a la base de datos una vez terminadas las pruebas.
 after(async () => {

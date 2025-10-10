@@ -22,7 +22,15 @@ const blogsEnBd = async () => {
   return blogs.map((blog) => blog.toJSON());
 };
 
+const blogValido = {
+  title: "Blog de prueba :D",
+  author: "Diri == Dirí",
+  url: "https://op.gg/lol/summoners/las/Dir%C3%AD-23487",
+  likes: 5,
+};
+
 module.exports = {
   primerosBlogs,
   blogsEnBd,
+  blogValido,
 };
