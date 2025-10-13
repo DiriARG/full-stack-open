@@ -34,8 +34,24 @@ const controladorDeErrores = (error, request, response, next) => {
   next(error);
 };
 
+// Middleware para extraer el token JWT del encabezado y adjuntarlo a request.token.
+const extraerToken = (request, response, next) => {
+  const cabeceraAutorizacion = request.get("authorization");
+  // Se verifica si existe la cabecera y si empieza con "Bearer".
+  if (cabeceraAutorizacion && cabeceraAutorizacion.startsWith("Bearer ")) {
+    // Si existe, guarda el token en la request y se elimina el prefijo "Bearer".
+    request.token = cabeceraAutorizacion.replace("Bearer ", "");
+  } else {
+    // Si no...
+    request.token = null;
+  }
+
+  next();
+};
+
 module.exports = {
   registroDeSolicitudes,
   rutaDesconocida,
   controladorDeErrores,
+  extraerToken,
 };

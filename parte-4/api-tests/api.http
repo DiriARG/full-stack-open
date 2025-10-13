@@ -9,7 +9,7 @@ Authorization: Bearer ingresareltokenaquí
 {
     "title": "Primer blog",
     "author": "Trafi",
-    "url": "http://ejemploo.com",
+    "url": "http://ejemplooo.com",
     "likes": 5
 }
 

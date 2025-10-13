@@ -9,24 +9,12 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
-// Función auxiliar que aísla el token del encabezado "authorization".
-const extraerToken = (request) => {
-  const cabeceraAutorizacion = request.get("authorization");
-  // Se verifica si existe la cabecera y si empieza con "Bearer".
-  if (cabeceraAutorizacion && cabeceraAutorizacion.startsWith("Bearer ")) {
-    // Si existe, se elimina el prefijo "Bearer" y devuelve solo el token.
-    return cabeceraAutorizacion.replace("Bearer ", "");
-  }
-  // Si no...
-  return null;
-};
-
 blogsRouter.post("/", async (request, response) => {
   const nuevoBlog = request.body;
 
-  // Con "jwt.verify", verifica si el token obtenido (extraerToken) es válido respecto a la firma del token de la clave secreta.
+  // Con "jwt.verify", verifica si el token obtenido (request.token) es válido respecto a la firma del token de la clave secreta.
   const tokenDecodificado = jwt.verify(
-    extraerToken(request),
+    request.token,
     process.env.SECRET
   );
   // Se comprueba si el token decodificado contiene el id del usuario.

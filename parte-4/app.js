@@ -25,6 +25,7 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(middleware.registroDeSolicitudes);
+app.use(middleware.extraerToken);
 
 app.use("/api/login", loginRouter);
 app.use("/api/blogs", blogsRouter);
