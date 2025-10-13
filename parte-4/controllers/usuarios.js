@@ -3,7 +3,12 @@ const usuariosRouter = require("express").Router();
 const Usuario = require("../models/usuario");
 
 usuariosRouter.get("/", async (request, response) => {
-  const usuarios = await Usuario.find({});
+  const usuarios = await Usuario.find({}).populate("blogs", {
+    // El "1" es porque queremos mostrar ese campo del modelo.
+    url: 1,
+    title: 1,
+    author: 1,
+  });
   response.json(usuarios);
 });
 

@@ -16,6 +16,11 @@ const blogSchema = new mongoose.Schema({
     // En caso de que la propiedad "likes" falte en la solicitud, tendrá el valor 0 por defecto.
     default: 0,
   },
+  // Hacemos referencia al esquema de "usuario.js" con la opción "ref".
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Usuario"
+  }
 });
 
 // Transforma la salida de MongoDB antes de convertir a JSON.
