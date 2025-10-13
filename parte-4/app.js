@@ -1,4 +1,4 @@
-// Archivo para centralizar la configuración principal de Express (middlewares, rutas y conexión a MongoDB). No inicia el servidor, simplemente prepara la app para ser usada por index.js. 
+// Archivo para centralizar la configuración principal de Express (middlewares, rutas y conexión a MongoDB). No inicia el servidor, simplemente prepara la app para ser usada por index.js.
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -6,6 +6,7 @@ const config = require("./utils/config");
 const logger = require("./utils/logger");
 const blogsRouter = require("./controllers/blogs");
 const middleware = require("./utils/middleware");
+const usuariosRouter = require("./controllers/usuarios");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(middleware.registroDeSolicitudes);
 
 app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usuariosRouter);
 
 app.use(middleware.rutaDesconocida);
 app.use(middleware.controladorDeErrores);

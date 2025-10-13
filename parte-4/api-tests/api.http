@@ -11,3 +11,16 @@ Content-Type: application/json
     "url": "http://ejemplo.com",
     "likes": 5
 }
+
+### Ruta para obtener todos los usuarios.
+GET http://localhost:3003/api/users
+
+### Crear un nuevo usuario.
+POST http://localhost:3003/api/users 
+Content-Type: application/json
+
+{
+    "username": "eltrafi",
+    "name": "idk",
+    "password": "contradefault"
+}
