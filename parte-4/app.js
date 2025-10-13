@@ -7,6 +7,7 @@ const logger = require("./utils/logger");
 const blogsRouter = require("./controllers/blogs");
 const middleware = require("./utils/middleware");
 const usuariosRouter = require("./controllers/usuarios");
+const loginRouter = require("./controllers/login");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.registroDeSolicitudes);
 
+app.use("/api/login", loginRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usuariosRouter);
 
