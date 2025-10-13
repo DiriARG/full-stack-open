@@ -1,6 +1,6 @@
 // Archivo que contiene datos y funciones auxiliares para las pruebas.
-
 const Blog = require("../models/blog");
+const Usuario = require("../models/usuario");
 
 const primerosBlogs = [
   {
@@ -29,8 +29,43 @@ const blogValido = {
   likes: 5,
 };
 
+const usuariosEnBd = async () => {
+  const usuarios = await Usuario.find({});
+  return usuarios.map((usuario) => usuario.toJSON());
+};
+
+// Se usa para poblar la bd antes de las pruebas, teniendo un usario ya existente.
+const usuarioInicial = {
+  username: "usuarioInicial",
+  name: "Matías Di Risio",
+  passwordHash: "hashDeEjemplo123",
+};
+
+const nuevoUsuario = {
+  username: "nuevoUsuario",
+  name: "Carlos",
+  password: "secreto123",
+};
+
+// Objeto que contiene casos inválidos de creación.
+const usuariosInvalidos = {
+  sinPassword: { username: "sinpass", name: "Test1" },
+  sinUsername: { name: "Test2", password: "abc123" },
+  cortoUsername: { username: "ab", name: "CortoU", password: "valido123" },
+  cortoPassword: { username: "validouser", name: "CortoP", password: "12" },
+  duplicado: {
+    username: "usuarioInicial",
+    name: "Duplicado",
+    password: "otra123",
+  },
+};
+
 module.exports = {
   primerosBlogs,
   blogsEnBd,
   blogValido,
+  usuariosEnBd,
+  usuarioInicial,
+  nuevoUsuario,
+  usuariosInvalidos,
 };
