@@ -13,10 +13,7 @@ blogsRouter.post("/", async (request, response) => {
   const nuevoBlog = request.body;
 
   // Con "jwt.verify", verifica si el token obtenido (request.token) es válido respecto a la firma del token de la clave secreta.
-  const tokenDecodificado = jwt.verify(
-    request.token,
-    process.env.SECRET
-  );
+  const tokenDecodificado = jwt.verify(request.token, process.env.SECRET);
   // Se comprueba si el token decodificado contiene el id del usuario.
   if (!tokenDecodificado.id) {
     return response.status(401).json({ error: "token invalido" });
@@ -47,6 +44,41 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
+  // Se agarra el "request.token" del middleware (extraerToken).
+  const token = request.token;
+
+  if (!token) {
+    return response.status(401).json({ error: "Token faltante" });
+  }
+
+  // Verificación del token para saber si es válido.
+  let tokenDecodificado;
+  try {
+    tokenDecodificado = jwt.verify(token, process.env.SECRET);
+  } catch (error) {
+    return response.status(401).json({ error: "Token inválido" });
+  }
+
+  // Se obtiene el blog que se intenta eliminar.
+  const blog = await Blog.findById(request.params.id);
+
+  // Verificaciones previas.
+  if (!blog) {
+    return response.status(404).json({ error: "Blog no encontrado" });
+  }
+  if (!blog.user) {
+    return response
+      .status(400)
+      .json({ error: "El blog no tiene un usuario asignado" });
+  }
+  // Se compara el id del usuario del blog con el del token, se utiliza "toString()" ya que "blog.user" es un ObjectId, y hay que convertirlo a cadena.
+  if (blog.user.toString() !== tokenDecodificado.id.toString()) {
+    return response
+      .status(403)
+      .json({ error: "No tienes los permisos para eliminar este blog" });
+  }
+
+  // Si supera todas las verificaciones, se elimina el blog.
   await Blog.findByIdAndDelete(request.params.id);
   response.status(204).end();
 });
