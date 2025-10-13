@@ -28,6 +28,8 @@ const controladorDeErrores = (error, request, response, next) => {
     return response.status(400).json({
       error: "El nombre de usuario ya está en uso.",
     });
+  } else if (error.name === "JsonWebTokenError") {
+    return response.status(401).json({ error: "token invalido" });
   }
   next(error);
 };

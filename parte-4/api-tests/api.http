@@ -4,6 +4,7 @@ GET http://localhost:3003/api/blogs
 ### Agregar un nuevo blog.
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer ingresareltokenaquí
 
 {
     "title": "Primer blog",
@@ -31,5 +32,5 @@ Content-Type: application/json
 
 {
     "username": "eltrafi",
-    "password": "asde"
+    "password": "wedew"
 }
