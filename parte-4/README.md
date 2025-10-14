@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
+
 # Ejercicios 4.1. - 4.2.
 
 **Nota**: el material de este curso fue escrito con la version v20.11.0. Por favor asegúrate de que tu version de Node es al menos tan nueva como la version utilizada en el material (puedes chequear la version al ejecutar **node -v** en la linea de comandos).  
