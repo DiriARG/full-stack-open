@@ -28,8 +28,7 @@ app.use(middleware.registroDeSolicitudes);
 app.use(middleware.extraerToken);
 
 app.use("/api/login", loginRouter);
-// Usa el middleware "userExtractor" solo en las rutas de api/blogs.
-app.use("/api/blogs", middleware.userExtractor, blogsRouter);
+app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usuariosRouter);
 
 app.use(middleware.rutaDesconocida);

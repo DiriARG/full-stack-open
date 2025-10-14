@@ -60,6 +60,24 @@ const usuariosInvalidos = {
   },
 };
 
+const blogsInvalidos = {
+  sinTitulo: {
+    author: "SrMaTyD",
+    url: "https://steamcommunity.com/id/SrMaTyD",
+    likes: 5,
+  },
+  sinUrl: {
+    title: "Antiguo aka",
+    author: "FeAr*",
+    likes: 2,
+  },
+  sinLikes: {
+    title: "Blog sin likes",
+    author: "Diri - VLLC!",
+    url: "http://nolikes.com",
+  },
+};
+
 module.exports = {
   primerosBlogs,
   blogsEnBd,
@@ -68,4 +86,5 @@ module.exports = {
   usuarioInicial,
   nuevoUsuario,
   usuariosInvalidos,
+  blogsInvalidos,
 };

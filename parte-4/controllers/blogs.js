@@ -1,15 +1,18 @@
 // Archivo donde se definen las rutas y controladores relacionados con los blogs.
-const jwt = require("jsonwebtoken");
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
-const Usuario = require("../models/usuario");
+const middleware = require('../utils/middleware');
+
+/* Las rutas POST y DELETE requieren autenticación/autorización (mediante un JWT) para verificar la identidad del usuario y sus permisos, por lo que utilizan el middleware "userExtractor". 
+La ruta GET, al ser pública, no requiere el token ni el middleware. 
+*/
 
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
   response.json(blogs);
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   const nuevoBlog = request.body;
   // Viene del middleware "userExtractor".
   const usuario = request.user; 
@@ -30,7 +33,7 @@ blogsRouter.post("/", async (request, response) => {
   response.status(201).json(blogGuardado);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
+blogsRouter.delete("/:id", middleware.userExtractor, async (request, response) => {
   const usuario = request.user;
 
   // Se obtiene el blog que se intenta eliminar.

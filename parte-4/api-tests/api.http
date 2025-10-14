@@ -7,10 +7,10 @@ Content-Type: application/json
 Authorization: Bearer ingresareltokenaquí
 
 {
-    "title": "Blog del punto 4.21*",
-    "author": "Trafi",
+    "title": "Blog de prueba",
+    "author": "trafi",
     "url": "https://fullstackopen.com/es/",
-    "likes": 8
+    "likes": 10
 }
 
 ### Ruta para obtener todos los usuarios.
@@ -21,9 +21,9 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "eltrafi",
-    "name": "anonimo",
-    "password": "wedew"
+    "username": "DiriARG",
+    "name": "Matías",
+    "password": "1e1jdn2n"
 }
 
 ### Logearse.
@@ -36,5 +36,5 @@ Content-Type: application/json
 }
 
 ### Eliminar un blog.
-DELETE http://localhost:3003/api/blogs/68ed91d8ba3aaa430d17ef18
+DELETE http://localhost:3003/api/blogs/68ee6951c0d187d8f040ee79
 Authorization: Bearer ingresareltokenaquí
