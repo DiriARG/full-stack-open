@@ -11,22 +11,9 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", async (request, response) => {
   const nuevoBlog = request.body;
+  // Viene del middleware "userExtractor".
+  const usuario = request.user; 
 
-  // Con "jwt.verify", verifica si el token obtenido (request.token) es válido respecto a la firma del token de la clave secreta.
-  const tokenDecodificado = jwt.verify(request.token, process.env.SECRET);
-  // Se comprueba si el token decodificado contiene el id del usuario.
-  if (!tokenDecodificado.id) {
-    return response.status(401).json({ error: "token invalido" });
-  }
-  // Utiliza el id obtenido del token para buscar al usuario correspondiente en la bd.
-  const usuario = await Usuario.findById(tokenDecodificado.id);
-
-  // Si el token es valido pero el id del usuario no existe...
-  if (!usuario) {
-    return response
-      .status(400)
-      .json({ error: "ID de usuario faltante o no válido" });
-  }
   const blog = new Blog({
     title: nuevoBlog.title,
     author: nuevoBlog.author,
@@ -44,20 +31,7 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  // Se agarra el "request.token" del middleware (extraerToken).
-  const token = request.token;
-
-  if (!token) {
-    return response.status(401).json({ error: "Token faltante" });
-  }
-
-  // Verificación del token para saber si es válido.
-  let tokenDecodificado;
-  try {
-    tokenDecodificado = jwt.verify(token, process.env.SECRET);
-  } catch (error) {
-    return response.status(401).json({ error: "Token inválido" });
-  }
+  const usuario = request.user;
 
   // Se obtiene el blog que se intenta eliminar.
   const blog = await Blog.findById(request.params.id);
@@ -71,8 +45,8 @@ blogsRouter.delete("/:id", async (request, response) => {
       .status(400)
       .json({ error: "El blog no tiene un usuario asignado" });
   }
-  // Se compara el id del usuario del blog con el del token, se utiliza "toString()" ya que "blog.user" es un ObjectId, y hay que convertirlo a cadena.
-  if (blog.user.toString() !== tokenDecodificado.id.toString()) {
+  // Se compara el id del usuario del blog con el id del usuario autenticado, se utiliza "toString()" ya que "blog.user" es un ObjectId, y hay que convertirlo a cadena.
+  if (blog.user.toString() !== usuario.id.toString()) {
     return response
       .status(403)
       .json({ error: "No tienes los permisos para eliminar este blog" });

@@ -1,5 +1,7 @@
 // Archivo que contiene middlewares personalizados de Express.
 const logger = require("./logger");
+const jwt = require("jsonwebtoken");
+const Usuario = require("../models/usuario");
 
 // Registra en consola información de cada solicitud.
 const registroDeSolicitudes = (request, response, next) => {
@@ -29,7 +31,7 @@ const controladorDeErrores = (error, request, response, next) => {
       error: "El nombre de usuario ya está en uso.",
     });
   } else if (error.name === "JsonWebTokenError") {
-    return response.status(401).json({ error: "token invalido" });
+    return response.status(401).json({ error: "Token invalido" });
   }
   next(error);
 };
@@ -49,9 +51,32 @@ const extraerToken = (request, response, next) => {
   next();
 };
 
+// Middleware que verifica la validez del JWT.
+const userExtractor = async (request, response, next) => {
+  if (!request.token) {
+    return response.status(401).json({ error: "Token faltante" });
+  }
+  // Con "jwt.verify", verifica si el token obtenido (request.token) es válido respecto a la firma del token de la clave secreta.
+  const tokenDecodificado = jwt.verify(request.token, process.env.SECRET);
+  // Se comprueba si el token decodificado contiene el id del usuario.
+  if (!tokenDecodificado.id) {
+    return response.status(401).json({ error: "Token inválido" });
+  }
+  // Se busca al usuario en la bd y se lo guarda en "request.user".
+  request.user = await Usuario.findById(tokenDecodificado.id);
+
+  // Se verifica que el usuario realmente exista en la bd.
+  if (!request.user) {
+    return response.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  next();
+};
+
 module.exports = {
   registroDeSolicitudes,
   rutaDesconocida,
   controladorDeErrores,
   extraerToken,
+  userExtractor,
 };
