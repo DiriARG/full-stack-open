@@ -16,6 +16,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 2: Comunicándose con el servidor](#parte-2-comunicándose-con-el-servidor)
 - [Parte 3: Programando un servidor con NodeJS y Express](#parte-3-programando-un-servidor-con-nodejs-y-express)
 - [Parte 4: Probando servidores Express, administración de usuarios](#parte-4-probando-servidores-express-administración-de-usuarios)
+- [Parte 5: Probando aplicaciones React](#parte-5-probando-aplicaciones-react)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
 
@@ -46,3 +47,10 @@ En esta parte, nuestro enfoque se desplaza hacia el backend, es decir, hacia la 
 En esta parte, continuaremos nuestro trabajo en el backend. Nuestro primer tema principal será escribir pruebas de unidad e integración para el backend. Una vez que hayamos cubierto las pruebas, analizaremos la implementación de la autenticación y autorización de usuario.
 
 <img src="./imagenes/parte-4.png" alt="Imagen parte 4" width="250">
+
+## Parte 5: Probando aplicaciones React:
+
+En esta parte volvemos al frontend, primero mirando a diferentes posibilidades para probar el código React. También implementaremos la autenticación basada en tokens que permitirá a los usuarios iniciar sesión en nuestra aplicación.
+
+<img src="./imagenes/parte-5.png" alt="Imagen parte 5" width="250">
+
