@@ -14,6 +14,19 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  // La aplicación verifica si los detalles de un usuario que ha iniciado sesión ya se encuentran en el local storage.
+  useEffect(() => {
+    const usuarioLogueadoJSON = window.localStorage.getItem(
+      "usuarioBlogListLogueado"
+    );
+    // Si se encuentran ahi...
+    if (usuarioLogueadoJSON) {
+      const usuario = JSON.parse(usuarioLogueadoJSON);
+      // Los detalles se guardan en el estado de la aplicación.
+      setUsuario(usuario);
+    }
+  }, []);
+
   // Maneja el envío del formulario de inicio de sesión.
   const handleLogin = async (evento) => {
     evento.preventDefault();
@@ -23,7 +36,14 @@ const App = () => {
         username: nombreDeUsuario,
         password: contraseña,
       });
-      // Se guarda los datos del usuario y un token.
+
+      // Se guarda los datos del usuario en localStorage.
+      window.localStorage.setItem(
+        "usuarioBlogListLogueado",
+        JSON.stringify(usuario)
+      );
+
+      // Se guardan los datos del usuario y su token.
       setUsuario(usuario);
 
       setNombreDeUsuario("");
@@ -34,6 +54,12 @@ const App = () => {
         setMensajeDeError(null);
       }, 5000);
     }
+  };
+
+  const handleCerrarSesion = () => {
+    window.localStorage.removeItem("usuarioBlogListLogueado");
+    // Se renderiza el componente y ahora toma un valor usuario=== null, por lo tanto se muestra nuevamente el formulario de login.
+    setUsuario(null);
   };
 
   const formularioLogin = () => (
@@ -76,7 +102,10 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{usuario.name} inició sesión</p>
+      <p>
+        {usuario.name} inició sesión
+        <button onClick={handleCerrarSesion}>Salir</button>
+      </p>
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
