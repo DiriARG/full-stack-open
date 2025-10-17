@@ -5,6 +5,9 @@ import servicioLogin from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [titulo, setTitulo] = useState("");
+  const [autor, setAutor] = useState("");
+  const [url, setUrl] = useState("");
   const [mensajeDeError, setMensajeDeError] = useState(null);
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
@@ -24,8 +27,28 @@ const App = () => {
       const usuario = JSON.parse(usuarioLogueadoJSON);
       // Los detalles se guardan en el estado de la aplicación.
       setUsuario(usuario);
+      // Se restaura el token en el servicio de blogs, permitiendo al usuario seguir realizando acciones (ej: crear blogs, etc) sin necesidad de iniciar sesión nuevamente.
+      blogService.setToken(usuario.token);
     }
   }, []);
+
+  const agregarBlog = (evento) => {
+    evento.preventDefault();
+    const nuevoBlog = {
+      title: titulo,
+      author: autor,
+      url: url,
+    };
+
+    // Se envía el nuevo blog al backend mediante el servicio.
+    blogService.crear(nuevoBlog).then((blogCreado) => {
+      // Si la creación es exitosa, se actualiza el estado local para mostrar el nuevo blog junto a los otros en pantalla.
+      setBlogs(blogs.concat(blogCreado));
+      setTitulo("");
+      setAutor("");
+      setUrl("");
+    });
+  };
 
   // Maneja el envío del formulario de inicio de sesión.
   const handleLogin = async (evento) => {
@@ -43,6 +66,8 @@ const App = () => {
         JSON.stringify(usuario)
       );
 
+      // Se configura el token de autenticación en el servicio de blogs para que las futuras peticiones incluyan la autorización necesaria.
+      blogService.setToken(usuario.token);
       // Se guardan los datos del usuario y su token.
       setUsuario(usuario);
 
@@ -58,7 +83,7 @@ const App = () => {
 
   const handleCerrarSesion = () => {
     window.localStorage.removeItem("usuarioBlogListLogueado");
-    // Se renderiza el componente y ahora toma un valor usuario=== null, por lo tanto se muestra nuevamente el formulario de login.
+    // Se renderiza el componente y ahora toma el siguiente valor: usuario === null, por lo tanto se muestra nuevamente el formulario de login.
     setUsuario(null);
   };
 
@@ -66,7 +91,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         <label>
-          Nombre de usuario
+          Nombre de usuario{" "}
           <input
             type="text"
             value={nombreDeUsuario}
@@ -76,7 +101,7 @@ const App = () => {
       </div>
       <div>
         <label>
-          Contraseña
+          Contraseña{" "}
           <input
             type="password"
             value={contraseña}
@@ -103,9 +128,43 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <p>
-        {usuario.name} inició sesión
+        {usuario.name} inició sesión{" "}
         <button onClick={handleCerrarSesion}>Salir</button>
       </p>
+      <h3>Crear nuevo blog</h3>
+      <form onSubmit={agregarBlog}>
+        <div>
+          <label>
+            titulo:{" "}
+            <input
+              type="text"
+              value={titulo}
+              onChange={({ target }) => setTitulo(target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            autor:{" "}
+            <input
+              type="text"
+              value={autor}
+              onChange={({ target }) => setAutor(target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            url:{" "}
+            <input
+              type="url"
+              value={url}
+              onChange={({ target }) => setUrl(target.value)}
+            />
+          </label>
+        </div>
+        <button type="submit">crear</button>
+      </form>
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
