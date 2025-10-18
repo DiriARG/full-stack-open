@@ -8,9 +8,6 @@ import AlternarContenido from "./components/AlternarContenido";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [titulo, setTitulo] = useState("");
-  const [autor, setAutor] = useState("");
-  const [url, setUrl] = useState("");
   // Ahora, este componente muestra ambos tipos de mensaje (exito y error).
   const [notificacion, setNotificacion] = useState(null);
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
@@ -36,21 +33,11 @@ const App = () => {
     }
   }, []);
 
-  const agregarBlog = (evento) => {
-    evento.preventDefault();
-    const nuevoBlog = {
-      title: titulo,
-      author: autor,
-      url: url,
-    };
-
+  const agregarBlog = (nuevoBlog) => {
     // Se envía el nuevo blog al backend mediante el servicio.
     blogService.crear(nuevoBlog).then((blogCreado) => {
       // Si la creación es exitosa, se actualiza el estado local para mostrar el nuevo blog junto a los otros en pantalla.
       setBlogs(blogs.concat(blogCreado));
-      setTitulo("");
-      setAutor("");
-      setUrl("");
 
       setNotificacion({
         texto: `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
@@ -151,15 +138,7 @@ const App = () => {
       </p>
 
       <AlternarContenido textoBoton="Crear nuevo blog">
-        <BlogFormulario
-          agregarBlog={agregarBlog}
-          titulo={titulo}
-          setTitulo={setTitulo}
-          autor={autor}
-          setAutor={setAutor}
-          url={url}
-          setUrl={setUrl}
-        />
+        <BlogFormulario crearBlog={agregarBlog} />
       </AlternarContenido>
 
       {blogs.map((blog) => (
