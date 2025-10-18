@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import servicioLogin from "./services/login";
+import Notificacion from "./components/Notificacion";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [autor, setAutor] = useState("");
   const [url, setUrl] = useState("");
-  const [mensajeDeError, setMensajeDeError] = useState(null);
+  // Ahora, este componente muestra ambos tipos de mensaje (exito y error).
+  const [notificacion, setNotificacion] = useState(null);
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [usuario, setUsuario] = useState(null);
@@ -47,6 +49,14 @@ const App = () => {
       setTitulo("");
       setAutor("");
       setUrl("");
+
+      setNotificacion({
+        texto: `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
+        tipo: "exito",
+      });
+      setTimeout(() => {
+        setNotificacion(null);
+      }, 5000);
     });
   };
 
@@ -73,10 +83,14 @@ const App = () => {
 
       setNombreDeUsuario("");
       setContraseña("");
-    } catch {
-      setMensajeDeError("Credenciales incorrectas");
+    } catch (error) {
+      console.log("Error en login: ", error)
+      setNotificacion({
+        texto: "Nombre de usuario y/o contraseña incorrectos",
+        tipo: "error",
+      });
       setTimeout(() => {
-        setMensajeDeError(null);
+        setNotificacion(null);
       }, 5000);
     }
   };
@@ -118,6 +132,7 @@ const App = () => {
     return (
       <div>
         <h2>Inicie sesión en la aplicación</h2>
+        <Notificacion mensaje={notificacion} />
         {formularioLogin()}
       </div>
     );
@@ -127,6 +142,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notificacion mensaje={notificacion} />
       <p>
         {usuario.name} inició sesión{" "}
         <button onClick={handleCerrarSesion}>Salir</button>
