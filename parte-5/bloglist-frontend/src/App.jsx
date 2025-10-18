@@ -3,6 +3,8 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import servicioLogin from "./services/login";
 import Notificacion from "./components/Notificacion";
+import BlogFormulario from "./components/BlogFormulario";
+import AlternarContenido from "./components/AlternarContenido";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -84,7 +86,7 @@ const App = () => {
       setNombreDeUsuario("");
       setContraseña("");
     } catch (error) {
-      console.log("Error en login: ", error)
+      console.log("Error en login: ", error);
       setNotificacion({
         texto: "Nombre de usuario y/o contraseña incorrectos",
         tipo: "error",
@@ -147,40 +149,18 @@ const App = () => {
         {usuario.name} inició sesión{" "}
         <button onClick={handleCerrarSesion}>Salir</button>
       </p>
-      <h3>Crear nuevo blog</h3>
-      <form onSubmit={agregarBlog}>
-        <div>
-          <label>
-            titulo:{" "}
-            <input
-              type="text"
-              value={titulo}
-              onChange={({ target }) => setTitulo(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            autor:{" "}
-            <input
-              type="text"
-              value={autor}
-              onChange={({ target }) => setAutor(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            url:{" "}
-            <input
-              type="url"
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">crear</button>
-      </form>
+
+      <AlternarContenido textoBoton="Crear nuevo blog">
+        <BlogFormulario
+          agregarBlog={agregarBlog}
+          titulo={titulo}
+          setTitulo={setTitulo}
+          autor={autor}
+          setAutor={setAutor}
+          url={url}
+          setUrl={setUrl}
+        />
+      </AlternarContenido>
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
