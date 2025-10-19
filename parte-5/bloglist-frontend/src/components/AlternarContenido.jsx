@@ -26,7 +26,7 @@ const AlternarContenido = (props) => {
       {/* Contenido visible solo cuando visible = true. */}
       <div style={mostrar}>
         {props.children}
-        <button onClick={alternarVisibilidad}>cancelar</button>
+        <button onClick={alternarVisibilidad}>Cancelar</button>
       </div>
     </div>
   );

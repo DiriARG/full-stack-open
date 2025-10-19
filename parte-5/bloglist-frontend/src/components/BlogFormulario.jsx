@@ -27,7 +27,7 @@ const BlogFormulario = ({ crearBlog }) => {
       <form onSubmit={agregarBlog}>
         <div>
           <label>
-            titulo:{" "}
+            Titulo:{" "}
             <input
               type="text"
               value={titulo}
@@ -37,7 +37,7 @@ const BlogFormulario = ({ crearBlog }) => {
         </div>
         <div>
           <label>
-            autor:{" "}
+            Autor:{" "}
             <input
               type="text"
               value={autor}
@@ -47,7 +47,7 @@ const BlogFormulario = ({ crearBlog }) => {
         </div>
         <div>
           <label>
-            url:{" "}
+            Url:{" "}
             <input
               type="url"
               value={url}
@@ -55,7 +55,7 @@ const BlogFormulario = ({ crearBlog }) => {
             />
           </label>
         </div>
-        <button type="submit">crear</button>
+        <button type="submit">Crear</button>
       </form>
     </div>
   );
