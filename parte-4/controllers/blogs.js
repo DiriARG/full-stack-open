@@ -61,7 +61,7 @@ blogsRouter.delete("/:id", middleware.userExtractor, async (request, response) =
 });
 
 blogsRouter.put("/:id", async (request, response) => {
-  const { title, author, url, likes } = request.body;
+  const { title, author, url, likes, user } = request.body;
 
   const blog = await Blog.findById(request.params.id);
   if (!blog) {
@@ -72,6 +72,10 @@ blogsRouter.put("/:id", async (request, response) => {
   blog.author = author;
   blog.url = url;
   blog.likes = likes;
+  // Si el frontend envía la propiedad "user", nos aseguramos de que en la bd solo se guarde el ID del usuario y no todo el objeto "user" completo.
+  if (user) {
+    blog.user = typeof user === "object" ? user.id || user._id : user;
+  }
 
   const blogActualizado = await blog.save();
   response.json(blogActualizado);
