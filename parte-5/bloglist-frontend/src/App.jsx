@@ -141,8 +141,14 @@ const App = () => {
         <BlogFormulario crearBlog={agregarBlog} />
       </AlternarContenido>
 
+      {/*
+       Le enviamos las funciones necesarias para actualizar la lista:
+       - blogs: el arreglo completo de blogs, necesario para poder actualizar la lista (por ejemplo, al hacer click a "like").
+       - setBlogs: la función que actualiza el estado del listado en App.jsx.
+       Esto permite que cada componente Blog pueda modificar el listado general si se actualiza un elemento.
+      */}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
       ))}
     </div>
   );

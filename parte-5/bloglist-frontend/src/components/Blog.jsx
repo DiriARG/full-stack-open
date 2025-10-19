@@ -1,6 +1,7 @@
 import { useState } from "react";
+import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, blogs, setBlogs }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
 
   // Estilos en línea.
@@ -17,11 +18,27 @@ const Blog = ({ blog }) => {
     setMostrarDetalles(!mostrarDetalles);
   };
 
+  const handleLike = async () => {
+    // Objeto a enviar al backend para la actualización. 
+    const blogActualizado = {
+      ...blog,
+      // Incrementa en 1 la cantidad de likes.
+      likes: blog.likes + 1,
+      // Se envia el ID del usuario.
+      user: blog.user.id || blog.user,
+    };
+    
+    const respuesta = await blogService.actualizar(blog.id, blogActualizado);
+    
+    // Se reemplaza el blog antiguo por la versión actualizada ("respuesta"), si no, se mantiene el blog original ("b").
+    setBlogs(blogs.map((b) => (b.id === blog.id ? respuesta : b)));
+  };
+
   return (
     // Acá se aplica los estilos definidos previamente.
     <div style={estiloDeBlog}>
       {/* Acá se muestra el título y el autor. Al lado está el botón que activa la función de alternancia al hacer click,
-      osea si "mostrarDetalles" es true, el texto es "Ocultar". Si es false, el texto es "Mostrar". */ }
+      osea si "mostrarDetalles" es true, el texto es "Ocultar". Si es false, el texto es "Mostrar". */}
       <div>
         {blog.title} {blog.author}{" "}
         <button onClick={alternarDetalles}>
@@ -34,7 +51,7 @@ const Blog = ({ blog }) => {
         <div>
           <div>{blog.url}</div>
           <div>
-            Likes {blog.likes} <button>Like</button>
+            Likes {blog.likes} <button onClick={handleLike}>Like</button>
           </div>
           {/* Se usa el operador de encadenamiento opcional: "?." para acceder a "name" solo si "blog.user" existe. 
            Sirve para prevenir errores en caso de que la propiedad "user" es null o undefined. */}
