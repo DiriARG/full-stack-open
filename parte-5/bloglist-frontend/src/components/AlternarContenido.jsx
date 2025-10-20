@@ -1,21 +1,21 @@
-/* Este componente alterna la visibilidad de su contenido interno. 
+/* Este componente alterna la visibilidad de su contenido interno.
 El contenido a mostrar se pasa como children desde el componente padre.
 Por ejemplo, en App.jsx, children representa lo que está dentro de las etiquetas <AlternarContenido> como puede ser el formulario <BlogFormulario />.
 */
-import { useState } from "react";
+import { useState } from 'react'
 
 const AlternarContenido = (props) => {
   // Estado que controla si el contenido es visible o no.
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   // Estilos que controlan qué parte se muestra en función del estado.
-  const ocultar = { display: visible ? "none" : "" };
-  const mostrar = { display: visible ? "" : "none" };
+  const ocultar = { display: visible ? 'none' : '' }
+  const mostrar = { display: visible ? '' : 'none' }
 
   // Cambia la visibilidad del contenido.
   const alternarVisibilidad = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   return (
     <div>
@@ -29,7 +29,7 @@ const AlternarContenido = (props) => {
         <button onClick={alternarVisibilidad}>Cancelar</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AlternarContenido;
+export default AlternarContenido

@@ -1,9 +1,9 @@
 const Notificacion = ({ mensaje }) => {
   if (mensaje === null) {
-    return null;
+    return null
   }
 
-  return <div className={mensaje.tipo}>{mensaje.texto}</div>;
-};
+  return <div className={mensaje.tipo}>{mensaje.texto}</div>
+}
 
-export default Notificacion;
+export default Notificacion

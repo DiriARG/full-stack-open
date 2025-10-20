@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogFormulario = ({ crearBlog }) => {
-  const [titulo, setTitulo] = useState("");
-  const [autor, setAutor] = useState("");
-  const [url, setUrl] = useState("");
+  const [titulo, setTitulo] = useState('')
+  const [autor, setAutor] = useState('')
+  const [url, setUrl] = useState('')
 
   // Función que maneja el envío del formulario.
   const agregarBlog = (evento) => {
-    evento.preventDefault();
-    
+    evento.preventDefault()
+
     // Llama a la función del padre (App.jsx) pasandole los datos del blog.
     crearBlog({
       title: titulo,
       author: autor,
       url: url,
-    });
-    
-    setTitulo("");
-    setAutor("");
-    setUrl("");
-  };
+    })
+
+    setTitulo('')
+    setAutor('')
+    setUrl('')
+  }
 
   return (
     <div>
@@ -27,7 +28,7 @@ const BlogFormulario = ({ crearBlog }) => {
       <form onSubmit={agregarBlog}>
         <div>
           <label>
-            Titulo:{" "}
+            Titulo:{' '}
             <input
               type="text"
               value={titulo}
@@ -37,7 +38,7 @@ const BlogFormulario = ({ crearBlog }) => {
         </div>
         <div>
           <label>
-            Autor:{" "}
+            Autor:{' '}
             <input
               type="text"
               value={autor}
@@ -47,7 +48,7 @@ const BlogFormulario = ({ crearBlog }) => {
         </div>
         <div>
           <label>
-            Url:{" "}
+            Url:{' '}
             <input
               type="url"
               value={url}
@@ -58,7 +59,13 @@ const BlogFormulario = ({ crearBlog }) => {
         <button type="submit">Crear</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogFormulario;
+// Define y valida los tipos de datos esperados para las props.
+BlogFormulario.propTypes = {
+  // El prop "crearBlog" debe ser una función (func) y es obligatoria (isRequired).
+  crearBlog: PropTypes.func.isRequired,
+}
+
+export default BlogFormulario
