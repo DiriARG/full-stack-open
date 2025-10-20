@@ -126,12 +126,12 @@ const App = () => {
       </div>
     );
   }
-  
+
   /* Función para ordenar los blogs por número de "likes" de forma descendente. 
   Se crea una copia del array "blogs" con el operador spread para no modificar el estado original. */
   const blogsOrdenados = [...blogs].sort((blog1, blog2) => {
     return blog2.likes - blog1.likes;
-  })
+  });
 
   // Si el usuario no es null (inicia sesión), se muestra el nombre del usuario y una lista de blogs.
   return (
@@ -151,10 +151,17 @@ const App = () => {
        Le enviamos las funciones necesarias para actualizar la lista:
        - blogs: el arreglo completo de blogs, necesario para poder actualizar la lista (por ejemplo, al hacer click a "like").
        - setBlogs: la función que actualiza el estado del listado en App.jsx.
+       - usuario: el objeto del usuario logueado, crucial para verificar si el usuario actual es el autor del blog. 
        Esto permite que cada componente Blog pueda modificar el listado general si se actualiza un elemento.
       */}
       {blogsOrdenados.map((blog) => (
-        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          blogs={blogs}
+          setBlogs={setBlogs}
+          usuario={usuario}
+        />
       ))}
     </div>
   );

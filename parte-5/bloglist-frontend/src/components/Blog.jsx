@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, usuario }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
 
   // Estilos en línea.
@@ -41,6 +41,23 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     setBlogs(blogs.map((b) => (b.id === blog.id ? blogConUsuario : b)));
   };
 
+  const handleEliminar = async () => {
+    const confirmacion = window.confirm(
+      `¿Eliminar el blog "${blog.title}" de ${blog.author}?`
+    );
+
+    if (confirmacion) {
+      try {
+        await blogService.eliminar(blog.id);
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+      } catch (error) {
+        console.error("Error al eliminar el blog: ", error);
+      }
+    }
+  };
+  // Verifica si el usuario logueado es el creador del blog.
+  const mostrarBotonEliminar = blog.user?.username === usuario?.username;
+
   return (
     // Acá se aplica los estilos definidos previamente.
     <div style={estiloDeBlog}>
@@ -63,6 +80,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           {/* Se usa el operador de encadenamiento opcional: "?." para acceder a "name" solo si "blog.user" existe. 
            Sirve para prevenir errores en caso de que la propiedad "user" es null o undefined. */}
           <div>{blog.user?.name}</div>
+
+          {mostrarBotonEliminar && (
+            <button onClick={handleEliminar}>Eliminar</button>
+          )}
         </div>
       )}
     </div>
