@@ -19,19 +19,26 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   };
 
   const handleLike = async () => {
-    // Objeto a enviar al backend para la actualización. 
+    // Se prepara el objeto para enviar al backend para su actualización.
     const blogActualizado = {
       ...blog,
-      // Incrementa en 1 la cantidad de likes.
       likes: blog.likes + 1,
       // Se envia el ID del usuario.
       user: blog.user.id || blog.user,
     };
-    
+
+    // Se envia la actualización al backend.
     const respuesta = await blogService.actualizar(blog.id, blogActualizado);
-    
-    // Se reemplaza el blog antiguo por la versión actualizada ("respuesta"), si no, se mantiene el blog original ("b").
-    setBlogs(blogs.map((b) => (b.id === blog.id ? respuesta : b)));
+
+    /* El backend devuelve el blog actualizado, pero sin la información completa del usuario.
+     Por eso, se sobreescribe el campo "user" incompleto de "respuesta" con el objeto "user" completo que ya teníamos en el estado local. */
+    const blogConUsuario = {
+      ...respuesta,
+      user: blog.user,
+    };
+
+    // Se recorre la lista actual de blogs, reemplazando el blog antiguo por la versión actualizada ("blogConUsuario") en caso de que el ID coincida, si no, se mantiene el blog original ("b").
+    setBlogs(blogs.map((b) => (b.id === blog.id ? blogConUsuario : b)));
   };
 
   return (
