@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs, usuario }) => {
+/* Se agrega la prop opcional "handleLikeProp". Esta permite inyectar una función mock desde las pruebas, reemplazando el comportamiento real de "handleLike".
+En el entorno normal, el componente sigue usando el servicio real (blogService). */
+const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
 
   // Estilos en línea.
@@ -19,6 +21,14 @@ const Blog = ({ blog, blogs, setBlogs, usuario }) => {
   }
 
   const handleLike = async () => {
+    // Si se proporciona "handleLikeProp" (modo testing), se ejecuta esa función en lugar de realizar la actualización real a través del servicio.
+    if (handleLikeProp) {
+      // Se le pasa el blog como argumento al mock.
+      handleLikeProp(blog)
+      // Finaliza acá para evitar llamadas al backend.
+      return
+    }
+
     // Se prepara el objeto para enviar al backend para su actualización.
     const blogActualizado = {
       ...blog,
@@ -60,19 +70,20 @@ const Blog = ({ blog, blogs, setBlogs, usuario }) => {
 
   return (
     // Acá se aplica los estilos definidos previamente.
-    <div style={estiloDeBlog} className='blog'> {/* Se agrego "className=blog" para identificar el contenedor principal del componente en las pruebas. */}
+    <div style={estiloDeBlog} className="blog">
+      {' '}
+      {/* Se agrego "className=blog" para identificar el contenedor principal del componente en las pruebas. */}
       {/* Acá se muestra el título y el autor. Al lado está el botón que activa la función de alternancia al hacer click,
       osea si "mostrarDetalles" es true, el texto es "Ocultar". Si es false, el texto es "Mostrar". */}
-      <div className='blogResumen'>
+      <div className="blogResumen">
         {blog.title} {blog.author}{' '}
         <button onClick={alternarDetalles}>
           {mostrarDetalles ? 'Ocultar' : 'Mostrar'}
         </button>
       </div>
-
       {/* El operador lógico AND (&&) asegura que el div interno solo se muestre si "mostrarDetalles" es true, mostrando los demás datos del blog.*/}
       {mostrarDetalles && (
-        <div className='blogDetalles'>
+        <div className="blogDetalles">
           <div>{blog.url}</div>
           <div>
             Likes {blog.likes} <button onClick={handleLike}>Like</button>

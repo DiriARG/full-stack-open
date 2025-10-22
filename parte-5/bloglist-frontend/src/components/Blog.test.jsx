@@ -36,6 +36,7 @@ describe('<Blog />', () => {
     const likes = screen.queryByText('Likes 10')
     expect(likes).toBeNull()
   })
+
   test('muestra la URL y los likes cuando se hace clic en el botón "Mostrar"', async () => {
     const blog = {
       title: 'Aprendiendo React Testing',
@@ -65,6 +66,44 @@ describe('<Blog />', () => {
     // Ahora, tras hacer clic, deberían aparecer la URL y los likes; toBeVisible() verifica la visibilidad de un elemento para el ususario.
     expect(screen.getByText('http://ejemplo.com')).toBeVisible()
     expect(screen.getByText('Likes 10')).toBeVisible()
+  })
 
+  test('llama dos veces al manejador de likes cuando se hace clic dos veces', async () => {
+    const blog = {
+      title: 'Aprendiendo React Testing',
+      author: 'Matías Di Risio',
+      url: 'http://ejemplo.com',
+      likes: 10,
+      user: { username: 'DiriARG' },
+      id: '123',
+    }
+
+    // Creación de una función simulada (mock).
+    const simuladorActualizarLike = vi.fn()
+
+    render(
+      <Blog
+        blog={blog}
+        blogs={[]}
+        setBlogs={() => {}}
+        usuario={{ username: 'DiriARG' }}
+        // Se inyecta la función simulada.
+        handleLikeProp={simuladorActualizarLike}
+      />
+    )
+
+    const usuario = userEvent.setup()
+
+    // Primero se muestran los detalles.
+    const botonMostrar = screen.getByText('Mostrar')
+    await usuario.click(botonMostrar)
+
+    // Luego se hace click dos veces en el botón "Like".
+    const botonLike = screen.getByText('Like')
+    await usuario.click(botonLike)
+    await usuario.click(botonLike)
+
+    // Verificación que se haya llamado exactamente dos veces.
+    expect(simuladorActualizarLike.mock.calls).toHaveLength(2)
   })
 })
