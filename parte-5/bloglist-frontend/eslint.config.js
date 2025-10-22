@@ -44,4 +44,15 @@ export default [
       'no-console': 'off',
     },
   },
+  // Configuración específica para archivos de prueba.
+  {
+    // Aplica esta configuración solo a los archivos con el sufijo .test.js o .test.jsx.
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        // Agrega todas las variables globales de Vitest (describe, test, expect, etc.) para que ESLint no las marque como indefinidas en los tests.
+        ...globals.vitest
+      }
+    }
+  }
 ]

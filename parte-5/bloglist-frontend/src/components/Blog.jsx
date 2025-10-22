@@ -60,10 +60,10 @@ const Blog = ({ blog, blogs, setBlogs, usuario }) => {
 
   return (
     // Acá se aplica los estilos definidos previamente.
-    <div style={estiloDeBlog}>
+    <div style={estiloDeBlog} className='blog'> {/* Se agrego "className=blog" para identificar el contenedor principal del componente en las pruebas. */}
       {/* Acá se muestra el título y el autor. Al lado está el botón que activa la función de alternancia al hacer click,
       osea si "mostrarDetalles" es true, el texto es "Ocultar". Si es false, el texto es "Mostrar". */}
-      <div>
+      <div className='blogResumen'>
         {blog.title} {blog.author}{' '}
         <button onClick={alternarDetalles}>
           {mostrarDetalles ? 'Ocultar' : 'Mostrar'}
@@ -72,7 +72,7 @@ const Blog = ({ blog, blogs, setBlogs, usuario }) => {
 
       {/* El operador lógico AND (&&) asegura que el div interno solo se muestre si "mostrarDetalles" es true, mostrando los demás datos del blog.*/}
       {mostrarDetalles && (
-        <div>
+        <div className='blogDetalles'>
           <div>{blog.url}</div>
           <div>
             Likes {blog.likes} <button onClick={handleLike}>Like</button>
