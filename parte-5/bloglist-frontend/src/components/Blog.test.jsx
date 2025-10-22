@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
@@ -34,5 +35,36 @@ describe('<Blog />', () => {
 
     const likes = screen.queryByText('Likes 10')
     expect(likes).toBeNull()
+  })
+  test('muestra la URL y los likes cuando se hace clic en el botón "Mostrar"', async () => {
+    const blog = {
+      title: 'Aprendiendo React Testing',
+      author: 'Matías Di Risio',
+      url: 'http://ejemplo.com',
+      likes: 10,
+      user: { username: 'DiriARG' },
+      id: '123',
+    }
+
+    render(
+      <Blog
+        blog={blog}
+        blogs={[]}
+        setBlogs={() => {}}
+        usuario={{ username: 'DiriARG' }}
+      />
+    )
+
+    // Creación de una instancia de userEvent (para simular interacciones de usuario).
+    const usuario = userEvent.setup()
+
+    const botonMostrar = screen.getByText('Mostrar')
+    // Simula un clic real.
+    await usuario.click(botonMostrar)
+
+    // Ahora, tras hacer clic, deberían aparecer la URL y los likes; toBeVisible() verifica la visibilidad de un elemento para el ususario.
+    expect(screen.getByText('http://ejemplo.com')).toBeVisible()
+    expect(screen.getByText('Likes 10')).toBeVisible()
+
   })
 })
