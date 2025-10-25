@@ -206,6 +206,18 @@ Realiza una prueba que garantice que si se hace clic dos veces en el botón _lik
 
 Haz una prueba para el nuevo formulario de blog. La prueba debe verificar que el formulario llama al controlador de eventos que recibió como props con los detalles correctos cuando se crea un nuevo blog.
 
+> [!IMPORTANT]
+> Al comenzar la sección **d - Pruebas de extremo a extremo: Playwright**, se nos presenta la siguiente advertencia del curso:
+>
+> Quizás las dos bibliotecas más fáciles para realizar pruebas de extremo a extremo en este momento son [Cypress](https://www.cypress.io/) y [Playwright](https://playwright.dev/).  
+> Según las estadísticas de [npmtrends.com](https://npmtrends.com/cypress-vs-playwright), podemos ver que Playwright superó a Cypress en número de descargas durante 2024, y su popularidad continúa creciendo:  
+>  <img src="./imagenes/playwright-papea.png" alt="Playwright vs Cypress">  
+> Este curso lleva años utilizando Cypress. Ahora, Playwright es una nueva incorporación. Puedes elegir si desea completar la parte de pruebas E2E del curso con Cypress o Playwright. Los principios operativos de ambas bibliotecas son muy similares, por lo que su elección no es crucial. Sin embargo, ahora Playwright es la librería E2E preferida para el curso.  
+> Si tu elección es Playwright, por favor continúa. Si terminas usando Cypress, ve [aquí](https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_cypress).
+>
+> Actualmente, según las estadísticas más recientes, **Playwright se mantiene como la opción más popular**, con **22.295.384 descargas** frente a **6.228.002 descargas** de Cypress en el último mes.  
+> Teniendo en cuenta esta tendencia y la recomendación del curso, **he decidido realizar los ejercicios de pruebas de extremo a extremo utilizando Playwright** en lugar de Cypress.
+
 # Ejercicios 5.17. - 5.23.
 
 En los últimos ejercicios de esta parte, hagamos algunas pruebas E2E para la aplicación de blog. El material anterior debería ser suficiente para hacer la mayoría de los ejercicios. Sin embargo, definitivamente deberías leer la [documentación](https://playwright.dev/docs/intro) de Playwright y la [descripción de la API](https://playwright.dev/docs/api/class-playwright), al menos las secciones mencionadas al final del capítulo anterior.
@@ -296,7 +308,11 @@ Realiza una prueba para asegurarte de que solo el creador puede ver el botón de
 ## 5.23: Pruebas de Extremo a Extremo de la Lista de Blogs, paso 7
 
 Realiza una prueba que verifique que los blogs estén ordenados de acuerdo con los likes, el blog con más likes en primer lugar.  
-_Este ejercicio puede ser un poco más complicado que los anteriores_.
+_Este ejercicio puede ser un poco más complicado que los anteriores_.  
+Este fue el último ejercicio de esta parte, y es hora de enviar tu código a GitHub y marcar los ejercicios que has completado en el [sistema de envío de ejercicios](https://studies.cs.helsinki.fi/stats/courses/fullstackopen).
+
+> [!NOTE]
+> Los ejercicios que se presentan a continuación corresponden a **Cypress**, por lo que **no los realicé**, ya que, tal como se menciona en la advertencia anterior, era necesario elegir entre **Cypress** y **Playwright**, y **opté por realizar los ejercicios con Playwright**.
 
 # Ejercicios 5.17. - 5.23.
 
