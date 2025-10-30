@@ -31,6 +31,12 @@ app.use("/api/login", loginRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usuariosRouter);
 
+// Solo si la aplicación se ejecuta en modo de prueba.
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 app.use(middleware.rutaDesconocida);
 app.use(middleware.controladorDeErrores);
 
