@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { iniciarSesion } = require("./utilidades_pruebas");
+const { iniciarSesion, crearBlog } = require("./utilidades_pruebas");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -40,17 +40,44 @@ describe("Blog app", () => {
   test("inicio de sesión no exitoso", async ({ page }) => {
     await iniciarSesion(page, "Diri", "cewwc");
 
-    // Espera a que el mensaje de error aparezca en el DOM.
-    await page.waitForSelector('.error');
-    
     // Se selecciona la notificación de error.
-    const mensajeDeError = page.locator('.error')
-    
-    await expect(mensajeDeError).toHaveText('Nombre de usuario y/o contraseña incorrectos')
-    await expect(mensajeDeError).toHaveCSS('border-style', 'solid')
-    await expect(mensajeDeError).toHaveCSS('color', 'rgb(255, 0, 0)')
+    const mensajeDeError = page.locator(".error");
+
+    await expect(mensajeDeError).toHaveText(
+      "Nombre de usuario y/o contraseña incorrectos"
+    );
+    await expect(mensajeDeError).toHaveCSS("border-style", "solid");
+    await expect(mensajeDeError).toHaveCSS("color", "rgb(255, 0, 0)");
 
     // Confirma que no se muestra el mensaje de inicio de sesión (el "not" niega la condición "toBeVisible").
-    await expect(page.getByText('Matías inició sesión')).not.toBeVisible()
+    await expect(page.getByText("Matías inició sesión")).not.toBeVisible();
+  });
+
+  describe("al iniciar sesión", () => {
+    beforeEach(async ({ page }) => {
+      await iniciarSesion(page, "Diri", "contrafacil");
+    });
+
+    test("se puede crear un nuevo blog", async ({ page }) => {
+      await crearBlog(
+        page,
+        "Blog de prueba E2E con Playwright",
+        "Matías",
+        "https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_playwright#ejercicios-5-17-5-23"
+      );
+
+      const mensajeDeExito = page.locator(".exito");
+      await expect(mensajeDeExito).toHaveText(
+        "Nuevo blog añadido: Blog de prueba E2E con Playwright, por Matías"
+      );
+      await expect(mensajeDeExito).toHaveCSS("border-style", "solid");
+      await expect(mensajeDeExito).toHaveCSS("color", "rgb(53, 156, 40)");
+
+      await expect(
+        page.getByText(
+          "Nuevo blog añadido: Blog de prueba E2E con Playwright, por Matías"
+        )
+      ).toBeVisible();
+    });
   });
 });
