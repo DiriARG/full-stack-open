@@ -12,4 +12,12 @@ const crearBlog = async (page, titulo, autor, url) => {
   await page.getByRole("button", { name: "Crear" }).click();
 };
 
+const darLike = async (page, tituloBlog) => {
+  // Localiza el contenedor HTML del blog que contenga el texto del título (".blog" es la clase raíz del componente blog).
+  const blogContainer = page.locator('.blog', { hasText: tituloBlog });
+
+  await blogContainer.getByRole("button", { name: "Mostrar" }).click();
+  await blogContainer.getByRole("button", { name: "Like" }).click();
+};
+
 export { iniciarSesion, crearBlog };

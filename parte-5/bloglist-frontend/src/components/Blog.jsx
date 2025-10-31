@@ -86,7 +86,7 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
         <div className="blogDetalles">
           <div>{blog.url}</div>
           <div>
-            Likes {blog.likes} <button onClick={handleLike}>Like</button>
+            Likes <span data-testid="contador-likes">{blog.likes}</span> <button onClick={handleLike}>Like</button>
           </div>
           {/* Se usa el operador de encadenamiento opcional: "?." para acceder a "name" solo si "blog.user" existe.
            Sirve para prevenir errores en caso de que la propiedad "user" es null o undefined. */}

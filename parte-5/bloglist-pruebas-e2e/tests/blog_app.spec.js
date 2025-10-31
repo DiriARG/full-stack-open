@@ -56,16 +56,16 @@ describe("Blog app", () => {
   describe("al iniciar sesión", () => {
     beforeEach(async ({ page }) => {
       await iniciarSesion(page, "Diri", "contrafacil");
-    });
 
-    test("se puede crear un nuevo blog", async ({ page }) => {
       await crearBlog(
         page,
         "Blog de prueba E2E con Playwright",
         "Matías",
         "https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_playwright#ejercicios-5-17-5-23"
       );
+    });
 
+    test("se puede crear un nuevo blog", async ({ page }) => {
       const mensajeDeExito = page.locator(".exito");
       await expect(mensajeDeExito).toHaveText(
         "Nuevo blog añadido: Blog de prueba E2E con Playwright, por Matías"
@@ -78,6 +78,19 @@ describe("Blog app", () => {
           "Nuevo blog añadido: Blog de prueba E2E con Playwright, por Matías"
         )
       ).toBeVisible();
+    });
+
+    test("se puede dar like a un blog", async ({ page }) => {
+      // Se ubica el blog.
+      const blogContainer = page.locator(".blog", {
+        hasText: "Blog de prueba E2E con Playwright",
+      });
+
+      await blogContainer.getByRole("button", { name: "Mostrar" }).click();
+      await blogContainer.getByRole("button", { name: "Like" }).click();
+
+      // Se verifica que el contador de likes haya pasado a 1.
+      await expect(blogContainer.getByTestId("contador-likes")).toHaveText("1");
     });
   });
 });
