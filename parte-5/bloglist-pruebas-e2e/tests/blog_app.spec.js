@@ -1,5 +1,10 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { iniciarSesion, crearBlog } = require("./utilidades_pruebas");
+const {
+  iniciarSesion,
+  crearBlog,
+  darLike,
+  eliminarBlog,
+} = require("./utilidades_pruebas");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -63,6 +68,7 @@ describe("Blog app", () => {
         "Matías",
         "https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_playwright#ejercicios-5-17-5-23"
       );
+
     });
 
     test("se puede crear un nuevo blog", async ({ page }) => {
@@ -81,16 +87,28 @@ describe("Blog app", () => {
     });
 
     test("se puede dar like a un blog", async ({ page }) => {
+      const tituloBlog = "Blog de prueba E2E con Playwright";
+
+      await darLike(page, tituloBlog);
+
       // Se ubica el blog.
       const blogContainer = page.locator(".blog", {
-        hasText: "Blog de prueba E2E con Playwright",
+        hasText: tituloBlog,
       });
-
-      await blogContainer.getByRole("button", { name: "Mostrar" }).click();
-      await blogContainer.getByRole("button", { name: "Like" }).click();
 
       // Se verifica que el contador de likes haya pasado a 1.
       await expect(blogContainer.getByTestId("contador-likes")).toHaveText("1");
+    });
+
+    test("el usuario que creó un blog puede eliminarlo", async ({ page }) => {
+      /* Forzar la recarga de la página para obtener datos de usuario completos del blog del backend y renderizar el botón "Eliminar". */
+      await page.reload();
+
+      const tituloBlog = "Blog de prueba E2E con Playwright";
+
+      await eliminarBlog(page, tituloBlog);
+
+      await expect(page.getByText(tituloBlog)).not.toBeVisible();
     });
   });
 });

@@ -14,10 +14,24 @@ const crearBlog = async (page, titulo, autor, url) => {
 
 const darLike = async (page, tituloBlog) => {
   // Localiza el contenedor HTML del blog que contenga el texto del título (".blog" es la clase raíz del componente blog).
-  const blogContainer = page.locator('.blog', { hasText: tituloBlog });
+  const blogContainer = page.locator(".blog", { hasText: tituloBlog });
 
   await blogContainer.getByRole("button", { name: "Mostrar" }).click();
   await blogContainer.getByRole("button", { name: "Like" }).click();
 };
 
-export { iniciarSesion, crearBlog };
+const eliminarBlog = async (page, tituloBlog) => {
+  const blogContainer = page.locator(".blog", { hasText: tituloBlog });
+
+  await blogContainer.getByRole("button", { name: "Mostrar" }).click();
+
+  /* "page.on('dialog')" captura el windows.confirm y lo acepta.
+  Se coloca antes de mostrar la ventana de confirmación para eliminar el blog. */
+  page.on("dialog", async (dialog) => {
+    await dialog.accept();
+  });
+
+  await blogContainer.getByRole("button", { name: "Eliminar" }).click();
+};
+
+export { iniciarSesion, crearBlog, darLike, eliminarBlog };
