@@ -70,7 +70,7 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
 
   return (
     // Acá se aplica los estilos definidos previamente.
-    <div style={estiloDeBlog} className="blog">
+    <div style={estiloDeBlog} className="blog" data-testid="blog-item"> {/* "data-testid" es un atributo personalizado de HTML que sirve para para identificar elementos de una página web de manera única durante las pruebas con Playwright. */}
       {' '}
       {/* Se agrego "className=blog" para identificar el contenedor principal del componente en las pruebas. */}
       {/* Acá se muestra el título y el autor. Al lado está el botón que activa la función de alternancia al hacer click,
