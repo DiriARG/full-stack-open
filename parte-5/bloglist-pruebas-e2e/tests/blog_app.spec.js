@@ -20,6 +20,14 @@ describe("Blog app", () => {
       },
     });
 
+    await request.post("/api/users", {
+      data: {
+        username: "OtroUsuario",
+        name: "Usuario Dos",
+        password: "awsd",
+      },
+    });
+
     // Entrar a la app.
     await page.goto("/");
   });
@@ -68,7 +76,6 @@ describe("Blog app", () => {
         "Matías",
         "https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_playwright#ejercicios-5-17-5-23"
       );
-
     });
 
     test("se puede crear un nuevo blog", async ({ page }) => {
@@ -109,6 +116,36 @@ describe("Blog app", () => {
       await eliminarBlog(page, tituloBlog);
 
       await expect(page.getByText(tituloBlog)).not.toBeVisible();
+    });
+    test("solo el creador del blog ve el botón eliminar", async ({ page }) => {
+      const tituloBlog = "Blog de prueba E2E con Playwright";
+
+      await page.reload();
+
+      // Usuario creador (ya logueado por el beforeEach).
+      const blogContainer = page
+        .getByTestId("blog-item")
+        .filter({ hasText: tituloBlog });
+      await blogContainer.getByRole("button", { name: "Mostrar" }).click();
+
+      await expect(
+        blogContainer.getByRole("button", { name: "Eliminar" })
+      ).toBeVisible();
+
+      await page.getByRole("button", { name: "Salir" }).click();
+
+      // Se inicia sesión con otro usuario que no creó el blog.
+      await iniciarSesion(page, "OtroUsuario", "awsd");
+
+      const blogContainerOtro = page
+        .getByTestId("blog-item")
+        .filter({ hasText: tituloBlog });
+      await blogContainerOtro.getByRole("button", { name: "Mostrar" }).click();
+
+      // El usuario NO creador del blog NO debe ver el botón Eliminar.
+      await expect(
+        blogContainerOtro.getByRole("button", { name: "Eliminar" })
+      ).not.toBeVisible()
     });
   });
 });
