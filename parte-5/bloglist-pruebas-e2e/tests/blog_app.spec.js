@@ -145,7 +145,48 @@ describe("Blog app", () => {
       // El usuario NO creador del blog NO debe ver el botón Eliminar.
       await expect(
         blogContainerOtro.getByRole("button", { name: "Eliminar" })
-      ).not.toBeVisible()
+      ).not.toBeVisible();
+    });
+
+    test("los blogs están ordenados por cantidad de likes (mayor a menor)", async ({
+      page,
+    }) => {
+      const blogA = "Blog A";
+      const blogB = "Blog B";
+      const blogC = "Blog C";
+
+      await crearBlog(page, "Blog A", "Matías", "http://a.com");
+      await crearBlog(page, "Blog B", "Matías", "http://b.com");
+      await crearBlog(page, "Blog C", "Matías", "http://c.com");
+
+      await darLike(page, blogB);
+      await darLike(page, blogB);
+      await darLike(page, blogB);
+      await darLike(page, blogB);
+      await darLike(page, blogB);
+
+      await darLike(page, blogC);
+      await darLike(page, blogC);
+      await darLike(page, blogC);
+      await darLike(page, blogC);
+
+      await darLike(page, blogA);
+      await darLike(page, blogA);
+      await darLike(page, blogA);
+
+      // Obtención de todos los contenedores de blogs renderizados en pantalla. 
+      const blogsOrdenados = await page
+        .locator('[data-testid="blog-item"]')
+        .evaluateAll((elementos) =>
+          // "innerText" devuelve TODO el texto visible dentro del blog, osea, el título, autor, likes, etc, como si los vería el usuario.
+          elementos.map((elemento) => elemento.innerText)
+        );
+
+      // Verificación:
+      // La lista resultante debe estar en orden: B -> C -> A.
+      expect(blogsOrdenados[0]).toMatch(blogB);
+      expect(blogsOrdenados[1]).toMatch(blogC);
+      expect(blogsOrdenados[2]).toMatch(blogA);
     });
   });
 });
