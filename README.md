@@ -17,6 +17,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 3: Programando un servidor con NodeJS y Express](#parte-3-programando-un-servidor-con-nodejs-y-express)
 - [Parte 4: Probando servidores Express, administración de usuarios](#parte-4-probando-servidores-express-administración-de-usuarios)
 - [Parte 5: Probando aplicaciones React](#parte-5-probando-aplicaciones-react)
+- [Parte 6: Gestión avanzada del estado](#parte-6-gestión-avanzada-del-estado)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
 
@@ -54,3 +55,10 @@ En esta parte volvemos al frontend, primero mirando a diferentes posibilidades p
 
 <img src="./imagenes/parte-5.png" alt="Imagen parte 5" width="250">
 
+## Parte 6: Gestión avanzada del estado:
+
+Hasta ahora, hemos colocado el estado de la aplicación y la lógica de estado directamente dentro de los componentes de React. Cuando las aplicaciones crecen, la administración del estado debe trasladarse fuera de los componentes de React. En esta parte, presentaremos la librería Redux, que actualmente es la solución más popular para administrar el estado de las aplicaciones React.
+
+Aprenderemos sobre la versión ligera de Redux compatible directamente con React, es decir el contexto de React y el hook useRedux, también sobre la librería React Query que simplifica la gestión de estados de la aplicación.
+
+<img src="./imagenes/parte-6.png" alt="Imagen parte 6" width="250">
