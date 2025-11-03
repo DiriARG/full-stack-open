@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> **Frontend de la Lista de Blogs** → Ejercicios 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 5.10, 5.11, 5.12 → Carpeta llamada **"bloglist-frontend"**.     
+> **Pruebas de Listas de Blogs** → Ejercicios 5.13, 5.14, 5.15, 5.16 → Carpeta llamada **"bloglist-frontend"**.    
+> **Pruebas de Extremo a Extremo de la Lista de Blogs** → Ejercicios 5.17, 5.18, 5.19, 5.20, 5.21, 5.22, 5.23 → Carpeta llamada **"bloglist-pruebas-e2e"**.    
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.    
+
 # Ejercicios 5.1. - 5.4.
 
 Ahora crearemos un frontend para el backend de la lista de blogs que creamos en la última parte. Puedes usar [esta aplicación](https://github.com/fullstack-hy2020/bloglist-frontend) de GitHub como base para tu solución. Debes conectar tu backend con un proxy como se muestra en [la parte 3](https://fullstackopen.com/es/part3/despliegue_de_la_aplicacion_a_internet#proxy).  
