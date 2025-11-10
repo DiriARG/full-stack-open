@@ -27,12 +27,16 @@ const reducer = (state = initialState, action) => {
     case "VOTE": {
       // El payload contiene el id de la anécdota a la cual se quiere votar.
       const id = action.payload;
-      // Se recorre cada anécdota...
-      return state.map((anecdota) =>
+      // Se recorre cada anécdota, creando un nuevo array de anécdotas con el voto actualizado.
+      const estadoActualizado = state.map((anecdota) =>
         anecdota.id === id
           ? // Si coincide el id, copia y actualiza solo la anécdota votada.
             { ...anecdota, votes: anecdota.votes + 1 }
           : anecdota
+      );
+      // Se ordena el array (de mayor a menor) y se lo devuelve.
+      return estadoActualizado.sort(
+        (anecdota1, anecdota2) => anecdota2.votes - anecdota1.votes
       );
     }
     case "CREAR": {
@@ -43,7 +47,11 @@ const reducer = (state = initialState, action) => {
         id: getId(),
         votes: 0,
       };
-      return [...state, nuevaAnecdota];
+      const estadoActualizado = [...state, nuevaAnecdota];
+      // Se realiza el ordenamiento antes de devolverlo por consistencia del estado y experiencia del usuario (UX).
+      return estadoActualizado.sort(
+        (anecdota1, anecdota2) => anecdota2.votes - anecdota1.votes
+      );
     }
     default:
       return state;
