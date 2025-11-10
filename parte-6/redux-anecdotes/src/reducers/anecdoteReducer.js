@@ -35,6 +35,16 @@ const reducer = (state = initialState, action) => {
           : anecdota
       );
     }
+    case "CREAR": {
+      const contenido = action.payload;
+      const nuevaAnecdota = {
+        // Propiedades que espera la UI (App.jsx).
+        content: contenido,
+        id: getId(),
+        votes: 0,
+      };
+      return [...state, nuevaAnecdota];
+    }
     default:
       return state;
   }

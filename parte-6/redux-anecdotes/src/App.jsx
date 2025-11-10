@@ -12,6 +12,16 @@ const App = () => {
     });
   };
 
+  const crearAnecdota = (evento) => {
+    evento.preventDefault();
+    /* Obtiene el valor escrito en el input 
+    "evento.target" es el <form> y como el input tiene name="anecdota" se puede acceder directamente a él como evento.target.anecdota. "value" es el texto que el usuario escribió. */
+    const contenido = evento.target.anecdota.value;
+    // Se limpia el input (borra el texto que el usuario acaba de enviar el formulario), dejando el campo listo para una nueva entrada.
+    evento.target.anecdota.value = "";
+    dispatch({ type: "CREAR", payload: contenido });
+  };
+
   return (
     <div>
       <h2>Anecdotes</h2>
@@ -25,11 +35,11 @@ const App = () => {
         </div>
       ))}
       <h2>create new</h2>
-      <form>
+      <form onSubmit={crearAnecdota}>
         <div>
-          <input />
+          <input name="anecdota" />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );
