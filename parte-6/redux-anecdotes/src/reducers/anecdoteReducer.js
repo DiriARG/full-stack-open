@@ -19,6 +19,8 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
+/* El reducer es una función pura que recibe el estado actual (variable "state") y un objeto de acción,  y retorna un nuevo estado. El objeto de acción le indica al reducer cómo 
+actualizar el estado; por ejemplo, { type: "VOTE", payload: 12345 } --> anecdota con id "12345" su voto se incrementa en +1. */
 const reducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);
@@ -56,6 +58,21 @@ const reducer = (state = initialState, action) => {
     default:
       return state;
   }
+};
+
+// Action Creators: Funciones que crean y devuelven un objeto de acción, usadas para evitar escribir dicho objeto manualmente en cada dispatch.
+export const votarAnecdota = (id) => {
+  return {
+    type: "VOTE",
+    payload: id,
+  };
+};
+
+export const crearNuevaAnecdota = (contenido) => {
+  return {
+    type: "CREAR",
+    payload: contenido,
+  };
 };
 
 export default reducer;

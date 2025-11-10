@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { votarAnecdota, crearNuevaAnecdota } from "./reducers/anecdoteReducer";
 
 const App = () => {
   const anecdotes = useSelector((state) => state);
@@ -6,10 +7,7 @@ const App = () => {
 
   const vote = (id) => {
     console.log("vote", id);
-    dispatch({
-      type: "VOTE",
-      payload: id,
-    });
+    dispatch(votarAnecdota(id))
   };
 
   const crearAnecdota = (evento) => {
@@ -19,7 +17,7 @@ const App = () => {
     const contenido = evento.target.anecdota.value;
     // Se limpia el input (borra el texto que el usuario acaba de enviar el formulario), dejando el campo listo para una nueva entrada.
     evento.target.anecdota.value = "";
-    dispatch({ type: "CREAR", payload: contenido });
+    dispatch(crearNuevaAnecdota(contenido));
   };
 
   return (
