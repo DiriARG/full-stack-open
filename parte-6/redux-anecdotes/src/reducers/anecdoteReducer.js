@@ -21,7 +21,7 @@ const initialState = anecdotesAtStart.map(asObject);
 
 /* El reducer es una función pura que recibe el estado actual (variable "state") y un objeto de acción,  y retorna un nuevo estado. El objeto de acción le indica al reducer cómo 
 actualizar el estado; por ejemplo, { type: "VOTE", payload: 12345 } --> anecdota con id "12345" su voto se incrementa en +1. */
-const reducer = (state = initialState, action) => {
+const anecdotaReducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);
 
@@ -75,4 +75,4 @@ export const crearNuevaAnecdota = (contenido) => {
   };
 };
 
-export default reducer;
+export default anecdotaReducer;
