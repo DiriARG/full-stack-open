@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -18,61 +20,51 @@ const asObject = (anecdote) => {
 };
 
 const initialState = anecdotesAtStart.map(asObject);
-
-/* El reducer es una función pura que recibe el estado actual (variable "state") y un objeto de acción,  y retorna un nuevo estado. El objeto de acción le indica al reducer cómo 
-actualizar el estado; por ejemplo, { type: "VOTE", payload: 12345 } --> anecdota con id "12345" su voto se incrementa en +1. */
-const anecdotaReducer = (state = initialState, action) => {
-  console.log("state now: ", state);
-  console.log("action", action);
-
-  switch (action.type) {
-    case "VOTE": {
+/*
+  Creación del slice:
+  - name: nombre interno para identificar las acciones.
+  - initialState: el estado inicial del reducer.
+  - reducers: funciones que modifican el estado.
+*/
+const anecdotaSlice = createSlice({
+  name: "anecdotas",
+  initialState,
+  reducers: {
+    votarAnecdota(state, action) {
       // El payload contiene el id de la anécdota a la cual se quiere votar.
       const id = action.payload;
-      // Se recorre cada anécdota, creando un nuevo array de anécdotas con el voto actualizado.
+      // Se recorre la lista de anécdotas y se genera un nuevo array con la anécdota votada actualizada.
       const estadoActualizado = state.map((anecdota) =>
+        // Si el id coincide, se copia el objeto y se incrementa su cantidad de votos.
         anecdota.id === id
-          ? // Si coincide el id, copia y actualiza solo la anécdota votada.
-            { ...anecdota, votes: anecdota.votes + 1 }
+          ? { ...anecdota, votes: anecdota.votes + 1 }
           : anecdota
       );
-      // Se ordena el array (de mayor a menor) y se lo devuelve.
-      return estadoActualizado.sort(
+      // Se usa spread para crear una copia antes de ordenar (de mayor a menor) por tema de inmutabilidad, luego se lo devuelve.
+      return [...estadoActualizado].sort(
         (anecdota1, anecdota2) => anecdota2.votes - anecdota1.votes
       );
-    }
-    case "CREAR": {
+    },
+
+    crearNuevaAnecdota(state, action) {
       const contenido = action.payload;
       const nuevaAnecdota = {
-        // Propiedades que espera la UI (App.jsx).
+        // Estructura que espera la UI (App.jsx --> AnecdoteList.jsx).
         content: contenido,
         id: getId(),
         votes: 0,
       };
       const estadoActualizado = [...state, nuevaAnecdota];
       // Se realiza el ordenamiento antes de devolverlo por consistencia del estado y experiencia del usuario (UX).
-      return estadoActualizado.sort(
+      return [...estadoActualizado].sort(
         (anecdota1, anecdota2) => anecdota2.votes - anecdota1.votes
       );
-    }
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-// Action Creators: Funciones que crean y devuelven un objeto de acción, usadas para evitar escribir dicho objeto manualmente en cada dispatch.
-export const votarAnecdota = (id) => {
-  return {
-    type: "VOTE",
-    payload: id,
-  };
-};
+// Exportación de las acciones generadas automáticamente por createSlice.
+export const { votarAnecdota, crearNuevaAnecdota } = anecdotaSlice.actions;
 
-export const crearNuevaAnecdota = (contenido) => {
-  return {
-    type: "CREAR",
-    payload: contenido,
-  };
-};
-
-export default anecdotaReducer;
+// Exportación del reducer para usarlo en store.js.
+export default anecdotaSlice.reducer;
