@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 /* El estado inicial del filtro es un string vacío, esto significa que al inicio, no se aplica ningún filtro y se muestran todas las anécdotas. 
-La propiedad debe llamarse "initialState" NO "estadoInicial" porque Redux Toolkit no la reconoce y devuelve "undefined".*/
+La propiedad debe llamarse "initialState" NO "estadoInicial" porque Redux Toolkit no la reconoce y devuelve "undefined" --> en "notificacionReducer" se muestra como hacerlo. */
 const initialState = ""
 
 /* Creación del slice para el filtro. 
