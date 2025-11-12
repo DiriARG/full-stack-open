@@ -1,19 +1,26 @@
-// El estado inicial del filtro es un string vacío, esto significa que al inicio, no se aplica ningún filtro y se muestran todas las anécdotas.
-const filtroReducer = (state = '', action) => {
-  switch (action.type) {
-    case 'ESTABLECER_FILTRO':  
-    // Cuando se ejecuta esta acción, el nuevo valor del filtro se encuentra en "action.payload", entonces, el estado del filtro se reemplaza por ese valor.
-    return action.payload
-    default:
-      return state
-  }
-}
+import { createSlice } from '@reduxjs/toolkit'
 
-export const setFiltro = (filter) => {
-  return {
-    type: 'ESTABLECER_FILTRO',
-    payload: filter
-  }
-}
+/* El estado inicial del filtro es un string vacío, esto significa que al inicio, no se aplica ningún filtro y se muestran todas las anécdotas. 
+La propiedad debe llamarse "initialState" NO "estadoInicial" porque Redux Toolkit no la reconoce y devuelve "undefined".*/
+const initialState = ""
 
-export default filtroReducer
+/* Creación del slice para el filtro. 
+Un "slice" combina el reducer y sus actions creators en una sola definición. */
+const filtroSlice = createSlice({
+  name: "filtro",
+  initialState,
+  reducers: {
+    // Reducer que actualiza el texto del filtro según lo que el usuario escribe.
+    setFiltro(state, action) {
+      // "action.payload" contiene el texto ingresado en el campo del filtro. Se retorna ese texto, reemplazando el valor anterior del estado.
+      return action.payload
+    }
+  }
+})
+
+// Exportación del action creator.
+export const { setFiltro } = filtroSlice.actions;
+
+// Exportación del reducer.
+export default filtroSlice.reducer;
+
