@@ -1,6 +1,7 @@
 // Componente que renderiza la lista de anécdotas y maneja la lógica de votación.
 import { useDispatch, useSelector } from "react-redux";
 import { votarAnecdota } from "../reducers/anecdoteReducer";
+import { setNotificationConTiempo } from "../reducers/notificacionReducer";
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) =>
@@ -17,9 +18,10 @@ const AnecdoteList = () => {
   );
   const dispatch = useDispatch();
 
-  const vote = (id) => {
+  const vote = (id, content) => {
     console.log("vote", id);
     dispatch(votarAnecdota(id));
+    dispatch(setNotificationConTiempo(`Votaste a '${content}'`, 5));
   };
 
   return (
@@ -29,7 +31,7 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
           </div>
         </div>
       ))}

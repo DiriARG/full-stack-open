@@ -2,6 +2,7 @@
 
 import { useDispatch } from "react-redux";
 import { crearNuevaAnecdota } from "../reducers/anecdoteReducer";
+import { setNotificationConTiempo } from "../reducers/notificacionReducer";
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const AnecdoteForm = () => {
     evento.target.anecdota.value = "";
     // Se utiliza el Action Creator importado.
     dispatch(crearNuevaAnecdota(contenido));
+    dispatch(setNotificationConTiempo(`Anécdota creada: '${contenido}'`, 5));
   };
 
   return (

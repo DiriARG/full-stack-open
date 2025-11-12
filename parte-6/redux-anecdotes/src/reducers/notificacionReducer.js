@@ -12,8 +12,26 @@ const notificacionSlice = createSlice({
     setNotificacion(state, action) {
       return action.payload;
     },
+    limpiarNotificacion() {
+      return "";
+    },
   },
 });
 
-export const { setNotificacion } = notificacionSlice.actions;
+// Action creators asincrónicos (thunk).
+export const setNotificationConTiempo = (mensaje, segundos) => {
+  // Un thunk devuelve una función (en lugar de objetos de acción) que recibe "dispatch" para manejar lógica asíncrona.
+  return (dispatch) => {
+    // Establece el mensaje de notificación inmediatamente.
+    dispatch(setNotificacion(mensaje));
+
+    // Limpia la notificación después del tiempo especificado.
+    setTimeout(() => {
+      dispatch(limpiarNotificacion());
+    }, segundos * 1000);
+  };
+};
+
+export const { setNotificacion, limpiarNotificacion } =
+  notificacionSlice.actions;
 export default notificacionSlice.reducer;
