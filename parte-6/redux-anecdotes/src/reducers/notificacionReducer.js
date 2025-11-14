@@ -18,6 +18,9 @@ const notificacionSlice = createSlice({
   },
 });
 
+/* Anotación:
+El ejercicio 6.19 fue realizado previamente en el ejercicio 6.13. */
+
 // Action creators asincrónicos (thunk).
 export const setNotificationConTiempo = (mensaje, segundos) => {
   // Un thunk devuelve una función (en lugar de objetos de acción) que recibe "dispatch" para manejar lógica asíncrona.

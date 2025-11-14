@@ -21,6 +21,7 @@ const AnecdoteList = () => {
   const vote = (id, content) => {
     console.log("vote", id);
     dispatch(votarAnecdota(id));
+    // El segundo parámetro, osea el 5, es el tiempo durante el cual se muestra la notificación en segundos.
     dispatch(setNotificationConTiempo(`Votaste a '${content}'`, 5));
   };
 

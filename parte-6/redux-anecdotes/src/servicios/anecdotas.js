@@ -15,4 +15,10 @@ const crear = async (contenido) => {
   return respuesta.data; 
 };
 
-export default { obtenerTodo, crear };
+const actualizar = async (id, nuevaAnecdota) => {
+  const respuesta = await axios.put(`${urlBase}/${id}`, nuevaAnecdota);
+  return respuesta.data; 
+}
+
+
+export default { obtenerTodo, crear, actualizar };
