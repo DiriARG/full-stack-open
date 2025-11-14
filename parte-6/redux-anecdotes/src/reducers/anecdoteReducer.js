@@ -57,5 +57,13 @@ export const inicializarAnecdotas = () => {
   };
 };
 
+// Thunk: crea una nueva anécdota en el backend y luego la añade al store.
+export const crearAnecdota = (contenido) => {
+  return async (dispatch) => {
+    const nuevaAnecdota = await servicioDeAnecdotas.crear(contenido);
+    dispatch(crearNuevaAnecdota(nuevaAnecdota));
+  };
+};
+
 // Exportación del reducer para usarlo en store.js.
 export default anecdotaSlice.reducer;
