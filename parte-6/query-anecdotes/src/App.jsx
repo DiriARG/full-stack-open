@@ -1,14 +1,24 @@
-import { useQuery } from '@tanstack/react-query'
-import { obtenerAnecdotas } from './peticiones'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { obtenerAnecdotas, actualizarAnecdota } from './peticiones'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
+  const clienteQuery = useQueryClient()
+
   const { isPending, isError, data } = useQuery({
     queryKey: ['anecdotas'],
     queryFn: obtenerAnecdotas,
     retry: false,
   })
+
+  const votarMutacion = useMutation({
+    mutationFn: actualizarAnecdota,
+    onSuccess: () => {
+      clienteQuery.invalidateQueries({ queryKey: ['anecdotas'] })
+    },
+  })
+
 
   // La consulta aún no tiene datos.
   if (isPending) {
@@ -30,6 +40,10 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     console.log('vote')
+    votarMutacion.mutate({
+      ...anecdote,
+      votes: anecdote.votes +1
+    })
   }
 
   // Si llega acá es porque "isSuccess === true".

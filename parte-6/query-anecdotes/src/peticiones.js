@@ -10,3 +10,11 @@ export const crearAnecdota = async (nuevaAnecdota) => {
   const respuesta = await axios.post(urlBase, nuevaAnecdota)
   return respuesta.data
 }
+
+export const actualizarAnecdota = async (anecdotaActualizada) => {
+  const respuesta = await axios.put(
+    `${urlBase}/${anecdotaActualizada.id}`,
+    anecdotaActualizada,
+  )
+  return respuesta.data
+}
