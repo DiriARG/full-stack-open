@@ -1,19 +1,38 @@
+import { useQuery } from '@tanstack/react-query'
+import { obtenerAnecdotas } from './peticiones'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
+  const { isPending, isError, data } = useQuery({
+    queryKey: ['anecdotas'],
+    queryFn: obtenerAnecdotas,
+    retry: false,
+  })
+
+  // La consulta aún no tiene datos.
+  if (isPending) {
+    return <div>Cargando data...</div>
+  }
+
+  // Si hay error... (en casos, como cuando se apaga el JSON-Server).
+  if (isError) {
+    return (
+      <div>
+        El servicio de anécdotas no está disponible debido a problemas en el
+        servidor.
+      </div>
+    )
+  }
+
+  // Se retorna los datos de la petición en la variable "data", a la cual se le da un nombre más descriptivo ("anecdotes").
+  const anecdotes = data
+
   const handleVote = (anecdote) => {
     console.log('vote')
   }
 
-  const anecdotes = [
-    {
-      content: 'If it hurts, do it more often',
-      id: '47145',
-      votes: 0,
-    },
-  ]
-
+  // Si llega acá es porque "isSuccess === true".
   return (
     <div>
       <h3>Anecdote app</h3>
