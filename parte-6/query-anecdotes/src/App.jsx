@@ -1,10 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { obtenerAnecdotas, actualizarAnecdota } from './peticiones'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
+import NotificacionContext from "./NotificacionContext"
 
 const App = () => {
   const clienteQuery = useQueryClient()
+
+  // Se extreae SOLO el dispatch del conteo. "_" indica que se ignora el primer valor (el msj actual) y solo utiliza el segundo (la función dispatch).
+  const [_, notificacionDispatch] = useContext(NotificacionContext)
 
   const { isPending, isError, data } = useQuery({
     queryKey: ['anecdotas'],
@@ -18,7 +23,6 @@ const App = () => {
       clienteQuery.invalidateQueries({ queryKey: ['anecdotas'] })
     },
   })
-
 
   // La consulta aún no tiene datos.
   if (isPending) {
@@ -42,8 +46,19 @@ const App = () => {
     console.log('vote')
     votarMutacion.mutate({
       ...anecdote,
-      votes: anecdote.votes +1
+      votes: anecdote.votes + 1,
     })
+
+    // Se muestra la notificación.
+    notificacionDispatch({
+      type: 'SET',
+      payload: `Votaste a '${anecdote.content}'`,
+    })
+    
+    // Se limpia a los 5 segundos.
+    setTimeout(() => {
+      notificacionDispatch({ type: 'LIMPIAR' })
+    }, 5000)
   }
 
   // Si llega acá es porque "isSuccess === true".
