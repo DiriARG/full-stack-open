@@ -11,8 +11,32 @@ const AnecdoteForm = () => {
   const nuevaAnecdotaMutacion = useMutation({
     mutationFn: crearAnecdota,
     // Cuando la creación es exitosa, se invalida la query, provocando que React Query actualice automáticamente las anécdotas.
-    onSuccess: () => {
+    onSuccess: (nuevaAnecdota) => {
       clienteQuery.invalidateQueries({ queryKey: ['anecdotas'] })
+
+      notificacionDispatch({
+        type: 'SET',
+        payload: `Anécdota creada: '${nuevaAnecdota.content}'`,
+      })
+
+      setTimeout(() => {
+        notificacionDispatch({ type: 'LIMPIAR' })
+      }, 5000)
+    },
+
+    // Cuando el servidor devuelve error (contenido < 5 caracteres).
+    onError: (error) => {
+      // Mensaje del servidor --> error.response.data.error.
+      const mensaje = error.response?.data?.error || 'Error inesperado'
+
+      notificacionDispatch({
+        type: 'SET',
+        payload: mensaje,
+      })
+
+      setTimeout(() => {
+        notificacionDispatch({ type: 'LIMPIAR' })
+      }, 5000)
     },
   })
 
@@ -26,15 +50,6 @@ const AnecdoteForm = () => {
       content,
       votes: 0,
     })
-
-    notificacionDispatch({
-      type: 'SET',
-      payload: `Anécdota creada: '${content}'`,
-    })
-
-    setTimeout(() => {
-      notificacionDispatch({ type: 'LIMPIAR' })
-    }, 5000)
   }
 
   return (
