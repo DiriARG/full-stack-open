@@ -18,6 +18,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 4: Probando servidores Express, administración de usuarios](#parte-4-probando-servidores-express-administración-de-usuarios)
 - [Parte 5: Probando aplicaciones React](#parte-5-probando-aplicaciones-react)
 - [Parte 6: Gestión avanzada del estado](#parte-6-gestión-avanzada-del-estado)
+- [Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack](#parte-7-react-router-custom-hooks-estilando-la-aplicación-con-css-y-webpack)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
 
@@ -62,3 +63,9 @@ Hasta ahora, hemos colocado el estado de la aplicación y la lógica de estado d
 Aprenderemos sobre la versión ligera de Redux compatible directamente con React, es decir el contexto de React y el hook useRedux, también sobre la librería React Query que simplifica la gestión de estados de la aplicación.
 
 <img src="./imagenes/parte-6.png" alt="Imagen parte 6" width="250">
+
+## Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack:
+
+La séptima parte del curso aborda varios temas diferentes. Primero, nos familiarizaremos con React Router. React Router nos ayuda a dividir la aplicación en diferentes vistas que se muestran según la URL en la barra de direcciones del navegador. Después de esto, veremos algunas formas más de agregar estilos CSS a las aplicaciones React. Durante todo el curso hemos utilizado Vite para construir nuestras aplicaciones. También es posible configurar todas las herramientas uno mismo, y en esta parte veremos cómo se puede hacer esto con una herramienta llamada Webpack. También echaremos un vistazo a las funciones hook y a cómo definir un hook personalizado.
+
+<img src="./imagenes/parte-7.png" alt="Imagen parte 7" width="250">
