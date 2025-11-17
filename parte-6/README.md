@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> **Unicafe Revisitado** → Ejercicios 6.1, 6.2 → Carpeta llamada **"unicafe-redux"**.       
+> **Pruebas de Listas de Blogs** → Ejercicios 6.3, 6.4, 6.5, 6.6, 6.7, 6.8 → Carpeta llamada **"redux-anecdotes"**.   
+> **Mejores Anécdotas** → Ejercicios 6.9, 6.10, 6.11, 6.12, 6.13 → **"redux-anecdotes"**.       
+> **Anécdotas y el Backend** → Ejercicios 6.14, 6.15, 6.16, 6.17, 6.18, 6.19 → Carpeta llamada **"redux-anecdotes"**.  
+> **Ejercicios 6.20, 6.21, 6.22, 6.23, 6.24** → Carpeta llamada **"query-anecdotes"**.   
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md. 
+
 # Ejercicios 6.1.- 6.2.
 
 Hagamos una versión simplificada del ejercicio unicafe de la parte 1. Manejemos la administración del estado con Redux.  
