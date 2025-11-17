@@ -316,11 +316,11 @@ const User = () => {
 
 ## 7.16: Vista de Blog
 
-Implementa una vista separada para las publicaciones de blog. Puedes modelar el diseño de tu vista a partir del siguiente ejemplo:  
-<img src="./imagenes/vista_blog_separada.png" alt="Vista separada para las publicaciones de blog">  
-Los usuarios deberían poder acceder a esta vista haciendo clic en el nombre de la publicación del blog en la vista que enumera todas las publicaciones de blog.
-<img src="./imagenes/vista_blog_lista_blogs.png" alt="Vista que enumera todas las publicaciones de blog">  
-Una vez que hayas terminado con este ejercicio, la funcionalidad que se implementó en el ejercicio 5.7 ya no es necesaria. Al hacer clic en una publicación de blog, ya no es necesario expandir el elemento en la lista y mostrar los detalles de la publicación de blog.
+Implementa una vista separada para las publicaciones de blog. Puedes modelar el diseño de tu vista a partir del siguiente ejemplo:    
+<img src="./imagenes/vista_blog_separada.png" alt="Vista separada para las publicaciones de blog">    
+Los usuarios deberían poder acceder a esta vista haciendo clic en el nombre de la publicación del blog en la vista que enumera todas las publicaciones de blog.  
+<img src="./imagenes/vista_blog_lista_blogs.png" alt="Vista que enumera todas las publicaciones de blog">    
+Una vez que hayas terminado con este ejercicio, la funcionalidad que se implementó en el ejercicio 5.7 ya no es necesaria. Al hacer clic en una publicación de blog, ya no es necesario expandir el elemento en la lista y mostrar los detalles de la publicación de blog.  
 
 ## 7.17: Navegación
 
