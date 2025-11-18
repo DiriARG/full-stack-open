@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, useParams } from "react-router-dom";
 
 const Menu = () => {
   const padding = {
@@ -9,14 +9,34 @@ const Menu = () => {
     <div>
       {/* El componente <Link> crea enlaces para navegar entre rutas sin recargar la página. */}
       <Link style={padding} to="/">
-        anecdotes
+        Anécdotas
       </Link>
       <Link style={padding} to="/create">
-        create new
+        Crear nueva
       </Link>
       <Link style={padding} to="/about">
-        about
+        Acerca de
       </Link>
+    </div>
+  );
+};
+
+const Anecdota = ({ anecdotes }) => {
+  // useParams obtiene los parámetros dinámicos de la URL (/anecdotes/:id); Se convierte a Number porque useParams devuelve todo como string. 
+  const id = Number(useParams().id)
+  const anecdota = anecdotes.find(anecdota => anecdota.id === id)
+  return (
+    <div>
+      <h2>
+        {anecdota.content} por {anecdota.author}
+      </h2>
+      <div>Tiene {anecdota.votes} votos</div>
+      <br></br>
+      <div>
+        {" "}
+        Para mas info mira: <a href={anecdota.info}>{anecdota.info}</a>{" "}
+      </div>
+      <br></br>
     </div>
   );
 };
@@ -26,7 +46,12 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        // Recorre el array de anécdotas con map para generar una lista (<li>) de cada una.
+        <li key={anecdote.id}>
+          {/* Link de React Router que navega a la ruta dinámica de la anécdota (`/anecdotes/${anecdote.id}`).
+          Cuando el usuario hace click, se muestra la vista detallada de la anécdota clickeada (anecdote.content). */}
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -155,7 +180,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      
+
       <Menu />
 
       {/* Rutas... 
@@ -167,6 +192,7 @@ const App = () => {
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
         <Route path="/about" element={<About />} />
+        <Route path="/anecdotes/:id" element={<Anecdota anecdotes={anecdotes}/>} /> 
       </Routes>
 
       <Footer />
