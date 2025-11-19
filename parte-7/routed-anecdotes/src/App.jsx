@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, Routes, Route, useParams, useNavigate } from "react-router-dom";
+import { useField } from "./hooks/index";
 
 const Menu = () => {
   const padding = {
@@ -90,11 +91,11 @@ const Footer = () => (
   </div>
 );
 
-
 const CreateNew = ({ addNew, setNotification }) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  // Se crean los campos usando el hook personalizado useField. Cada uno de estos hooks devuelve { type, value, onChange}, que luego se pueden aplicar directamente a un <input>.
+  const content = useField("text")
+  const author = useField("text")
+  const info = useField("url")
 
   // Hook para poder navegar.
   const navigate = useNavigate();
@@ -102,12 +103,14 @@ const CreateNew = ({ addNew, setNotification }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Se obtiene solo el 'value' (el texto) de cada hook, ya que el hook completo incluye también 'type' y 'onChange', que no son necesarios.
     const nuevaAnecdota = {
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     };
+
     // Se llama a la función para añadir la anécdota.
     addNew(nuevaAnecdota);
 
@@ -125,33 +128,34 @@ const CreateNew = ({ addNew, setNotification }) => {
 
   return (
     <div>
-      <h2>create a new anecdote</h2>
+      <h2>Crear una nueva anécdota</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
+          Contenido
+          {/* 
+          El operador spread {...content} inyecta automáticamente:
+          - type="text"
+          - value={content.value}
+          - onChange={content.onChange} 
+          Ahora una sola línea maneja todo. 
+          */}
           <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            {...content}
           />
         </div>
         <div>
-          author
+          Autor
           <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            {...author}
           />
         </div>
         <div>
-          url for more info
+          URL para más información
           <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
+            {...info}
           />
         </div>
-        <button>create</button>
+        <button>Crear</button>
       </form>
     </div>
   );
@@ -204,7 +208,7 @@ const App = () => {
       {/* Si "notification" es un string, ej: "Nueva anécdota creada!" se muestra el <div> con el msj". 
       Si "notification" está vacio, React lo ignora y no se renderiza nada. */}
       {notification && <div>{notification}</div>}
-      
+
       {/* Rutas... 
       <Routes> es el contenedor que se encarga de examinar la URL actual y decidir que <Route> debe renderizarse.
       Cada <Route> define una ruta específica.
