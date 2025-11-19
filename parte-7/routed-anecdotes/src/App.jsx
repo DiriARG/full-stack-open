@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Routes, Route, useParams } from "react-router-dom";
+import { Link, Routes, Route, useParams, useNavigate } from "react-router-dom";
 
 const Menu = () => {
   const padding = {
@@ -22,9 +22,9 @@ const Menu = () => {
 };
 
 const Anecdota = ({ anecdotes }) => {
-  // useParams obtiene los parámetros dinámicos de la URL (/anecdotes/:id); Se convierte a Number porque useParams devuelve todo como string. 
-  const id = Number(useParams().id)
-  const anecdota = anecdotes.find(anecdota => anecdota.id === id)
+  // useParams obtiene los parámetros dinámicos de la URL (/anecdotes/:id); Se convierte a Number porque useParams devuelve todo como string.
+  const id = Number(useParams().id);
+  const anecdota = anecdotes.find((anecdota) => anecdota.id === id);
   return (
     <div>
       <h2>
@@ -90,19 +90,37 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = (props) => {
+
+const CreateNew = ({ addNew, setNotification }) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
 
+  // Hook para poder navegar.
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.addNew({
+
+    const nuevaAnecdota = {
       content,
       author,
       info,
       votes: 0,
-    });
+    };
+    // Se llama a la función para añadir la anécdota.
+    addNew(nuevaAnecdota);
+
+    // Se muestra la notificación y luego se limpia después de 5 segundos.
+    setNotification(
+      `La anécdota: ${nuevaAnecdota.content} se ha creado correctamente!`
+    );
+    setTimeout(() => {
+      setNotification("");
+    }, 5000);
+
+    // Se redirige a la lista de anécdotas.
+    navigate("/");
   };
 
   return (
@@ -183,6 +201,10 @@ const App = () => {
 
       <Menu />
 
+      {/* Si "notification" es un string, ej: "Nueva anécdota creada!" se muestra el <div> con el msj". 
+      Si "notification" está vacio, React lo ignora y no se renderiza nada. */}
+      {notification && <div>{notification}</div>}
+      
       {/* Rutas... 
       <Routes> es el contenedor que se encarga de examinar la URL actual y decidir que <Route> debe renderizarse.
       Cada <Route> define una ruta específica.
@@ -190,9 +212,17 @@ const App = () => {
       - element={} es el componente que se mostrará para esa ruta. */}
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route
+          path="/create"
+          element={
+            <CreateNew addNew={addNew} setNotification={setNotification} />
+          }
+        />
         <Route path="/about" element={<About />} />
-        <Route path="/anecdotes/:id" element={<Anecdota anecdotes={anecdotes}/>} /> 
+        <Route
+          path="/anecdotes/:id"
+          element={<Anecdota anecdotes={anecdotes} />}
+        />
       </Routes>
 
       <Footer />
