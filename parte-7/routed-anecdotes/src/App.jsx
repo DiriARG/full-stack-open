@@ -92,7 +92,7 @@ const Footer = () => (
 );
 
 const CreateNew = ({ addNew, setNotification }) => {
-  // Se crean los campos usando el hook personalizado useField. Cada uno de estos hooks devuelve { type, value, onChange}, que luego se pueden aplicar directamente a un <input>.
+  // Se crean los campos usando el hook personalizado useField. Cada uno de estos hooks devuelve un objeto que contiene las props para el <input> (propsDelInput) y la función de limpieza (reset).
   const content = useField("text");
   const author = useField("text");
   const info = useField("url");
@@ -105,9 +105,9 @@ const CreateNew = ({ addNew, setNotification }) => {
 
     // Se obtiene solo el 'value' (el texto) de cada hook, ya que el hook completo incluye también 'type' y 'onChange', que no son necesarios.
     const nuevaAnecdota = {
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.propsDelInput.value,
+      author: author.propsDelInput.value,
+      info: info.propsDelInput.value,
       votes: 0,
     };
 
@@ -126,8 +126,7 @@ const CreateNew = ({ addNew, setNotification }) => {
     navigate("/");
   };
 
-  const handleReset = (evento) => {
-    evento.preventDefault();
+  const handleReset = () => {
     // Se limpian todos los campos.
     content.reset();
     author.reset();
@@ -141,24 +140,26 @@ const CreateNew = ({ addNew, setNotification }) => {
         <div>
           Contenido
           {/* 
-          El operador spread {...content} inyecta automáticamente:
-          - type="text"
-          - value={content.value}
-          - onChange={content.onChange} 
+          El operador spread {...content.propsDelInput} inyecta automáticamente:
+          - type="text" (el valor inicializado en useField)
+          - value= {content.propsDelInput.value}
+          - onChange={content.propsDelInput.onChange} 
           Ahora una sola línea maneja todo. 
           */}
-          <input {...content} />
+          <input {...content.propsDelInput} />
         </div>
         <div>
           Autor
-          <input {...author} />
+          <input {...author.propsDelInput} />
         </div>
         <div>
           URL para más información
-          <input {...info} />
+          <input {...info.propsDelInput} />
         </div>
         <button>Crear</button>
-        <button type="button" onClick={handleReset}>resetear</button>
+        <button type="button" onClick={handleReset}>
+          Resetear formulario
+        </button>
       </form>
     </div>
   );

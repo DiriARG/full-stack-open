@@ -16,11 +16,14 @@ export const useField = (type) => {
     setValue("");
   };
 
-  // El hook devuelve un objeto con las props necesarias para un <input>, esto permite conectar el hook directamente al input usando {...hook}.
+  /* El hook devuelve un objeto, donde "propsDelInput" contiene las props necesarias para un <input>. Esto permite conectar el hook al input usando {...propsDelInput}. 
+  Se devuelve "reset" separado de las props del input para evitar un warning de React, ya que el elemento <input> no reconoce "reset" como un atributo DOM válido al usar el spread operator. */
   return {
-    type, // Tipo del input (text, url, etc.).
-    value, // Valor actual del input.
-    onChange, // Función.
+    propsDelInput: {
+      type, // Tipo del input (text, url, etc.).
+      value, // Valor actual del input.
+      onChange, // Función.
+    },
     reset,
   };
 };
