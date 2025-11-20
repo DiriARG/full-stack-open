@@ -93,9 +93,9 @@ const Footer = () => (
 
 const CreateNew = ({ addNew, setNotification }) => {
   // Se crean los campos usando el hook personalizado useField. Cada uno de estos hooks devuelve { type, value, onChange}, que luego se pueden aplicar directamente a un <input>.
-  const content = useField("text")
-  const author = useField("text")
-  const info = useField("url")
+  const content = useField("text");
+  const author = useField("text");
+  const info = useField("url");
 
   // Hook para poder navegar.
   const navigate = useNavigate();
@@ -126,6 +126,14 @@ const CreateNew = ({ addNew, setNotification }) => {
     navigate("/");
   };
 
+  const handleReset = (evento) => {
+    evento.preventDefault();
+    // Se limpian todos los campos.
+    content.reset();
+    author.reset();
+    info.reset();
+  };
+
   return (
     <div>
       <h2>Crear una nueva anécdota</h2>
@@ -139,23 +147,18 @@ const CreateNew = ({ addNew, setNotification }) => {
           - onChange={content.onChange} 
           Ahora una sola línea maneja todo. 
           */}
-          <input
-            {...content}
-          />
+          <input {...content} />
         </div>
         <div>
           Autor
-          <input
-            {...author}
-          />
+          <input {...author} />
         </div>
         <div>
           URL para más información
-          <input
-            {...info}
-          />
+          <input {...info} />
         </div>
         <button>Crear</button>
+        <button type="button" onClick={handleReset}>resetear</button>
       </form>
     </div>
   );

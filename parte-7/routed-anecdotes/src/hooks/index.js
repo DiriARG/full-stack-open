@@ -12,10 +12,15 @@ export const useField = (type) => {
     setValue(event.target.value);
   };
 
+  const reset = () => {
+    setValue("");
+  };
+
   // El hook devuelve un objeto con las props necesarias para un <input>, esto permite conectar el hook directamente al input usando {...hook}.
   return {
-    type,  // Tipo del input (text, url, etc.).
-    value,  // Valor actual del input.
+    type, // Tipo del input (text, url, etc.).
+    value, // Valor actual del input.
     onChange, // Función.
+    reset,
   };
 };
