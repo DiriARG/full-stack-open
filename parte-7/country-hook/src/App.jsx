@@ -18,7 +18,42 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    // Solo se intenta buscar si "name" tiene un valor.
+    if (name) {
+      axios
+        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
+        .then(respuesta => {
+          // Si la solicitud es exitosa (código 200), se construye el objeto de estado final.
+          const dataDelPais = {
+            // "found: true" indica éxito. Luego el componente 'Country' usará esta propiedad para mostrar los datos.
+            found: true,
+            // Se agrupan solo los detalles que queremos ver.
+            data: {
+              name: respuesta.data.name.common,
+              capital: respuesta.data.capital[0],
+              population: respuesta.data.population,
+              flag: respuesta.data.flags.png
+            }
+          }
+          // Actualiza el estado, lo que dispara un re-renderizado para mostrar los detalles del país.
+          setCountry(dataDelPais)
+        })
+        .catch(error => {
+          // Si no se encuentra el país.
+          if (error.respuesta && error.respuesta.status === 404) {
+            setCountry({ found: false, data: null })
+          } else {
+            // Manejo de otros errores(red, sv, etc).
+            console.error('Error al buscar el país:', error)
+            setCountry({ found: false, data: null })
+          }
+        })
+    } else {
+      // Se limpia el estado del país si el nombre está vacío.
+      setCountry(null)
+    }
+  }, [name]) // --> Array de dependencias: useEffect se re-ejecuta cuando "name" cambia de valor.
 
   return country
 }
@@ -49,11 +84,12 @@ const Country = ({ country }) => {
 const App = () => {
   const nameInput = useField('text')
   const [name, setName] = useState('')
-  const country = useCountry(name)
+  // "useCountry" reacciona cuando "name" cambia.
+  const country = useCountry(name) 
 
   const fetch = (e) => {
     e.preventDefault()
-    setName(nameInput.value)
+    setName(nameInput.value) 
   }
 
   return (
