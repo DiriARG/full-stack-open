@@ -5,13 +5,28 @@ import servicioLogin from './services/login'
 import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
+import { useNotificacionDispatch } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notificacion, setNotificacion] = useState(null)
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
   const [usuario, setUsuario] = useState(null)
+
+  // Reducer de notificaciones.
+  const notificacionDispatch = useNotificacionDispatch()
+
+  // Función para mostrar notificaciones.  "exito" es valor por defecto cuando no se especifica.
+  const mostrarNotificacion = (texto, tipo = 'exito') => {
+    notificacionDispatch({
+      type: 'SET',
+      payload: { texto, tipo },
+    })
+
+    setTimeout(() => {
+      notificacionDispatch({ type: 'LIMPIAR' })
+    }, 5000)
+  }
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -28,18 +43,19 @@ const App = () => {
     }
   }, [])
 
-  const agregarBlog = (nuevoBlog) => {
-    blogService.crear(nuevoBlog).then((blogCreado) => {
+  const agregarBlog = async (nuevoBlog) => {
+    try {
+      const blogCreado = await blogService.crear(nuevoBlog)
       setBlogs(blogs.concat(blogCreado))
 
-      setNotificacion({
-        texto: `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
-        tipo: 'exito',
-      })
-      setTimeout(() => {
-        setNotificacion(null)
-      }, 5000)
-    })
+      mostrarNotificacion(
+        `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
+        'exito',
+      )
+    } catch (error) {
+      console.log(error)
+      mostrarNotificacion('Error al crear el blog', 'error')
+    }
   }
 
   const handleLogin = async (evento) => {
@@ -62,19 +78,17 @@ const App = () => {
       setContraseña('')
     } catch (error) {
       console.log('Error en login: ', error)
-      setNotificacion({
-        texto: 'Nombre de usuario y/o contraseña incorrectos',
-        tipo: 'error',
-      })
-      setTimeout(() => {
-        setNotificacion(null)
-      }, 5000)
+      mostrarNotificacion(
+        'Nombre de usuario y/o contraseña incorrectos',
+        'error',
+      )
     }
   }
 
   const handleCerrarSesion = () => {
     window.localStorage.removeItem('usuarioBlogListLogueado')
     setUsuario(null)
+    mostrarNotificacion('Sesión cerrada', 'exito')
   }
 
   const formularioLogin = () => (
@@ -107,7 +121,7 @@ const App = () => {
     return (
       <div>
         <h2>Inicie sesión en la aplicación</h2>
-        <Notificacion mensaje={notificacion} />
+        <Notificacion />
         {formularioLogin()}
       </div>
     )
@@ -120,7 +134,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notificacion mensaje={notificacion} />
+      <Notificacion />
       <p>
         {usuario.name} inició sesión{' '}
         <button onClick={handleCerrarSesion}>Salir</button>
