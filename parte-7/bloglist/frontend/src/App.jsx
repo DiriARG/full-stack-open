@@ -5,10 +5,11 @@ import servicioLogin from './services/login'
 import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
+import servicioDeBlogs from './services/blogs'
 import { useNotificacionDispatch } from './hooks'
+import { useQuery } from '@tanstack/react-query'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
   const [usuario, setUsuario] = useState(null)
@@ -28,9 +29,14 @@ const App = () => {
     }, 5000)
   }
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+  const {
+    isPending,
+    isError,
+    data: blogs,
+  } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: servicioDeBlogs.getAll,
+  })
 
   useEffect(() => {
     const usuarioLogueadoJSON = window.localStorage.getItem(
@@ -46,12 +52,13 @@ const App = () => {
   const agregarBlog = async (nuevoBlog) => {
     try {
       const blogCreado = await blogService.crear(nuevoBlog)
-      setBlogs(blogs.concat(blogCreado))
 
       mostrarNotificacion(
         `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
         'exito',
       )
+      // Se retorna 'blogCreado' y la lista de blogs se refresca automáticamente (invalida la query 'blogs') mediante la configuración de la mutación de React Query/RTK Query.
+      return blogCreado
     } catch (error) {
       console.log(error)
       mostrarNotificacion('Error al crear el blog', 'error')
@@ -127,6 +134,19 @@ const App = () => {
     )
   }
 
+  if (isPending) {
+    return <div>Cargando data...</div>
+  }
+
+  if (isError) {
+    return (
+      <div>
+        El servicio de blogs no está disponible debido a problemas en el
+        servidor.
+      </div>
+    )
+  }
+
   const blogsOrdenados = [...blogs].sort((blog1, blog2) => {
     return blog2.likes - blog1.likes
   })
@@ -145,13 +165,7 @@ const App = () => {
       </AlternarContenido>
 
       {blogsOrdenados.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          blogs={blogs}
-          setBlogs={setBlogs}
-          usuario={usuario}
-        />
+        <Blog key={blog.id} blog={blog} blogs={blogs} usuario={usuario} />
       ))}
     </div>
   )

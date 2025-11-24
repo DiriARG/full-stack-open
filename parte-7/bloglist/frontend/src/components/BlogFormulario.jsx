@@ -1,15 +1,25 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const BlogFormulario = ({ crearBlog }) => {
   const [titulo, setTitulo] = useState('')
   const [autor, setAutor] = useState('')
   const [url, setUrl] = useState('')
 
+  const clienteQuery = useQueryClient()
+
+  const crearBlogMutation = useMutation({
+    mutationFn: crearBlog,
+    onSuccess: () => {
+      clienteQuery.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
   const agregarBlog = (evento) => {
     evento.preventDefault()
 
-    crearBlog({
+    crearBlogMutation.mutate({
       title: titulo,
       author: autor,
       url: url,
