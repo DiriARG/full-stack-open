@@ -13,11 +13,8 @@ export default defineConfig({
     },
   },
   test: {
-    // Le dice a Vitest que use un DOM simulado.
     environment: 'jsdom',
-    // Para usar describe, test, expect sin importar Vitest en cada archivo.
     globals: true,
-    // Configuraciones globales.
     setupFiles: './configuracionTests.js',
   },
 })

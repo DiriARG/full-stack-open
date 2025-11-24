@@ -40,7 +40,7 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
 
   const handleEliminar = async () => {
     const confirmacion = window.confirm(
-      `¿Eliminar el blog "${blog.title}" de ${blog.author}?`
+      `¿Eliminar el blog "${blog.title}" de ${blog.author}?`,
     )
 
     if (confirmacion) {
@@ -68,7 +68,8 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
         <div className="blogDetalles">
           <div>{blog.url}</div>
           <div>
-            Likes <span data-testid="contador-likes">{blog.likes}</span> <button onClick={handleLike}>Like</button>
+            Likes <span data-testid="contador-likes">{blog.likes}</span>{' '}
+            <button onClick={handleLike}>Like</button>
           </div>
           <div>{blog.user?.name}</div>
 

@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     const usuarioLogueadoJSON = window.localStorage.getItem(
-      'usuarioBlogListLogueado'
+      'usuarioBlogListLogueado',
     )
     if (usuarioLogueadoJSON) {
       const usuario = JSON.parse(usuarioLogueadoJSON)
@@ -52,7 +52,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'usuarioBlogListLogueado',
-        JSON.stringify(usuario)
+        JSON.stringify(usuario),
       )
 
       blogService.setToken(usuario.token)
