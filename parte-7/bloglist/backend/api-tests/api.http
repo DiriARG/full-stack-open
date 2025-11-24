@@ -1,0 +1,40 @@
+### Ruta para obtener todos los blogs.
+GET http://localhost:3003/api/blogs
+
+### Agregar un nuevo blog.
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer ingresareltokenaquí
+
+{
+    "title": "Test Previo al Ejercicio 7.9",
+    "author": "Matías",
+    "url": "https://fullstackopen.com/es/part7/ejercicios_ampliar_la_lista_de_blogs",
+    "likes": 10
+}
+
+### Ruta para obtener todos los usuarios.
+GET http://localhost:3003/api/users
+
+### Crear un nuevo usuario.
+POST http://localhost:3003/api/users 
+Content-Type: application/json
+
+{
+    "username": "DereEshkere",
+    "name": "Matías",
+    "password": "1e1jdn2n"
+}
+
+### Logearse.
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "DereEshkere",
+    "password": "1e1jdn2n"
+}
+
+### Eliminar un blog.
+DELETE http://localhost:3003/api/blogs/69247176aaa4dbb669077992
+Authorization: Bearer ingresareltokenaquí

@@ -236,6 +236,32 @@ Muchos de los ejercicios de esta parte del material del curso requerirán la ref
 
 Un buen consejo para refactorizar y escribir código nuevo es dar _pequeños pasos_. Perder la cordura está casi garantizado si dejas la aplicación en un estado completamente roto durante largos períodos de tiempo mientras refactorizas.
 
+> [!NOTE]
+>
+> ### 🎯 Base del Código y Ejercicios (7.9 - 7.21)
+>
+> La base para la realización de los ejercicios **7.9 al 7.21** es el código que desarrollé previamente en los módulos **Backend (parte-4)** y **Frontend (parte-5)**, y no el código de la solución modelo del curso.
+>
+> ### 🗑️ Archivos Omitidos
+>
+> Se han **omitido intencionalmente** los siguientes archivos y carpetas, ya que no son necesarios para completar los ejercicios propuestos:
+>
+> **📦 Backend (`parte-4`)**
+>
+> - `controllers/testing.js`: Archivo de _endpoint_ utilizado exclusivamente durante las pruebas E2E.
+> - `carpeta tests`: Contiene todos los _tests_ del backend (principalmente con la librería **Supertest**).
+>
+> **🎨 Frontend (`parte-5`)**
+>
+> - `carpeta bloglist-pruebas-e2e`: Contiene los _tests_ de la lista de blogs con **Playwright** (pruebas E2E).
+> - `components/Blog.test.jsx`: Archivo de _tests_ para el componente `Blog` (con **@testing-library/react**).
+> - `components/BlogFormulario.test.jsx`: Archivo de _tests_ para el formulario de blogs (con **@testing-library/react**).
+> - `archivo configuracionTests.js`: Función para resetear el JSDOM en el entorno de pruebas.
+>
+> ### 🧹 Legibilidad del Código
+>
+> Por último, se aclara que los **comentarios de código** del backend y frontend han sido eliminados en esta versión. Esto se hizo para mejorar la legibilidad y evitar redundancias, ya que los comentarios detallados se encuentran disponibles en las carpetas originales (`parte-4` y `parte-5`).
+
 # Ejercicios 7.9. - 7.21.
 
 ## 7.9: Formateo Automático de Código
