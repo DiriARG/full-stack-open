@@ -227,6 +227,15 @@ const App = () => {
 El hook personalizado `useResource` devuelve un array de dos elementos al igual que los hooks de estado. El primer elemento del array contiene todos los recursos individuales y el segundo elemento del array es un objeto que se puede usar para manipular la colección de recursos y crear nuevos.  
 Si implementas el hook correctamente, se puede usar tanto para notas como para números de teléfono (inicia el servidor con el comando `npm run server` en el puerto 3005).
 
+# Ejercicios: ampliar la lista de blogs
+
+Además de los ocho ejercicios en las secciones [React router](https://fullstackopen.com/es/part7/react_router[) y [custom hooks](https://fullstackopen.com/es/part7/hooks_personalizados) de esta séptima parte del material del curso, hay 13 ejercicios que continúan nuestro trabajo en la aplicación BlogList en la que trabajamos en las partes cuatro y cinco del material del curso. Algunos de los siguientes ejercicios son "funcionalidades" que son independientes entre sí, lo que significa que no es necesario terminarlos en ningún orden en particular. Eres libre de saltarte una parte de los ejercicios si lo deseas. Muchos de ellos son acerca de aplicar la técnica de gestión avanzada de estado (Redux, React Query y context) cubierta en la [parte 6](https://fullstackopen.com/es/part6).  
+Si no deseas utilizar tu propia aplicación BlogList, puedes utilizar el código de la solución modelo como punto de partida para estos ejercicios.
+
+Muchos de los ejercicios de esta parte del material del curso requerirán la refactorización del código existente. Esta es una realidad común a la hora de extender aplicaciones existentes, lo que significa que la refactorización es una habilidad importante y necesaria incluso si a veces puede parecer difícil y desagradable.
+
+Un buen consejo para refactorizar y escribir código nuevo es dar _pequeños pasos_. Perder la cordura está casi garantizado si dejas la aplicación en un estado completamente roto durante largos períodos de tiempo mientras refactorizas.
+
 # Ejercicios 7.9. - 7.21.
 
 ## 7.9: Formateo Automático de Código
@@ -316,23 +325,23 @@ const User = () => {
 
 ## 7.16: Vista de Blog
 
-Implementa una vista separada para las publicaciones de blog. Puedes modelar el diseño de tu vista a partir del siguiente ejemplo:    
-<img src="./imagenes/vista_blog_separada.png" alt="Vista separada para las publicaciones de blog">    
+Implementa una vista separada para las publicaciones de blog. Puedes modelar el diseño de tu vista a partir del siguiente ejemplo:  
+<img src="./imagenes/vista_blog_separada.png" alt="Vista separada para las publicaciones de blog">  
 Los usuarios deberían poder acceder a esta vista haciendo clic en el nombre de la publicación del blog en la vista que enumera todas las publicaciones de blog.  
-<img src="./imagenes/vista_blog_lista_blogs.png" alt="Vista que enumera todas las publicaciones de blog">    
-Una vez que hayas terminado con este ejercicio, la funcionalidad que se implementó en el ejercicio 5.7 ya no es necesaria. Al hacer clic en una publicación de blog, ya no es necesario expandir el elemento en la lista y mostrar los detalles de la publicación de blog.  
+<img src="./imagenes/vista_blog_lista_blogs.png" alt="Vista que enumera todas las publicaciones de blog">  
+Una vez que hayas terminado con este ejercicio, la funcionalidad que se implementó en el ejercicio 5.7 ya no es necesaria. Al hacer clic en una publicación de blog, ya no es necesario expandir el elemento en la lista y mostrar los detalles de la publicación de blog.
 
 ## 7.17: Navegación
 
 Implementa un menú de navegación para la aplicación:  
-<img src="./imagenes/navegacion.png" alt="Menú de navegación">  
+<img src="./imagenes/navegacion.png" alt="Menú de navegación">
 
 ## 7.18: Comentarios, paso 1
 
 Implementa la funcionalidad para comentar las publicaciones de blog:  
-<img src="./imagenes/comentarios_p1.png" alt="Funcionalidad para comentar publicaciones de blog">    
-Los comentarios deben ser anónimos, lo que significa que no están asociados al usuario que dejó el comentario.    
-En este ejercicio basta con que el frontend muestre solo los comentarios que recibe la aplicación del backend.    
+<img src="./imagenes/comentarios_p1.png" alt="Funcionalidad para comentar publicaciones de blog">  
+Los comentarios deben ser anónimos, lo que significa que no están asociados al usuario que dejó el comentario.  
+En este ejercicio basta con que el frontend muestre solo los comentarios que recibe la aplicación del backend.  
 Un mecanismo apropiado para agregar comentarios a una publicación de blog sería una solicitud HTTP POST al endpoint _api/blogs/:id/comments_.
 
 ## 7.19: Comentarios, paso 2
