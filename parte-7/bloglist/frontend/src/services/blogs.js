@@ -21,8 +21,13 @@ const crear = async (nuevoObjeto) => {
   return respuesta.data
 }
 
-const actualizar = async (id, blogActualizado) => {
-  const respuesta = await axios.put(`${baseUrl}/${id}`, blogActualizado)
+/* Servicio actualizado para recibir un solo parámetro. Esto permite usarlo directamente en "mutationFn", es decir: mutationFn: servicioDeBlogs.actualizar.
+Si esta función recibiera dos parámetros (id, blogActualizado), React Query no sabría cómo dividir el dato que le enviamos. */
+const actualizar = async (blogActualizado) => {
+  const respuesta = await axios.put(
+    `${baseUrl}/${blogActualizado.id}`,
+    blogActualizado,
+  )
   return respuesta.data
 }
 

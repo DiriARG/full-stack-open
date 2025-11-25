@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
+const Blog = ({ blog, usuario, onLike, onEliminar }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
 
   const estiloDeBlog = {
@@ -16,26 +15,13 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
     setMostrarDetalles(!mostrarDetalles)
   }
 
+  // Se envia el blog ya actualizado.
   const handleLike = async () => {
-    if (handleLikeProp) {
-      handleLikeProp(blog)
-      return
-    }
-
-    const blogActualizado = {
+    onLike({
       ...blog,
       likes: blog.likes + 1,
-      user: blog.user.id || blog.user,
-    }
-
-    const respuesta = await blogService.actualizar(blog.id, blogActualizado)
-
-    const blogConUsuario = {
-      ...respuesta,
-      user: blog.user,
-    }
-
-    setBlogs(blogs.map((b) => (b.id === blog.id ? blogConUsuario : b)))
+      user: blog.user.id, // El backend requiere solo el id del usuario.
+    })
   }
 
   const handleEliminar = async () => {
@@ -43,13 +29,10 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
       `¿Eliminar el blog "${blog.title}" de ${blog.author}?`,
     )
 
+    // Si el usuario acepta...
     if (confirmacion) {
-      try {
-        await blogService.eliminar(blog.id)
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
-      } catch (error) {
-        console.error('Error al eliminar el blog: ', error)
-      }
+      // Se llama al prop "onEliminar" que realmente es "eliminarMutacion.mutate", mutate recibe el id del blog y React Query ejecuta "mutationFn(id)".
+      onEliminar(blog.id)
     }
   }
 

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import servicioLogin from './services/login'
 import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
 import servicioDeBlogs from './services/blogs'
 import { useNotificacionDispatch } from './hooks'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
@@ -16,6 +15,7 @@ const App = () => {
 
   // Reducer de notificaciones.
   const notificacionDispatch = useNotificacionDispatch()
+  const clienteQuery = useQueryClient()
 
   // Función para mostrar notificaciones.  "exito" es valor por defecto cuando no se especifica.
   const mostrarNotificacion = (texto, tipo = 'exito') => {
@@ -38,6 +38,20 @@ const App = () => {
     queryFn: servicioDeBlogs.getAll,
   })
 
+  const likeMutacion = useMutation({
+    mutationFn: servicioDeBlogs.actualizar,
+    onSuccess: () => {
+      clienteQuery.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
+  const eliminarMutacion = useMutation({
+    mutationFn: servicioDeBlogs.eliminar,
+    onSuccess: () => {
+      clienteQuery.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
   useEffect(() => {
     const usuarioLogueadoJSON = window.localStorage.getItem(
       'usuarioBlogListLogueado',
@@ -45,13 +59,13 @@ const App = () => {
     if (usuarioLogueadoJSON) {
       const usuario = JSON.parse(usuarioLogueadoJSON)
       setUsuario(usuario)
-      blogService.setToken(usuario.token)
+      servicioDeBlogs.setToken(usuario.token)
     }
   }, [])
 
   const agregarBlog = async (nuevoBlog) => {
     try {
-      const blogCreado = await blogService.crear(nuevoBlog)
+      const blogCreado = await servicioDeBlogs.crear(nuevoBlog)
 
       mostrarNotificacion(
         `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
@@ -78,7 +92,7 @@ const App = () => {
         JSON.stringify(usuario),
       )
 
-      blogService.setToken(usuario.token)
+      servicioDeBlogs.setToken(usuario.token)
       setUsuario(usuario)
 
       setNombreDeUsuario('')
@@ -164,8 +178,15 @@ const App = () => {
         <BlogFormulario crearBlog={agregarBlog} />
       </AlternarContenido>
 
+      {/* "onLike" y "onEliminar" al ser una prop que representan eventos, osea una acción, comienzan con "on". */}
       {blogsOrdenados.map((blog) => (
-        <Blog key={blog.id} blog={blog} blogs={blogs} usuario={usuario} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          usuario={usuario}
+          onLike={likeMutacion.mutate}
+          onEliminar={eliminarMutacion.mutate}
+        />
       ))}
     </div>
   )

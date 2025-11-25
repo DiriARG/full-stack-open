@@ -9,7 +9,7 @@ const BlogFormulario = ({ crearBlog }) => {
 
   const clienteQuery = useQueryClient()
 
-  const crearBlogMutation = useMutation({
+  const crearBlogMutacion = useMutation({
     mutationFn: crearBlog,
     onSuccess: () => {
       clienteQuery.invalidateQueries({ queryKey: ['blogs'] })
@@ -19,7 +19,7 @@ const BlogFormulario = ({ crearBlog }) => {
   const agregarBlog = (evento) => {
     evento.preventDefault()
 
-    crearBlogMutation.mutate({
+    crearBlogMutacion.mutate({
       title: titulo,
       author: autor,
       url: url,
