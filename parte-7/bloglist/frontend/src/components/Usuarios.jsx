@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import servicioDeUsuarios from '../services/usuarios'
 
 const Usuarios = () => {
@@ -11,7 +12,9 @@ const Usuarios = () => {
     queryFn: servicioDeUsuarios.obtenerTodo,
   })
 
-  if (isPending) return <div>Cargando usuarios...</div>
+  if (isPending) {
+    return <div>Cargando usuarios...</div>
+  }
 
   if (isError) {
     return (
@@ -38,7 +41,9 @@ const Usuarios = () => {
         <tbody>
           {usuarios.map((usuario) => (
             <tr key={usuario.id}>
-              <td>{usuario.name}</td>
+              <td>
+                <Link to={`/users/${usuario.id}`}>{usuario.name}</Link>
+              </td>
               {/* Se muestra la longitud del array "blogs" del usuario (backend/models/usuario.js), que es la cantidad de blogs que ha creado. */}
               <td>{usuario.blogs.length}</td>
             </tr>
@@ -48,6 +53,5 @@ const Usuarios = () => {
     </div>
   )
 }
-
 
 export default Usuarios

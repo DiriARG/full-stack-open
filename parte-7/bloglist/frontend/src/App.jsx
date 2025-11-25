@@ -11,8 +11,9 @@ import {
   useUsuarioDispatch,
 } from './hooks'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Usuarios from './components/Usuarios'
+import Usuario from './components/Usuario'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
@@ -220,6 +221,7 @@ const App = () => {
         />
 
         <Route path="/users" element={<Usuarios />} />
+        <Route path="/users/:id" element={<Usuario />} />
       </Routes>
     </div>
   )
