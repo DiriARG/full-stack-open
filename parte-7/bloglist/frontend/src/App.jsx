@@ -11,6 +11,8 @@ import {
   useUsuarioDispatch,
 } from './hooks'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link, Routes, Route } from 'react-router-dom'
+import Usuarios from './components/Usuarios'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
@@ -188,25 +190,37 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notificacion />
+
       <p>
         {usuario.name} inició sesión{' '}
         <button onClick={handleCerrarSesion}>Salir</button>
       </p>
 
-      <AlternarContenido textoBoton="Crear nuevo blog">
-        <BlogFormulario crearBlog={agregarBlog} />
-      </AlternarContenido>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <AlternarContenido textoBoton="Crear nuevo blog">
+                <BlogFormulario crearBlog={agregarBlog} />
+              </AlternarContenido>
 
-      {/* "onLike" y "onEliminar" al ser una prop que representan eventos, osea una acción, comienzan con "on". */}
-      {blogsOrdenados.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          usuario={usuario}
-          onLike={likeMutacion.mutate}
-          onEliminar={eliminarMutacion.mutate}
+              {/* "onLike" y "onEliminar" al ser una prop que representan eventos, osea una acción, comienzan con "on". */}
+              {blogsOrdenados.map((blog) => (
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  usuario={usuario}
+                  onLike={likeMutacion.mutate}
+                  onEliminar={eliminarMutacion.mutate}
+                />
+              ))}
+            </>
+          }
         />
-      ))}
+
+        <Route path="/users" element={<Usuarios />} />
+      </Routes>
     </div>
   )
 }
