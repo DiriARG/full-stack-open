@@ -5,16 +5,24 @@ import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
 import servicioDeBlogs from './services/blogs'
-import { useNotificacionDispatch } from './hooks'
+import {
+  useNotificacionDispatch,
+  useUsuario,
+  useUsuarioDispatch,
+} from './hooks'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
-  const [usuario, setUsuario] = useState(null)
 
   // Reducer de notificaciones.
   const notificacionDispatch = useNotificacionDispatch()
+
+  // El estado de 'usuario' se gestiona de forma global usando Context + useReducer.
+  const usuario = useUsuario()
+  const usuarioDispatch = useUsuarioDispatch()
+
   const clienteQuery = useQueryClient()
 
   // Función para mostrar notificaciones.  "exito" es valor por defecto cuando no se especifica.
@@ -58,10 +66,15 @@ const App = () => {
     )
     if (usuarioLogueadoJSON) {
       const usuario = JSON.parse(usuarioLogueadoJSON)
-      setUsuario(usuario)
       servicioDeBlogs.setToken(usuario.token)
+
+      // Se actualiza el estado global del usuario usando el reducer.
+      usuarioDispatch({
+        type: 'SET_USUARIO',
+        payload: usuario,
+      })
     }
-  }, [])
+  }, [usuarioDispatch]) // Se coloca porque al utilizar una variable creada fuera de useEffect, debe ir en el array de dependencias.
 
   const agregarBlog = async (nuevoBlog) => {
     try {
@@ -71,7 +84,7 @@ const App = () => {
         `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
         'exito',
       )
-      // Se retorna 'blogCreado' y la lista de blogs se refresca automáticamente (invalida la query 'blogs') mediante la configuración de la mutación de React Query/RTK Query.
+      // Se retorna 'blogCreado' y la lista de blogs se refresca automáticamente (invalida la query 'blogs') mediante la configuración de la mutación de React Query.
       return blogCreado
     } catch (error) {
       console.log(error)
@@ -93,7 +106,10 @@ const App = () => {
       )
 
       servicioDeBlogs.setToken(usuario.token)
-      setUsuario(usuario)
+      usuarioDispatch({
+        type: 'SET_USUARIO',
+        payload: usuario,
+      })
 
       setNombreDeUsuario('')
       setContraseña('')
@@ -108,7 +124,10 @@ const App = () => {
 
   const handleCerrarSesion = () => {
     window.localStorage.removeItem('usuarioBlogListLogueado')
-    setUsuario(null)
+    // Se quita el token del servicio HTTP.
+    servicioDeBlogs.setToken(null)
+    // Y el estado global del usuario vuelve a null.
+    usuarioDispatch({ type: 'SALIR' })
     mostrarNotificacion('Sesión cerrada', 'exito')
   }
 

@@ -2,6 +2,7 @@
 
 import { useContext } from 'react'
 import NotificacionContext from '../NotificacionContext'
+import UsuarioContext from '../UsuarioContext'
 
 /*
   Hooks personalizados para simplificar y optimizar el consumo del NotificacionContext.
@@ -29,4 +30,16 @@ export const useNotificacion = () => {
 export const useNotificacionDispatch = () => {
   const [, notificacionDispatch] = useContext(NotificacionContext)
   return notificacionDispatch
+}
+
+// Hook que devuelve solo el usuario logueado.
+export const useUsuario = () => {
+  const [usuario] = useContext(UsuarioContext)
+  return usuario
+}
+
+// Hook que devuelve solo el dispatch de acciones (cambiar de usuario y salir).
+export const useUsuarioDispatch = () => {
+  const [, usuarioDispatch] = useContext(UsuarioContext)
+  return usuarioDispatch
 }
