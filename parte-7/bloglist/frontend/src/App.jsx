@@ -12,8 +12,9 @@ import {
 } from './hooks'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Routes, Route } from 'react-router-dom'
-import Usuarios from './components/Usuarios'
-import Usuario from './components/Usuario'
+import Usuarios from './vistas/Usuarios'
+import Usuario from './vistas/Usuario'
+import VistaBlog from './vistas/vistaBlog'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
@@ -197,6 +198,7 @@ const App = () => {
         <button onClick={handleCerrarSesion}>Salir</button>
       </p>
 
+      {/* Vista principal: lista de blogs + formulario de creación. */}
       <Routes>
         <Route
           path="/"
@@ -206,7 +208,6 @@ const App = () => {
                 <BlogFormulario crearBlog={agregarBlog} />
               </AlternarContenido>
 
-              {/* "onLike" y "onEliminar" al ser una prop que representan eventos, osea una acción, comienzan con "on". */}
               {blogsOrdenados.map((blog) => (
                 <Blog
                   key={blog.id}
@@ -220,8 +221,24 @@ const App = () => {
           }
         />
 
+        {/* Vista de todos los usuarios. */}
         <Route path="/users" element={<Usuarios />} />
+
+        {/* Vista de usuario individual. */}
         <Route path="/users/:id" element={<Usuario />} />
+
+        {/* Vista de blog individual. */}
+        {/* "onLike" y "onEliminar" al ser una prop que representan eventos, osea una acción, comienzan con "on". */}
+        <Route
+          path="/blogs/:id"
+          element={
+            <VistaBlog
+              onLike={likeMutacion.mutate}
+              onEliminar={eliminarMutacion.mutate}
+              usuario={usuario}
+            />
+          }
+        />
       </Routes>
     </div>
   )
