@@ -39,4 +39,22 @@ const eliminar = async (id) => {
   return respuesta.data
 }
 
-export default { getAll, crear, setToken, actualizar, eliminar }
+/* Al desestructurar { id, comentario } nos permite que la función pueda usarse  directamente así en mutationFn: "mutationFn: servicioDeBlogs.agregarComentario".
+Esto evita tener que hacer esto: mutationFn: ({ id, comentario }) => servicioDeBlogs.agregarComentario(id, comentario)`;
+por justamente no desestructurar: `const agregarComentario = async (id, comentario)...`
+*/
+const agregarComentario = async ({ id, comentario }) => {
+  const respuesta = await axios.post(`${baseUrl}/${id}/comments`, {
+    comment: comentario,
+  })
+  return respuesta.data
+}
+
+export default {
+  getAll,
+  crear,
+  setToken,
+  actualizar,
+  eliminar,
+  agregarComentario,
+}

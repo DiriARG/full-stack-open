@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import servicioDeBlogs from '../services/blogs'
 
-const VistaBlog = ({ onLike, onEliminar, usuario }) => {
+const VistaBlog = ({ onLike, onEliminar, usuario, onComentar }) => {
+  const [nuevoComentario, setNuevoComentario] = useState('')
   const id = useParams().id
 
   const {
@@ -50,6 +52,17 @@ const VistaBlog = ({ onLike, onEliminar, usuario }) => {
 
   const puedeEliminar = blog.user?.username === usuario?.username
 
+  const handleAgregarComentario = (evento) => {
+    evento.preventDefault()
+
+    onComentar({
+      id: blog.id,
+      comentario: nuevoComentario,
+    })
+
+    setNuevoComentario('')
+  }
+
   return (
     <div>
       <h2>
@@ -66,6 +79,16 @@ const VistaBlog = ({ onLike, onEliminar, usuario }) => {
       <div>Añadido por {blog.user?.name}</div>
 
       <h3>Comentarios</h3>
+
+      <form onSubmit={handleAgregarComentario}>
+        <input
+          type="text"
+          value={nuevoComentario}
+          onChange={(evento) => setNuevoComentario(evento.target.value)}
+        />
+        <button type="submit">Agregar comentario</button>
+      </form>
+
       {/*
        - comentario → el texto de cada comentario.
        - i → índice de cada comentario (se usa como key porque los comentarios no tienen ID).

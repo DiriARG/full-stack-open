@@ -64,6 +64,13 @@ const App = () => {
     },
   })
 
+  const comentarMutacion = useMutation({
+    mutationFn: servicioDeBlogs.agregarComentario,
+    onSuccess: () => {
+      clienteQuery.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
   useEffect(() => {
     const usuarioLogueadoJSON = window.localStorage.getItem(
       'usuarioBlogListLogueado',
@@ -252,6 +259,7 @@ const App = () => {
             <VistaBlog
               onLike={likeMutacion.mutate}
               onEliminar={eliminarMutacion.mutate}
+              onComentar ={comentarMutacion.mutate}
               usuario={usuario}
             />
           }
