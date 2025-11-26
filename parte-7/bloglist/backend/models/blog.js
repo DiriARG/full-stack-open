@@ -18,6 +18,8 @@ const blogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario',
   },
+  // Array de Strings para poder almacenar una lista de comentarios dentro de un mismo blog.
+  comments: [String],
 })
 
 blogSchema.set('toJSON', {

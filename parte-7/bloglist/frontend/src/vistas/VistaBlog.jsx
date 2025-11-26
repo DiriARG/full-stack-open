@@ -65,6 +65,18 @@ const VistaBlog = ({ onLike, onEliminar, usuario }) => {
 
       <div>Añadido por {blog.user?.name}</div>
 
+      <h3>Comentarios</h3>
+      {/*
+       - comentario → el texto de cada comentario.
+       - i → índice de cada comentario (se usa como key porque los comentarios no tienen ID).
+       El operador ?. evita errores si el array comments es undefined.
+      */}
+      <ul>
+        {blog.comments?.map((comentario, i) => (
+          <li key={i}>{comentario}</li>
+        ))}
+      </ul>
+
       {puedeEliminar && <button onClick={handleEliminar}>Eliminar</button>}
     </div>
   )

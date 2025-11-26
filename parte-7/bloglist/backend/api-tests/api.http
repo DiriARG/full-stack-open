@@ -38,3 +38,11 @@ Content-Type: application/json
 ### Eliminar un blog.
 DELETE http://localhost:3003/api/blogs/69247176aaa4dbb669077992
 Authorization: Bearer ingresareltokenaquí
+
+### Agregar comentario a un blog.
+POST http://localhost:3003/api/blogs/68f1874438f0902823996619/comments
+Content-Type: application/json
+
+{
+    "comment": "Intento n3"
+}

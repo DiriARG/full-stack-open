@@ -75,4 +75,18 @@ blogsRouter.put('/:id', async (request, response) => {
   response.json(blogActualizado)
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).json({ error: 'Blog no encontrado' })
+  }
+
+  blog.comments = blog.comments.concat(comment)
+  const blogActualizado = await blog.save()
+
+  response.status(201).json(blogActualizado)
+})
+
 module.exports = blogsRouter
