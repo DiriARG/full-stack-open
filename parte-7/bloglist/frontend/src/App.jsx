@@ -11,7 +11,7 @@ import {
   useUsuarioDispatch,
 } from './hooks'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import Usuarios from './vistas/Usuarios'
 import Usuario from './vistas/Usuario'
 import VistaBlog from './vistas/vistaBlog'
@@ -190,13 +190,30 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
       <Notificacion />
 
-      <p>
-        {usuario.name} inició sesión{' '}
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
+          padding: '10px',
+          background: '#c2bfbfff',
+          marginBottom: '15px',
+        }}
+      >
+        {/* Barra de navegación simple con estilo en linea. */}
+        <nav style={{ display: 'flex', gap: '10px' }}>
+          <Link to="/">blogs</Link>
+          <Link to="/users">usuarios</Link>
+        </nav>
+
+        <span>{usuario.name} inició sesión</span>
+
         <button onClick={handleCerrarSesion}>Salir</button>
-      </p>
+      </div>
+
+      <h2>App de blogs</h2>
 
       {/* Vista principal: lista de blogs + formulario de creación. */}
       <Routes>
