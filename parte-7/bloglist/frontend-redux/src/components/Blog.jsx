@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { darLikeBlog, eliminarBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
+const Blog = ({ blog, usuario }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
+
+  const dispatch = useDispatch()
 
   const estiloDeBlog = {
     paddingTop: 10,
@@ -16,26 +19,9 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
     setMostrarDetalles(!mostrarDetalles)
   }
 
-  const handleLike = async () => {
-    if (handleLikeProp) {
-      handleLikeProp(blog)
-      return
-    }
-
-    const blogActualizado = {
-      ...blog,
-      likes: blog.likes + 1,
-      user: blog.user.id || blog.user,
-    }
-
-    const respuesta = await blogService.actualizar(blog.id, blogActualizado)
-
-    const blogConUsuario = {
-      ...respuesta,
-      user: blog.user,
-    }
-
-    setBlogs(blogs.map((b) => (b.id === blog.id ? blogConUsuario : b)))
+  const handleLike = () => {
+    // Se le pasa un id ya que el thunk lo espera.
+    dispatch(darLikeBlog(blog.id))
   }
 
   const handleEliminar = async () => {
@@ -44,12 +30,7 @@ const Blog = ({ blog, blogs, setBlogs, usuario, handleLikeProp }) => {
     )
 
     if (confirmacion) {
-      try {
-        await blogService.eliminar(blog.id)
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
-      } catch (error) {
-        console.error('Error al eliminar el blog: ', error)
-      }
+      dispatch(eliminarBlog(blog.id))
     }
   }
 
