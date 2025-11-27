@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import servicioLogin from './services/login'
@@ -10,9 +10,9 @@ import {
   setNotificacion,
   limpiarNotificacion,
 } from './reducers/notificacionReducer'
+import { inializarBlogs, crearNuevoBlog } from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
   const [usuario, setUsuario] = useState(null)
@@ -21,15 +21,18 @@ const App = () => {
 
   // Función para mostrar notificaciones durante 5 segundos.
   const mostrarNotificacion = (texto, tipo = 'exito') => {
-  /* Dispatch de la acción: Establece el estado de la notificación en el store de Redux. El reducer `setNotificacion` (en el slice 'notificacion') sobrescribe el estado
+    /* Dispatch de la acción: Establece el estado de la notificación en el store de Redux. El reducer `setNotificacion` (en el slice 'notificacion') sobrescribe el estado
   actual con el nuevo objeto { texto: string, tipo: 'exito' | 'error' }.*/
     dispatch(setNotificacion({ texto, tipo }))
     setTimeout(() => dispatch(limpiarNotificacion()), 5000)
   }
 
+  // Los blogs vienen de Redux, no de useState.
+  const blogs = useSelector((state) => state.blogs)
+
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    dispatch(inializarBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const usuarioLogueadoJSON = window.localStorage.getItem(
@@ -44,11 +47,10 @@ const App = () => {
 
   const agregarBlog = async (nuevoBlog) => {
     try {
-      const blogCreado = await blogService.crear(nuevoBlog)
-      setBlogs(blogs.concat(blogCreado))
+      await dispatch(crearNuevoBlog(nuevoBlog))
 
       mostrarNotificacion(
-        `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
+        `Nuevo blog añadido: ${nuevoBlog.title}, por ${nuevoBlog.author}`,
         'exito',
       )
     } catch (error) {
@@ -144,13 +146,7 @@ const App = () => {
       </AlternarContenido>
 
       {blogsOrdenados.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          blogs={blogs}
-          setBlogs={setBlogs}
-          usuario={usuario}
-        />
+        <Blog key={blog.id} blog={blog} usuario={usuario} />
       ))}
     </div>
   )
