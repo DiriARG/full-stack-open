@@ -1,17 +1,31 @@
 import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import servicioLogin from './services/login'
 import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
+import {
+  setNotificacion,
+  limpiarNotificacion,
+} from './reducers/notificacionReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notificacion, setNotificacion] = useState(null)
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
   const [usuario, setUsuario] = useState(null)
+
+  const dispatch = useDispatch()
+
+  // Función para mostrar notificaciones durante 5 segundos.
+  const mostrarNotificacion = (texto, tipo = 'exito') => {
+  /* Dispatch de la acción: Establece el estado de la notificación en el store de Redux. El reducer `setNotificacion` (en el slice 'notificacion') sobrescribe el estado
+  actual con el nuevo objeto { texto: string, tipo: 'exito' | 'error' }.*/
+    dispatch(setNotificacion({ texto, tipo }))
+    setTimeout(() => dispatch(limpiarNotificacion()), 5000)
+  }
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -28,18 +42,19 @@ const App = () => {
     }
   }, [])
 
-  const agregarBlog = (nuevoBlog) => {
-    blogService.crear(nuevoBlog).then((blogCreado) => {
+  const agregarBlog = async (nuevoBlog) => {
+    try {
+      const blogCreado = await blogService.crear(nuevoBlog)
       setBlogs(blogs.concat(blogCreado))
 
-      setNotificacion({
-        texto: `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
-        tipo: 'exito',
-      })
-      setTimeout(() => {
-        setNotificacion(null)
-      }, 5000)
-    })
+      mostrarNotificacion(
+        `Nuevo blog añadido: ${blogCreado.title}, por ${blogCreado.author}`,
+        'exito',
+      )
+    } catch (error) {
+      console.log(error)
+      mostrarNotificacion('Error al crear el blog', 'error')
+    }
   }
 
   const handleLogin = async (evento) => {
@@ -62,19 +77,17 @@ const App = () => {
       setContraseña('')
     } catch (error) {
       console.log('Error en login: ', error)
-      setNotificacion({
-        texto: 'Nombre de usuario y/o contraseña incorrectos',
-        tipo: 'error',
-      })
-      setTimeout(() => {
-        setNotificacion(null)
-      }, 5000)
+      mostrarNotificacion(
+        'Nombre de usuario y/o contraseña incorrectos',
+        'error',
+      )
     }
   }
 
   const handleCerrarSesion = () => {
     window.localStorage.removeItem('usuarioBlogListLogueado')
     setUsuario(null)
+    mostrarNotificacion('Sesión cerrada', 'exito')
   }
 
   const formularioLogin = () => (
@@ -107,7 +120,7 @@ const App = () => {
     return (
       <div>
         <h2>Inicie sesión en la aplicación</h2>
-        <Notificacion mensaje={notificacion} />
+        <Notificacion />
         {formularioLogin()}
       </div>
     )
@@ -120,7 +133,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notificacion mensaje={notificacion} />
+      <Notificacion />
       <p>
         {usuario.name} inició sesión{' '}
         <button onClick={handleCerrarSesion}>Salir</button>
