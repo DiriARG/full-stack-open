@@ -15,6 +15,53 @@ import { Routes, Route, Link } from 'react-router-dom'
 import Usuarios from './vistas/Usuarios'
 import Usuario from './vistas/Usuario'
 import VistaBlog from './vistas/vistaBlog'
+import styled from 'styled-components'
+
+// El término styled.div le dice a la librería que cree un nuevo componente de React que, al renderizarse, usará la etiqueta <div> en el DOM (otros ejemplos semánticos son styled.nav o styled.span).
+const BarraDeNavegacion = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  background: #b6a9ecff;
+  margin-bottom: 20px;
+  border-radius: 6px;
+`
+
+const LinksDeNavegacion = styled.nav`
+  display: flex;
+  gap: 12px;
+
+  a {
+    text-decoration: none;
+    color: #1f1f1f;
+    font-weight: 600;
+
+    &:hover {
+      color: #0074d9;
+    }
+  }
+`
+
+const UsuarioInfo = styled.span`
+  margin-left: auto;
+  font-style: italic;
+  color: #141212ff;
+`
+
+const BotonSalir = styled.button`
+  background: #6c45c9ff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: #120872ff;
+  }
+`
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
@@ -199,26 +246,17 @@ const App = () => {
     <div>
       <Notificacion />
 
-      <div
-        style={{
-          display: 'flex',
-          gap: '10px',
-          alignItems: 'center',
-          padding: '10px',
-          background: '#c2bfbfff',
-          marginBottom: '15px',
-        }}
-      >
-        {/* Barra de navegación simple con estilo en linea. */}
-        <nav style={{ display: 'flex', gap: '10px' }}>
+      {/* Cada componente estilizado (BarraDeNavegacion, LinksDeNavegacion, etc.) renderiza un elemento HTML semántico (div, nav, button, etc.) con los estilos CSS definidos. */}
+      <BarraDeNavegacion>
+        <LinksDeNavegacion>
           <Link to="/">blogs</Link>
           <Link to="/users">usuarios</Link>
-        </nav>
+        </LinksDeNavegacion>
 
-        <span>{usuario.name} inició sesión</span>
+        <UsuarioInfo>{usuario.name} inició sesión</UsuarioInfo>
 
-        <button onClick={handleCerrarSesion}>Salir</button>
-      </div>
+        <BotonSalir onClick={handleCerrarSesion}>Salir</BotonSalir>
+      </BarraDeNavegacion>
 
       <h2>App de blogs</h2>
 
@@ -259,7 +297,7 @@ const App = () => {
             <VistaBlog
               onLike={likeMutacion.mutate}
               onEliminar={eliminarMutacion.mutate}
-              onComentar ={comentarMutacion.mutate}
+              onComentar={comentarMutacion.mutate}
               usuario={usuario}
             />
           }

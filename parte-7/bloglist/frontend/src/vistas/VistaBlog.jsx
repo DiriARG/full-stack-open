@@ -2,6 +2,79 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import servicioDeBlogs from '../services/blogs'
+import styled from 'styled-components'
+
+const Contenedor = styled.div`
+  max-width: 700px;
+`
+
+const Titulo = styled.h2`
+  margin-bottom: 10px;
+`
+
+const Link = styled.a`
+  color: #007bff;
+  font-size: 1.1rem;
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const Likes = styled.div`
+  margin: 10px 0;
+  font-size: 1.1rem;
+`
+
+const Boton = styled.button`
+  padding: 6px 12px;
+  margin-left: 8px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background: #0066d3;
+  }
+`
+
+// Texto "Añadido por...".
+const Autor = styled.div`
+  margin: 10px 0 20px 0;
+  font-style: italic;
+  color: #555;
+`
+
+// Título de la sección comentarios.
+const Subtitulo = styled.h3`
+  margin-top: 25px;
+  margin-bottom: 10px;
+`
+
+const Formulario = styled.form`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+`
+
+const CampoInput = styled.input`
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+`
+
+const ListaComentarios = styled.ul`
+  list-style: disc inside;
+  padding-left: 10px;
+  margin-top: 10px;
+`
+
+const Comentario = styled.li`
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+`
 
 const VistaBlog = ({ onLike, onEliminar, usuario, onComentar }) => {
   const [nuevoComentario, setNuevoComentario] = useState('')
@@ -64,44 +137,49 @@ const VistaBlog = ({ onLike, onEliminar, usuario, onComentar }) => {
   }
 
   return (
-    <div>
-      <h2>
+    <Contenedor>
+      <Titulo>
         {blog.title} {blog.author}
-      </h2>
+      </Titulo>
 
-      <a href={blog.url}>{blog.url}</a>
+      <Link href={blog.url}>{blog.url}</Link>
 
-      <div>
-        {blog.likes} likes {''}
-        <button onClick={handleLike}>Like</button>
-      </div>
+      <Likes>
+        {blog.likes} likes
+        <Boton onClick={handleLike}>Like</Boton>
+      </Likes>
 
-      <div>Añadido por {blog.user?.name}</div>
+      <Autor>Añadido por {blog.user?.name}</Autor>
 
-      <h3>Comentarios</h3>
+      <Subtitulo>Comentarios</Subtitulo>
 
-      <form onSubmit={handleAgregarComentario}>
-        <input
+      <Formulario onSubmit={handleAgregarComentario}>
+        <CampoInput
           type="text"
           value={nuevoComentario}
+          placeholder="Escribe un comentario..."
           onChange={(evento) => setNuevoComentario(evento.target.value)}
         />
-        <button type="submit">Agregar comentario</button>
-      </form>
+        <Boton type="submit">Agregar</Boton>
+      </Formulario>
 
       {/*
        - comentario → el texto de cada comentario.
        - i → índice de cada comentario (se usa como key porque los comentarios no tienen ID).
        El operador ?. evita errores si el array comments es undefined.
       */}
-      <ul>
+      <ListaComentarios>
         {blog.comments?.map((comentario, i) => (
-          <li key={i}>{comentario}</li>
+          <Comentario key={i}>{comentario}</Comentario>
         ))}
-      </ul>
+      </ListaComentarios>
 
-      {puedeEliminar && <button onClick={handleEliminar}>Eliminar</button>}
-    </div>
+      {puedeEliminar && (
+        <Boton style={{ background: '#ec782bff' }} onClick={handleEliminar}>
+          Eliminar
+        </Boton>
+      )}
+    </Contenedor>
   )
 }
 

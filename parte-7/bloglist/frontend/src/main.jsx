@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
-import './index.css'
+import EstiloGlobal from './EstilosGlobales'
 import { NotificacionContextProvider } from './NotificacionContext'
 import { UsuarioContextProvider } from './UsuarioContext'
 
@@ -14,6 +14,7 @@ createRoot(document.getElementById('root')).render(
     <UsuarioContextProvider>
       <NotificacionContextProvider>
         <BrowserRouter>
+          <EstiloGlobal />
           <App />
         </BrowserRouter>
       </NotificacionContextProvider>
