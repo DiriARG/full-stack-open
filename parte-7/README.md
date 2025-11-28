@@ -3,7 +3,7 @@
 > **Anécdotas y Hooks** → Ejercicios 7.4, 7.5, 7.6 → Carpeta llamada **"routed-anecdotes"**.    
 > **Hook de País** → Ejercicio 7.7 → **"country-hook"**.    
 > **Hooks Definitivos** → Ejercicio 7.8 → Carpeta llamada **"ultimate-hooks"**.    
-> **Formateo Automático de Código** → Ejercicio 7.9 → Carpetas: **"bloglist/backend"** y **bloglist/frontend**.    
+> **Formateo Automático de Código** → Ejercicio 7.9 → Carpetas: **"bloglist/backend"** y **"bloglist/frontend"**.    
 > **Administración de Estado: Redux** → Ejercicio 7.10, 7.11, 7.12, 7.13 → Carpeta llamada **"bloglist/frontend-redux"**.     
 > **Administración de estado: React Query y Context** → Ejercicio 7.10, 7.11, 7.12, 7.13 → Carpeta llamada **"bloglist/frontend"**.      
 > **Vista de usuarios** → Ejercicio 7.14 → Carpeta llamada **"bloglist/frontend"**.       
