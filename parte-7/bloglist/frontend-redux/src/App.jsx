@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
-import servicioLogin from './services/login'
 import Notificacion from './components/Notificacion'
 import BlogFormulario from './components/BlogFormulario'
 import AlternarContenido from './components/AlternarContenido'
@@ -11,11 +9,15 @@ import {
   limpiarNotificacion,
 } from './reducers/notificacionReducer'
 import { inializarBlogs, crearNuevoBlog } from './reducers/blogReducer'
+import {
+  inicializarUsuario,
+  loginUsuario,
+  salirUsuario,
+} from './reducers/usuarioReducer'
 
 const App = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState('')
   const [contraseña, setContraseña] = useState('')
-  const [usuario, setUsuario] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -27,23 +29,17 @@ const App = () => {
     setTimeout(() => dispatch(limpiarNotificacion()), 5000)
   }
 
-  // Los blogs vienen de Redux, no de useState.
+  // Los blogs y el usuario vienen de Redux (store), no de useState.
   const blogs = useSelector((state) => state.blogs)
+  const usuario = useSelector((state) => state.usuario)
 
   useEffect(() => {
     dispatch(inializarBlogs())
   }, [dispatch])
 
   useEffect(() => {
-    const usuarioLogueadoJSON = window.localStorage.getItem(
-      'usuarioBlogListLogueado',
-    )
-    if (usuarioLogueadoJSON) {
-      const usuario = JSON.parse(usuarioLogueadoJSON)
-      setUsuario(usuario)
-      blogService.setToken(usuario.token)
-    }
-  }, [])
+    dispatch(inicializarUsuario())
+  }, [dispatch])
 
   const agregarBlog = async (nuevoBlog) => {
     try {
@@ -62,18 +58,12 @@ const App = () => {
   const handleLogin = async (evento) => {
     evento.preventDefault()
     try {
-      const usuario = await servicioLogin.login({
-        username: nombreDeUsuario,
-        password: contraseña,
-      })
-
-      window.localStorage.setItem(
-        'usuarioBlogListLogueado',
-        JSON.stringify(usuario),
+      await dispatch(
+        loginUsuario({
+          username: nombreDeUsuario,
+          password: contraseña,
+        }),
       )
-
-      blogService.setToken(usuario.token)
-      setUsuario(usuario)
 
       setNombreDeUsuario('')
       setContraseña('')
@@ -87,8 +77,7 @@ const App = () => {
   }
 
   const handleCerrarSesion = () => {
-    window.localStorage.removeItem('usuarioBlogListLogueado')
-    setUsuario(null)
+    dispatch(salirUsuario())
     mostrarNotificacion('Sesión cerrada', 'exito')
   }
 
