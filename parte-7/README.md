@@ -1,3 +1,18 @@
+> [!IMPORTANT] > **Anécdotas Enrutadas** → Ejercicios 7.1, 7.2, 7.3 → Carpeta llamada **"routed-anecdotes"**.    
+> **Anécdotas y Hooks** → Ejercicios 7.4, 7.5, 7.6 → Carpeta llamada **"routed-anecdotes"**.    
+> **Hook de País** → Ejercicio 7.7 → **"country-hook"**.    
+> **Hooks Definitivos** → Ejercicio 7.8 → Carpeta llamada **"ultimate-hooks"**.    
+> **Formateo Automático de Código** → Ejercicio 7.9 → Carpetas: **"bloglist/backend"** y **bloglist/frontend**.    
+> **Administración de Estado: Redux** → Ejercicio 7.10, 7.11, 7.12, 7.13 → Carpeta llamada **"bloglist/frontend-redux"**.     
+> **Administración de estado: React Query y Context** → Ejercicio 7.10, 7.11, 7.12, 7.13 → Carpeta llamada **"bloglist/frontend"**.      
+> **Vista de usuarios** → Ejercicio 7.14 → Carpeta llamada **"bloglist/frontend"**.       
+> **Vista de Usuario Individual** → Ejercicio 7.15 → Carpeta llamada **"bloglist/frontend"**.   
+> **Vista de Blog** → Ejercicio 7.16 → Carpeta llamada **"bloglist/frontend"**.  
+> **Navegación** → Ejercicio 7.17 → Carpeta llamada **"bloglist/frontend"**.  
+> **Comentarios** → Ejercicio 7.18, 7.19 → Carpetas: **"bloglist/backend"** y **bloglist/frontend**.   
+> **Estilos** → Ejercicios 7.20, 7.21 → Carpeta llamada **"bloglist/frontend"**.   
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
+
 # Ejercicios 7.1. - 7.3.
 
 Volvamos a trabajar con anécdotas. Utiliza la aplicación de anécdotas sin redux que se encuentra en el repositorio https://github.com/fullstack-hy2020/routed-anecdotes como punto de partida para los ejercicios.  
