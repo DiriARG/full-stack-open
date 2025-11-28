@@ -19,6 +19,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 5: Probando aplicaciones React](#parte-5-probando-aplicaciones-react)
 - [Parte 6: Gestión avanzada del estado](#parte-6-gestión-avanzada-del-estado)
 - [Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack](#parte-7-react-router-custom-hooks-estilando-la-aplicación-con-css-y-webpack)
+- [Parte 8: GraphQL](#parte-8-graphql)
 - [Certificado del curso](#certificado-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
@@ -70,6 +71,12 @@ Aprenderemos sobre la versión ligera de Redux compatible directamente con React
 La séptima parte del curso aborda varios temas diferentes. Primero, nos familiarizaremos con React Router. React Router nos ayuda a dividir la aplicación en diferentes vistas que se muestran según la URL en la barra de direcciones del navegador. Después de esto, veremos algunas formas más de agregar estilos CSS a las aplicaciones React. Durante todo el curso hemos utilizado Vite para construir nuestras aplicaciones. También es posible configurar todas las herramientas uno mismo, y en esta parte veremos cómo se puede hacer esto con una herramienta llamada Webpack. También echaremos un vistazo a las funciones hook y a cómo definir un hook personalizado.
 
 <img src="./imagenes/parte-7.png" alt="Imagen parte 7" width="250">
+
+## Parte 8: GraphQL:
+
+Esta parte del curso trata sobre GraphQL, la alternativa de Facebook a REST para la comunicación entre navegador y servidor.
+
+<img src="./imagenes/parte-8.png" alt="Imagen parte 8" width="250">
 
 ## Certificado del curso 😁
 
