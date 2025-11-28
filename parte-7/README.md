@@ -10,7 +10,7 @@
 > **Vista de Usuario Individual** → Ejercicio 7.15 → Carpeta llamada **"bloglist/frontend"**.   
 > **Vista de Blog** → Ejercicio 7.16 → Carpeta llamada **"bloglist/frontend"**.  
 > **Navegación** → Ejercicio 7.17 → Carpeta llamada **"bloglist/frontend"**.  
-> **Comentarios** → Ejercicio 7.18, 7.19 → Carpetas: **"bloglist/backend"** y **bloglist/frontend**.   
+> **Comentarios** → Ejercicio 7.18, 7.19 → Carpetas: **"bloglist/backend"** y **"bloglist/frontend"**.   
 > **Estilos** → Ejercicios 7.20, 7.21 → Carpeta llamada **"bloglist/frontend"**.   
 > La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
 
