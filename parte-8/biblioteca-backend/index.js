@@ -113,6 +113,11 @@ const typeDefs = `
     published: Int!
     genres: [String!]!
   ): Libro
+
+  editAuthor(
+    name: String!
+    setBornTo: Int!
+  ): Autor
 }
 `;
 
@@ -170,19 +175,38 @@ const resolvers = {
           id: uuid(),
           born: null,
         };
-        // Se lo agrega al array "authors".
+        // Se lo agrega al array "authors". Se coloca el nombre exacto para que JS sepa qué variable global está actualizando.
         authors = authors.concat(autor);
       }
 
       // Se crea el nuevo libro.
       const nuevoLibro = {
-        ...args, // Copia todos los argumentos. 
+        ...args, // Copia todos los argumentos.
         id: uuid(),
       };
       // Se agrega al array "books".
       books = books.concat(nuevoLibro);
 
       return nuevoLibro;
+    },
+    editAuthor: (root, args) => {
+      const autor = authors.find((a) => a.name === args.name);
+
+      if (!autor) {
+        return null;
+      }
+
+      const autorActualizado = {
+        ...autor,
+        born: args.setBornTo,
+      };
+
+      // Se actualiza el array global "authors" de forma inmutable, se utiliza map para reemplazar el objeto viejo con el objeto actualizado.
+      authors = authors.map((a) =>
+        a.name === args.name ? autorActualizado : a
+      );
+
+      return autorActualizado;
     },
   },
 };
