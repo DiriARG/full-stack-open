@@ -1,5 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { v4: uuid } = require("uuid");
 
 let authors = [
   {
@@ -80,7 +81,8 @@ let books = [
 ];
 
 /* "type Query" → qué consultas están permitidas --> GraphQL solo define qué se puede hacer, pero no cómo hacerlo. 
-"type Libro" es un Tipo de Objeto Personalizado. Define la forma de un objeto Libro, especificando sus campos (propiedades) y sus tipos (String!, Int!, etc) asociados.*/
+"type Libro" es un Tipo de Objeto Personalizado. Define la forma de un objeto Libro, especificando sus campos (propiedades) y sus tipos (String!, Int!, etc) asociados.
+"type Mutation" → todas las operaciones que provocan cambio son mutaciones (crear, actualizar, borrar datos). */
 const typeDefs = `
   type Libro {
     title: String!
@@ -103,6 +105,15 @@ const typeDefs = `
     allBooks(author: String, genre: String): [Libro!]!
     allAuthors: [Autor!]!
   }
+  
+  type Mutation {
+  addBook(
+    title: String!
+    author: String!
+    published: Int!
+    genres: [String!]!
+  ): Libro
+}
 `;
 
 // Lógica real, que define como se responde a las consultas GraphQL.
@@ -143,6 +154,35 @@ const resolvers = {
       /* Se filtra el arreglo global "books", comparando el campo "author" de cada libro (libro.author) con el nombre del autor actual que estamos resolviendo (root.name);
       luego se cuenta la cantidad de libros que cumplen la condición (.length), calculando el número de libros para este autor específico. */
       return books.filter((libro) => libro.author === root.name).length;
+    },
+  },
+  // Resolver para las mutaciones.
+  Mutation: {
+    addBook: (root, args) => {
+      // Se comprueba si existe el autor.
+      let autor = authors.find((a) => a.name === args.author);
+
+      // Si no existe el autor...
+      if (!autor) {
+        // Se crea uno nuevo.
+        autor = {
+          name: args.author,
+          id: uuid(),
+          born: null,
+        };
+        // Se lo agrega al array "authors".
+        authors = authors.concat(autor);
+      }
+
+      // Se crea el nuevo libro.
+      const nuevoLibro = {
+        ...args, // Copia todos los argumentos. 
+        id: uuid(),
+      };
+      // Se agrega al array "books".
+      books = books.concat(nuevoLibro);
+
+      return nuevoLibro;
     },
   },
 };
