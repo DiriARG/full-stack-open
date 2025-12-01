@@ -100,7 +100,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Libro!]!
+    allBooks(author: String): [Libro!]!
     allAuthors: [Autor!]!
   }
 `;
@@ -110,7 +110,15 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books,
+    // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
+    allBooks: (root, args) => {
+      // Si no se pasa el "author" se devuelven todos los libros.
+      if (!args.author) {
+        return books;
+      }
+      // Si se pasa el "author" se filtra.
+      return books.filter((book) => book.author === args.author);
+    },
     allAuthors: () => authors,
   },
   // Este objeto contiene la lógica para los campos de "type Autor" que no existen directamente en los datos originales (array "authors").
