@@ -100,7 +100,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String): [Libro!]!
+    allBooks(author: String, genre: String): [Libro!]!
     allAuthors: [Autor!]!
   }
 `;
@@ -112,12 +112,25 @@ const resolvers = {
     authorCount: () => authors.length,
     // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
     allBooks: (root, args) => {
-      // Si no se pasa el "author" se devuelven todos los libros.
-      if (!args.author) {
-        return books;
+      // La lista de libros.
+      let librosFiltrados = books;
+
+      // Filtros.
+      if (args.author) {
+        librosFiltrados = librosFiltrados.filter(
+          (libro) => libro.author === args.author
+        );
       }
-      // Si se pasa el "author" se filtra.
-      return books.filter((book) => book.author === args.author);
+
+      if (args.genre) {
+        librosFiltrados = librosFiltrados.filter((libro) =>
+          // El género debe estar incluido en el array "genres" del libro.
+          libro.genres.includes(args.genre)
+        );
+      }
+
+      // Se devuelve la lista resultante (filtrada o completa si no se pasaron argumentos).
+      return librosFiltrados;
     },
     allAuthors: () => authors,
   },
@@ -127,9 +140,9 @@ const resolvers = {
     EJ: en la primera ejecución, "root" es:
     { name: "Robert Martin", id: "...", born: 1952 } */
     bookCount: (root) => {
-      /* Se filtra el arreglo global "books", comparando el campo "author" de cada libro (book.author) con el nombre del autor actual que estamos resolviendo (root.name);
+      /* Se filtra el arreglo global "books", comparando el campo "author" de cada libro (libro.author) con el nombre del autor actual que estamos resolviendo (root.name);
       luego se cuenta la cantidad de libros que cumplen la condición (.length), calculando el número de libros para este autor específico. */
-      return books.filter((book) => book.author === root.name).length;
+      return books.filter((libro) => libro.author === root.name).length;
     },
   },
 };
