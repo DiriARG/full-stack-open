@@ -1,8 +1,24 @@
+import { useQuery } from '@apollo/client'
+
+import { ALL_AUTHORS } from "../consultas";
+
 const Authors = (props) => {
+  // "useQuery" es el hook de Apollo que ejecuta la consulta GraphQL (ALL_AUTHORS) y desestructura los estados de la petición: loading, error, y data.  
+  const { loading, error, data } = useQuery(ALL_AUTHORS);
+
   if (!props.show) {
-    return null
+    return null;
   }
-  const authors = []
+
+  if (loading) {
+    return <div>Cargando autores...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  // Una vez que los datos han llegado (no hay loading ni error), extrae el array de autores de la respuesta ("data").
+  const authors = data.allAuthors;
 
   return (
     <div>
@@ -24,7 +40,7 @@ const Authors = (props) => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default Authors
+export default Authors;
