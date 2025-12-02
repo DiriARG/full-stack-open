@@ -24,7 +24,7 @@ export const ALL_BOOKS = gql`
 `;
 
 export const ADD_BOOK = gql`
-  # Esta sección define las variables que el cliente (componente React) debe proporcionar cuando ejecuta la mutación. 
+  # Esta sección define las variables que el cliente (componente React) debe proporcionar cuando ejecuta la mutación.
   mutation addBook(
     $title: String!
     $author: String!
@@ -44,6 +44,17 @@ export const ADD_BOOK = gql`
       published
       genres
       id
+    }
+  }
+`;
+
+export const EDIT_AUTHOR = gql`
+  mutation editAuthor($name: String!, $setBornTo: Int!) {
+    editAuthor(name: $name, setBornTo: $setBornTo) {
+      name
+      born
+      id
+      bookCount
     }
   }
 `;
