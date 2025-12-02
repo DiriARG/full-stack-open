@@ -22,3 +22,28 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
+
+export const ADD_BOOK = gql`
+  # Esta sección define las variables que el cliente (componente React) debe proporcionar cuando ejecuta la mutación. 
+  mutation addBook(
+    $title: String!
+    $author: String!
+    $published: Int!
+    $genres: [String!]!
+  ) {
+    # "addBook" es el nombre del resolver en el esquema GraphQL del backend.
+    addBook(
+      title: $title
+      author: $author
+      published: $published
+      genres: $genres
+    ) {
+      # Datos que se quieren recibir al crear el objeto.
+      title
+      author
+      published
+      genres
+      id
+    }
+  }
+`;
