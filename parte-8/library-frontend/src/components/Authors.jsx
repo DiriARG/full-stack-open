@@ -62,6 +62,8 @@ const Authors = (props) => {
         </tbody>
       </table>
 
+      {/*  Anotación:
+      El ejercicio 8.12 fue realizado previamente en el ejercicio 8.11. */}
       <h3>Establecer año de nacimiento</h3>
       <form onSubmit={enviar}>
         <div>
