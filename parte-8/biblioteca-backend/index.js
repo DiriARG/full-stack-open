@@ -1,13 +1,12 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const { v4: uuid } = require("uuid");
+const { GraphQLError } = require("graphql");
 require("dotenv").config();
 const mongoose = require("mongoose");
 // Deshabilita el modo de consulta estricto de Mongoose. Esto evita una advertencia de consola y permite buscar documentos usando campos que NO estén definidos en el esquema (Schema).
 mongoose.set("strictQuery", false);
 const Author = require("./modelos/author");
 const Book = require("./modelos/book");
-const book = require("./modelos/book");
 const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose
@@ -96,42 +95,71 @@ const resolvers = {
   Mutation: {
     // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
     addBook: async (root, args) => {
-      // Se comprueba si existe el autor.
-      let autor = await Author.findOne({ name: args.author });
+      try {
+        // Se comprueba si existe el autor.
+        let autor = await Author.findOne({ name: args.author });
 
-      // Si no existe el autor...
-      if (!autor) {
-        // Se crea uno nuevo.
-        autor = new Author({ name: args.author });
-        // Se lo guarda.
-        await autor.save();
+        // Si no existe el autor...
+        if (!autor) {
+          // Se crea uno nuevo.
+          autor = new Author({ name: args.author });
+          // Se lo guarda.
+          await autor.save();
+        }
+
+        // Se crea el nuevo libro.
+        const nuevoLibro = new Book({
+          title: args.title,
+          published: args.published,
+          genres: args.genres,
+          author: autor._id,
+        });
+
+        await nuevoLibro.save();
+
+        return nuevoLibro.populate("author");
+      } catch (error) {
+        if (error.name === "ValidationError") {
+          throw new GraphQLError("Error de validación", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              // Se obtienen los nombres de los campos que fallaron la validación.
+              invalidArgs: Object.keys(error.errors),
+              error,
+            },
+          });
+        }
+
+        // Si no es un error de validación (ej: error de duplicado), se relanza el error para que sea manejado por el servidor GraphQL.
+        throw error;
       }
-
-      // Se crea el nuevo libro.
-      const nuevoLibro = new Book({
-        title: args.title,
-        published: args.published,
-        genres: args.genres,
-        author: autor._id,
-      });
-
-      await nuevoLibro.save();
-
-      return nuevoLibro.populate("author");
     },
     editAuthor: async (root, args) => {
-      const autor = await Author.findOne({ name: args.name });
+      try {
+        const autor = await Author.findOne({ name: args.name });
 
-      if (!autor) {
-        return null;
+        if (!autor) {
+          return null;
+        }
+        // Se modifica el objeto en memoria.
+        autor.born = args.setBornTo;
+        // Se guarda el cambio en la bd.
+        await autor.save();
+
+        return autor;
+      } catch (error) {
+        if (error.name === "ValidationError") {
+          throw new GraphQLError("Error de validación.", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: Object.keys(error.errors),
+              error,
+            },
+          });
+        }
+
+        throw error;
       }
-
-      // Se modifica el objeto en memoria.
-      autor.born = args.setBornTo;
-      // Se guarda el cambio en la bd.
-      await autor.save();
-
-      return autor;
     },
   },
 };
