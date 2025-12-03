@@ -63,11 +63,20 @@ const typeDefs = `
 // Lógica real, que define como se responde a las consultas GraphQL.
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
-    allBooks: async () => {
-      return Book.find({}).populate("author")
+    bookCount: async () => Book.countDocuments(),
+    authorCount: async () => Author.countDocuments(),
+    allBooks: async (root, args) => {
+      // Se crea un objeto vacío para el filtro de busqueda, si no se pasa ningun parámetro, este objeto queda vacío y se devuelve todos los libros.
+      const filtro = {};
+
+      /* Si el usuario envía un parámetro "genre", se filtra por género. 
+      Para buscar dentro de un array en mongo se utiliza el operador $in. */
+      if (args.genre) {
+        filtro.genres = { $in: [args.genre] };
+      }
+
+      // Busca los libros aplicando el filtro y ".populate('author')" incluye el objeto completo del autor en lugar de solo su ID.
+      return Book.find(filtro).populate("author");
     },
     allAuthors: async () => {
       return Author.find({});
@@ -78,10 +87,14 @@ const resolvers = {
     /* El parámetro "root" es el objeto "Autor" actual que se está procesando:
     EJ: en la primera ejecución, "root" es:
     { name: "Robert Martin", id: "...", born: 1952 } */
-    bookCount: () => 0
+    bookCount: async (root) => {
+      // Calcula y devuelve el número exacto de libros en la colección "Book" que estan asociados con el ID (_id) del autor actualmente procesado (root).
+      return Book.countDocuments({ author: root._id });
+    },
   },
   // Resolver para las mutaciones.
   Mutation: {
+    // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
     addBook: async (root, args) => {
       // Se comprueba si existe el autor.
       let autor = await Author.findOne({ name: args.author });
@@ -106,24 +119,19 @@ const resolvers = {
 
       return nuevoLibro.populate("author");
     },
-    editAuthor: (root, args) => {
-      const autor = authors.find((a) => a.name === args.name);
+    editAuthor: async (root, args) => {
+      const autor = await Author.findOne({ name: args.name });
 
       if (!autor) {
         return null;
       }
 
-      const autorActualizado = {
-        ...autor,
-        born: args.setBornTo,
-      };
+      // Se modifica el objeto en memoria.
+      autor.born = args.setBornTo;
+      // Se guarda el cambio en la bd.
+      await autor.save();
 
-      // Se actualiza el array global "authors" de forma inmutable, se utiliza map para reemplazar el objeto viejo con el objeto actualizado.
-      authors = authors.map((a) =>
-        a.name === args.name ? autorActualizado : a
-      );
-
-      return autorActualizado;
+      return autor;
     },
   },
 };
