@@ -1,84 +1,23 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuid } = require("uuid");
+require("dotenv").config();
+const mongoose = require("mongoose");
+// Deshabilita el modo de consulta estricto de Mongoose. Esto evita una advertencia de consola y permite buscar documentos usando campos que NO estén definidos en el esquema (Schema).
+mongoose.set("strictQuery", false);
+const Author = require("./modelos/author");
+const Book = require("./modelos/book");
+const book = require("./modelos/book");
+const MONGODB_URI = process.env.MONGODB_URI;
 
-let authors = [
-  {
-    name: "Robert Martin",
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-  },
-  {
-    name: "Martin Fowler",
-    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
-    born: 1963,
-  },
-  {
-    name: "Fyodor Dostoevsky",
-    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821,
-  },
-  {
-    name: "Joshua Kerievsky",
-    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
-  },
-  {
-    name: "Sandi Metz",
-    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
-  },
-];
-
-let books = [
-  {
-    title: "Clean Code",
-    published: 2008,
-    author: "Robert Martin",
-    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring"],
-  },
-  {
-    title: "Agile software development",
-    published: 2002,
-    author: "Robert Martin",
-    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
-    genres: ["agile", "patterns", "design"],
-  },
-  {
-    title: "Refactoring, edition 2",
-    published: 2018,
-    author: "Martin Fowler",
-    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring"],
-  },
-  {
-    title: "Refactoring to patterns",
-    published: 2008,
-    author: "Joshua Kerievsky",
-    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring", "patterns"],
-  },
-  {
-    title: "Practical Object-Oriented Design, An Agile Primer Using Ruby",
-    published: 2012,
-    author: "Sandi Metz",
-    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring", "design"],
-  },
-  {
-    title: "Crime and punishment",
-    published: 1866,
-    author: "Fyodor Dostoevsky",
-    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
-    genres: ["classic", "crime"],
-  },
-  {
-    title: "Demons",
-    published: 1872,
-    author: "Fyodor Dostoevsky",
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
-    genres: ["classic", "revolution"],
-  },
-];
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("Conectado a MongoDB");
+  })
+  .catch((error) => {
+    console.log("Error al conectar a MongoDB:", error.message);
+  });
 
 /* "type Query" → qué consultas están permitidas --> GraphQL solo define qué se puede hacer, pero no cómo hacerlo. 
 "type Libro" es un Tipo de Objeto Personalizado. Define la forma de un objeto Libro, especificando sus campos (propiedades) y sus tipos (String!, Int!, etc) asociados.
@@ -86,7 +25,7 @@ let books = [
 const typeDefs = `
   type Libro {
     title: String!
-    author: String!
+    author: Autor!
     published: Int!
     genres: [String!]!
     id: ID!
@@ -127,67 +66,45 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
-    allBooks: (root, args) => {
-      // La lista de libros.
-      let librosFiltrados = books;
-
-      // Filtros.
-      if (args.author) {
-        librosFiltrados = librosFiltrados.filter(
-          (libro) => libro.author === args.author
-        );
-      }
-
-      if (args.genre) {
-        librosFiltrados = librosFiltrados.filter((libro) =>
-          // El género debe estar incluido en el array "genres" del libro.
-          libro.genres.includes(args.genre)
-        );
-      }
-
-      // Se devuelve la lista resultante (filtrada o completa si no se pasaron argumentos).
-      return librosFiltrados;
+    allBooks: async () => {
+      return Book.find({}).populate("author")
     },
-    allAuthors: () => authors,
+    allAuthors: async () => {
+      return Author.find({});
+    },
   },
-  // Este objeto contiene la lógica para los campos de "type Autor" que no existen directamente en los datos originales (array "authors").
+  // Este objeto contiene la lógica para los campos de "type Autor" que no existen directamente en los datos originales.
   Autor: {
     /* El parámetro "root" es el objeto "Autor" actual que se está procesando:
     EJ: en la primera ejecución, "root" es:
     { name: "Robert Martin", id: "...", born: 1952 } */
-    bookCount: (root) => {
-      /* Se filtra el arreglo global "books", comparando el campo "author" de cada libro (libro.author) con el nombre del autor actual que estamos resolviendo (root.name);
-      luego se cuenta la cantidad de libros que cumplen la condición (.length), calculando el número de libros para este autor específico. */
-      return books.filter((libro) => libro.author === root.name).length;
-    },
+    bookCount: () => 0
   },
   // Resolver para las mutaciones.
   Mutation: {
-    addBook: (root, args) => {
+    addBook: async (root, args) => {
       // Se comprueba si existe el autor.
-      let autor = authors.find((a) => a.name === args.author);
+      let autor = await Author.findOne({ name: args.author });
 
       // Si no existe el autor...
       if (!autor) {
         // Se crea uno nuevo.
-        autor = {
-          name: args.author,
-          id: uuid(),
-          born: null,
-        };
-        // Se lo agrega al array "authors". Se coloca el nombre exacto para que JS sepa qué variable global está actualizando.
-        authors = authors.concat(autor);
+        autor = new Author({ name: args.author });
+        // Se lo guarda.
+        await autor.save();
       }
 
       // Se crea el nuevo libro.
-      const nuevoLibro = {
-        ...args, // Copia todos los argumentos.
-        id: uuid(),
-      };
-      // Se agrega al array "books".
-      books = books.concat(nuevoLibro);
+      const nuevoLibro = new Book({
+        title: args.title,
+        published: args.published,
+        genres: args.genres,
+        author: autor._id,
+      });
 
-      return nuevoLibro;
+      await nuevoLibro.save();
+
+      return nuevoLibro.populate("author");
     },
     editAuthor: (root, args) => {
       const autor = authors.find((a) => a.name === args.name);
@@ -211,6 +128,7 @@ const resolvers = {
   },
 };
 
+// Se crea el servidor GraphQL usando el esquema (typeDefs) y los resolvers.
 const server = new ApolloServer({
   typeDefs,
   resolvers,
