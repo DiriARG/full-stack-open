@@ -1,12 +1,14 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoose = require("mongoose");
 // Deshabilita el modo de consulta estricto de Mongoose. Esto evita una advertencia de consola y permite buscar documentos usando campos que NO estén definidos en el esquema (Schema).
 mongoose.set("strictQuery", false);
 const Author = require("./modelos/author");
 const Book = require("./modelos/book");
+const User = require("./modelos/user");
 const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose
@@ -22,6 +24,16 @@ mongoose
 "type Libro" es un Tipo de Objeto Personalizado. Define la forma de un objeto Libro, especificando sus campos (propiedades) y sus tipos (String!, Int!, etc) asociados.
 "type Mutation" → todas las operaciones que provocan cambio son mutaciones (crear, actualizar, borrar datos). */
 const typeDefs = `
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }  
+  
+  type Token {
+    value: String! 
+  }
+
   type Libro {
     title: String!
     author: Autor!
@@ -42,6 +54,7 @@ const typeDefs = `
     authorCount: Int!
     allBooks(author: String, genre: String): [Libro!]!
     allAuthors: [Autor!]!
+    me: User
   }
   
   type Mutation {
@@ -56,6 +69,16 @@ const typeDefs = `
     name: String!
     setBornTo: Int!
   ): Autor
+
+  createUser(
+    username: String!
+    favoriteGenre: String!
+  ): User
+
+  login(
+    username: String!
+    password: String!
+  ): Token
 }
 `;
 
@@ -80,6 +103,10 @@ const resolvers = {
     allAuthors: async () => {
       return Author.find({});
     },
+    // Devuelve al usuario autenticado según el token desde la función "context".
+    me: (root, args, context) => {
+      return context.usuarioActual || null;
+    },
   },
   // Este objeto contiene la lógica para los campos de "type Autor" que no existen directamente en los datos originales.
   Autor: {
@@ -93,8 +120,58 @@ const resolvers = {
   },
   // Resolver para las mutaciones.
   Mutation: {
+    createUser: async (root, args) => {
+      try {
+        const usuario = new User({
+          username: args.username,
+          favoriteGenre: args.favoriteGenre,
+        });
+
+        return await usuario.save();
+      } catch (error) {
+        if (error.name === "ValidationError") {
+          throw new GraphQLError("Error de validación al crear usuario.", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: Object.keys(error.errors),
+              error,
+            },
+          });
+        }
+        throw error;
+      }
+    },
+    // Devuelve un token JWT (campo value).
+    login: async (root, args) => {
+      const usuario = await User.findOne({ username: args.username });
+
+      // En el ejercicio se asume que todos los usuarios tienen la misma contraseña.
+      if (!usuario || args.password !== "secreta") {
+        throw new GraphQLError("Credenciales inválidas", {
+          extensions: { code: "BAD_USER_INPUT" },
+        });
+      }
+
+      // Información que se incluye en el token.
+      const contenidoToken = {
+        id: usuario._id,
+        username: usuario.username,
+      };
+
+      // Se firma el token con la clave secreta del .env.
+      const tokenFirmado = jwt.sign(contenidoToken, process.env.JWT_SECRETO);
+
+      return { value: tokenFirmado };
+    },
     // El parámetro "args" es un objeto que contiene todos los valores que el usuario pasó a la consulta al momento de hacer la petición, osea basicamente, lo que escribe el usuario en la query.
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      // Comprobación de autorización.
+      if (!context.usuarioActual) {
+        throw new GraphQLError("Debe iniciar sesión para agregar un libro", {
+          extensions: { code: "UNAUTHENTICATED" },
+        });
+      }
+
       try {
         // Se comprueba si existe el autor.
         let autor = await Author.findOne({ name: args.author });
@@ -134,7 +211,12 @@ const resolvers = {
         throw error;
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      if (!context.usuarioActual) {
+        throw new GraphQLError("Debe iniciar sesión para editar un autor", {
+          extensions: { code: "UNAUTHENTICATED" },
+        });
+      }
       try {
         const autor = await Author.findOne({ name: args.name });
 
@@ -172,6 +254,35 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
+
+  // La función 'context' actúa como un middleware de autenticación por cada operación GraphQL.
+  context: async ({ req }) => {
+    // Operador de encadenamiento opcional (`?.`) y OR lógico para obtener el encabezado 'Authorization' o `null`.
+    const autorizacion = req?.headers?.authorization || null;
+
+    // Si viene un token en formato 'Bearer <token>'...
+    if (autorizacion && autorizacion.startsWith("Bearer ")) {
+      // Se remueve el prefijo "Bearer " (que tiene 7 caracteres) para obtener solo el token JWT.
+      const token = autorizacion.substring(7);
+
+      try {
+        // Se verifica el token usando la clave secreta del .env.
+        const tokenDecodificado = jwt.verify(token, process.env.JWT_SECRETO);
+
+        // Se busca al usuario correspondiente al ID dentro del token en la bd.
+        const usuarioActual = await User.findById(tokenDecodificado.id);
+
+        // Se devuelve el usuario autenticado para que sea accesible a todos los resolvers.
+        return { usuarioActual };
+      } catch (error) {
+        console.log("Token inválido o expirado.");
+        return {};
+      }
+    }
+
+    // Si no hay token, se devuelve un contexto vacío (usuario no autenticado).
+    return {};
+  },
 }).then(({ url }) => {
-  console.log(`Server ready at ${url}`);
+  console.log(`Servidor corriendo en ${url}`);
 });
