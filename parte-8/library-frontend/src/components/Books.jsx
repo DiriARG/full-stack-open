@@ -32,7 +32,8 @@ const Books = (props) => {
           {books.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              {/* Ahora "author" es un objeto, no un string. */}
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           ))}
