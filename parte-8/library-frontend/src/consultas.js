@@ -13,8 +13,10 @@ export const ALL_AUTHORS = gql`
 `;
 
 export const ALL_BOOKS = gql`
-  query {
-    allBooks {
+  # Este nombre se puede modificar, ya que solo existe en el front.
+  query LibrosPorGenero($genre: String) {
+    # Esta operación debe coincidir exactamente con la que está en el backend.
+    allBooks(genre: $genre) {
       title
       published
       genres
@@ -71,3 +73,15 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+      id
+    }
+  }
+`;
+
+
