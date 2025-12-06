@@ -4,11 +4,11 @@ import { ALL_BOOKS } from "../consultas";
 
 const Books = (props) => {
   /* Estado que guarda el género actualmente seleccionado. 
-  Al cambiar este valor, Apollo volverá a ejecutar la query "ALL_BOOKS" con la variable "genre" actualizada.*/
+  Al cambiar este valor, se trae desde el back la lista filtrada por ese género a partir de un refetch manual (más abajo en el código).*/
   const [genero, setGenero] = useState(null);
 
-  const { loading, error, data } = useQuery(ALL_BOOKS, {
-    // Se envía la variable "genre" a la query GraphQL para que el backend filtre los libros, con el valor que el usuario seleccionó.
+  const { loading, error, data, refetch } = useQuery(ALL_BOOKS, {
+    // Se envía la variable "genre" a GraphQL para que el servidor filtre los libros, sin embargo, como se quiere que la query siempre traiga datos frescos cuando cambia el filtro, se utiliza refetch() más abajo.
     variables: { genre: genero },
   });
 
@@ -30,7 +30,17 @@ const Books = (props) => {
   Después con "new Set(...)" se elimina los géneros repetidos. 
   Por ultimo "[...Set]" vuelve a convertir el Set en un array normal para su uso. */
   const todosLosGeneros = [...new Set(books.flatMap((libro) => libro.genres))];
-
+  
+  
+  /* Cuando el usuario toca un botón de género:
+  1 - Se guarda el estado qué género seleccionó --> setGenero (generoNuevo).
+  2 - Se fuerza que Apollo pida datos frescos al back pasando ese género como parámetro a "refetch". 
+  Esto actualiza la lista de libros. */
+  const seleccionarGenero = (generoNuevo) => {
+    setGenero(generoNuevo);
+    refetch({ genre: generoNuevo });
+  };
+  
   return (
     <div>
       <h2>books</h2>
@@ -59,18 +69,24 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
-      {/* Botones para filtrar por géneros. */}
+      {/* Botones para filtrar por género. */}
       <div style={{ marginTop: "1rem" }}>
-        {/* Mapea y renderiza un botón por cada género único.
-            Al hacer click, actualiza el estado "setGenero". */}
+        {/* Mapea y renderiza un botón por cada género único. */}
         {todosLosGeneros.map((g) => (
-          <button key={g} onClick={() => setGenero(g)}>
+          <button key={g} onClick={() => seleccionarGenero(g)}>
             {g}
           </button>
         ))}
 
         {/* Botón para ver todos los libros (quita el filtro). */}
-        <button onClick={() => setGenero(null)}>todos los géneros</button>
+        <button
+          onClick={() => {
+            setGenero(null);
+            refetch({ genre: null }); // Se piden todos los libros otra vez.
+          }}
+        >
+          todos los géneros
+        </button>
       </div>
     </div>
   );

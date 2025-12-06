@@ -47,10 +47,14 @@ export const ADD_BOOK = gql`
     ) {
       # Datos que se quieren recibir al crear el objeto.
       title
-      author
       published
       genres
       id
+      author {
+        name
+        born
+        id
+      }
     }
   }
 `;

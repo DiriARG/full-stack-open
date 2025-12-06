@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../consultas";
+import { useApolloClient } from "@apollo/client";
+
 
 const FormularioLogin = ({ show, setToken, setPage }) => {
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [mensajeError, setMensajeError] = useState(null);
+  const cliente = useApolloClient();
 
   const [login] = useMutation(LOGIN, {
     // Maneja los errores enviados por el backend.
@@ -20,7 +23,8 @@ const FormularioLogin = ({ show, setToken, setPage }) => {
       localStorage.setItem("usuarioLogueado", token);
       // Se actualiza el estado global de la app con el token, disparando un re-renderizado en App.jsx para mostrar la UI de usuario atenticado.
       setToken(token);
-
+      // Se resetea la caché inmediatamente después del login.
+      cliente.resetStore()
       // Se redirige al usuario.
       setPage("authors");
 
