@@ -3,9 +3,14 @@ import { useState } from "react";
 import { ALL_BOOKS } from "../consultas";
 
 const Books = (props) => {
+  /* Estado que guarda el género actualmente seleccionado. 
+  Al cambiar este valor, Apollo volverá a ejecutar la query "ALL_BOOKS" con la variable "genre" actualizada.*/
   const [genero, setGenero] = useState(null);
 
-  const { loading, error, data } = useQuery(ALL_BOOKS);
+  const { loading, error, data } = useQuery(ALL_BOOKS, {
+    // Se envía la variable "genre" a la query GraphQL para que el backend filtre los libros, con el valor que el usuario seleccionó.
+    variables: { genre: genero },
+  });
 
   if (!props.show) {
     return null;
@@ -19,18 +24,12 @@ const Books = (props) => {
     return <div>Error: {error.message}</div>;
   }
 
-  const books = data.allBooks;
+  const books = data?.allBooks || [];
 
   /* Con "flatMap()" se crea un solo gran array con todos los géneros de todos los libros (incluyendo duplicados).
   Después con "new Set(...)" se elimina los géneros repetidos. 
   Por ultimo "[...Set]" vuelve a convertir el Set en un array normal para su uso. */
   const todosLosGeneros = [...new Set(books.flatMap((libro) => libro.genres))];
-
-  const librosAMostrar = genero
-  // Si hay un género seleccionado, se filtran los libros para incluir solo aquellos cuya lista "genres" contenga ese género. 
-  ? books.filter((libro) => libro.genres.includes(genero))
-  // Si no hay género seleccionado simplemente se devuelve todos los libros.
-  : books;
 
   return (
     <div>
@@ -50,7 +49,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {librosAMostrar.map((a) => (
+          {books.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
               {/* Ahora "author" es un objeto, no un string. */}
