@@ -39,9 +39,10 @@ const resolvers = {
     /* El parámetro "root" es el objeto "Autor" actual que se está procesando:
     EJ: en la primera ejecución, "root" es:
     { name: "Robert Martin", id: "...", born: 1952 } */
-    bookCount: async (root) => {
-      // Calcula y devuelve el número exacto de libros en la colección "Book" que estan asociados con el ID (_id) del autor actualmente procesado (root).
-      return Book.countDocuments({ author: root._id });
+    // Resolver optimizado con "DataLoader". 
+    bookCount: async (root, args, { loaders }) => {
+      // Delega la petición al loader, que recopila el ID del autor y aplaza la consulta real. Esto resuelve el problema n+1 al agrupar múltiples IDs en una solo query a la bd (batch --> agrupación de consultas).
+      return loaders.bookCountLoader.load(root._id); //"root._id" es el ID del autor actual.
     },
   },
   // Resolver para las mutaciones.

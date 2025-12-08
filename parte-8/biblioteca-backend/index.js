@@ -22,6 +22,7 @@ const User = require("./modelos/user");
 
 const typeDefs = require("./esquema");
 const resolvers = require("./resolvers");
+const { crearLoaderBookCount } = require("./loaders");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -36,7 +37,7 @@ mongoose
 
 const iniciarServidor = async () => {
   const app = express();
-  // Creación de un servidor HTTP estándar a partir de la app Express (necesario para el servidor ws). 
+  // Creación de un servidor HTTP estándar a partir de la app Express (necesario para el servidor ws).
   const servidorHttp = http.createServer(app);
 
   // Configuración del servidor "WebSocket" que gestiona las suscripciones (graphql-ws).
@@ -104,7 +105,14 @@ const iniciarServidor = async () => {
             const usuarioActual = await User.findById(tokenDecodificado.id);
 
             // Se devuelve el usuario autenticado para que sea accesible a todos los resolvers.
-            return { usuarioActual };
+            return {
+              usuarioActual,
+              // Se agregan el DataLoader al contexto. Cada request (query o mutación) obtiene sus loaders propios para evitar mezclar cachés.
+              loaders: {
+                // Loader para agrupar y optimizar la consulta "bookCount".
+                bookCountLoader: crearLoaderBookCount(),
+              },
+            };
           } catch (error) {
             console.log("Token inválido o expirado.");
             return {};
