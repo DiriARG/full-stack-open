@@ -20,7 +20,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 6: Gestión avanzada del estado](#parte-6-gestión-avanzada-del-estado)
 - [Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack](#parte-7-react-router-custom-hooks-estilando-la-aplicación-con-css-y-webpack)
 - [Parte 8: GraphQL](#parte-8-graphql)
-- [Certificado del curso](#certificado-del-curso-)
+- [Certificados del curso](#certificados-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
 
@@ -78,6 +78,12 @@ Esta parte del curso trata sobre GraphQL, la alternativa de Facebook a REST para
 
 <img src="./imagenes/parte-8.png" alt="Imagen parte 8" width="250">
 
-## Certificado del curso 😁
+## Certificados del curso 😁
 
-<img src="./imagenes/certificado-fullstack.png">
+### Certificado Full Stack (Parte 0 - Parte 7):
+
+<img src="./imagenes/certificado-fullstack.png" alt="Certificado sobre las primeras 7 partes del curso">
+
+### Certificado GraphQL (Parte 8):
+
+<img src="./imagenes/certificado-graphql.png" alt="Certificado del curso sobre GraphQL">
