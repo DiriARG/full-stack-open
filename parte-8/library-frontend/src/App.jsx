@@ -4,7 +4,8 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import FormularioLogin from "./components/FormularioLogin";
 import Recomendaciones from "./components/Recomendaciones";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient, useSubscription } from "@apollo/client";
+import { BOOK_ADDED } from "./consultas";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -13,6 +14,16 @@ const App = () => {
   // La función se ejecuta solo una vez al inicio para leer el token de "localStorage".
   const [token, setToken] = useState(() => {
     return localStorage.getItem("usuarioLogueado");
+  });
+
+  // Suscripción a nuevos libros agregados. "useSubscription" abre una conexión ws al sv usando GraphQL WS. 
+  useSubscription(BOOK_ADDED, {
+    // "onData" se ejecuta cada vez que llega un nuevo valor desde la suscripción.
+    onData: ({ data }) => {
+      // Se extrae el libro recibido desde la suscripción. La estructura de acceso es "data.data.[nombre-del-campo]".
+      const libro = data.data.bookAdded;
+      window.alert(`Nuevo libro agregado: ${libro.title}`);
+    },
   });
 
   const salir = () => {
