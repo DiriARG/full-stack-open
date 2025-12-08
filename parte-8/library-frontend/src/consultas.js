@@ -1,5 +1,22 @@
 import { gql } from "@apollo/client";
 
+// Este fragmento sirve para definir un conjunto de campos que se reutilizan en múltiples consultas.
+export const DETALLES_LIBRO = gql`
+  # "on Libro" es la Condición de Tipo (Type Condition), indica que este fragmento se aplica a objetos que coincidan con el tipo "Libro" definido en el "typeDefs" (esquema).
+  fragment DetallesLibro on Libro {
+    title
+    published
+    genres
+    id
+    # El autor es un objeto anidado, al cual se le solicita sus detalles:
+    author {
+      name
+      born
+      id
+    }
+  }
+`;
+
 // Mismo nombre que fue definido en el esquema del backend (index.js).
 export const ALL_AUTHORS = gql`
   query {
@@ -17,17 +34,12 @@ export const ALL_BOOKS = gql`
   query LibrosPorGenero($genre: String) {
     # Esta operación debe coincidir exactamente con la que está en el backend.
     allBooks(genre: $genre) {
-      title
-      published
-      genres
-      id
-      author {
-        name
-        born
-        id
-      }
+      # Se utiliza el fragmento para incluir todos sus campos en el resultado de esta consulta.
+      ...DetallesLibro
     }
   }
+  # Es obligatorio incluir el fragmento fuera de la query para que GraphQL lo reconozca.
+  ${DETALLES_LIBRO}
 `;
 
 export const ADD_BOOK = gql`
@@ -46,17 +58,10 @@ export const ADD_BOOK = gql`
       genres: $genres
     ) {
       # Datos que se quieren recibir al crear el objeto.
-      title
-      published
-      genres
-      id
-      author {
-        name
-        born
-        id
-      }
+      ...DetallesLibro
     }
   }
+  ${DETALLES_LIBRO}
 `;
 
 export const EDIT_AUTHOR = gql`
@@ -91,15 +96,8 @@ export const ME = gql`
 export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
-      title
-      published
-      genres
-      id
-      author {
-        name
-        id
-      }
+      ...DetallesLibro
     }
   }
+  ${DETALLES_LIBRO}
 `;
-
