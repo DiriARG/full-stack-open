@@ -1,3 +1,28 @@
+> [!IMPORTANT]  
+> **El número de libros y autores** → Ejercicio 8.1 → Carpeta llamada **"biblioteca-backend"**.         
+> **Todos los libros** → Ejercicio 8.2 → Carpeta llamada **"biblioteca-backend"**.   
+> **Todos los autores** → Ejercicio 8.3 → Carpeta llamada **"biblioteca-backend"**.       
+> **Libros de un autor** → Ejercicio 8.4 → Carpeta llamada **"biblioteca-backend"**.  
+> **Libros por género** → Ejercicio 8.5 → Carpeta llamada **"biblioteca-backend"**.  
+> **Agregar un libro** → Ejercicio 8.6 → Carpeta llamada **"biblioteca-backend"**.       
+> **Actualización del año de nacimiento de un autor** → Ejercicio 8.7 → Carpeta llamada **"biblioteca-backend"**.     
+> **Vista de autores** → Ejercicio 8.8 → Carpeta llamada **"library-frontend"**.       
+> **Vista de Libros** → Ejercicio 8.9 → Carpeta llamada **"library-frontend"**.  
+> **Agregar un libro** → Ejercicio 8.10 → Carpeta llamada **"library-frontend"**.    
+> **Año de nacimiento del autor** → Ejercicio 8.11 → Carpeta llamada **"library-frontend"**.       
+> **Año de nacimiento del autor avanzado** → Ejercicio 8.12 → Carpeta llamada **"library-frontend"**.  
+> **Base de datos** → Ejercicios 8.13, 8.14, 8.15 → Carpeta llamada **"biblioteca-backend"**.  
+> **usuario e inicio de sesión** → Ejercicio 8.16 → Carpeta llamada **"biblioteca-backend"**.  
+> **Listado de libros** → Ejercicio 8.17 → Carpeta llamada **"library-frontend"**.    
+> **Iniciar sesión** → Ejercicio 8.18 → Carpeta llamada **"library-frontend"**.       
+> **Libros por género** → Ejercicios 8.19, 8.20 → Carpeta llamada **"library-frontend"**.   
+> **libros por género con GraphQL** → Ejercicio 8.21 → Carpeta llamada **"library-frontend"**.    
+> **Caché actualizado y recomendaciones de libros** → Ejercicio 8.22 → Carpeta llamada **"library-frontend"**.         
+> **Suscripciones - servidor** → Ejercicio 8.23 → Carpeta llamada **"biblioteca-backend"**.   
+> **Suscripciones - cliente** → Ejercicios 8.24, 8.25 → Carpeta llamada **"library-frontend"**.  
+> **n + 1** → Ejercicio 8.26 → Carpeta llamada **"biblioteca-backend"**.     
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md. 
+
 # Ejercicios 8.1. - 8.7
 
 A través de los ejercicios, implementaremos un backend GraphQL para una pequeña biblioteca. Comience con [este archivo](https://github.com/fullstack-hy2020/misc/blob/master/library-backend.js). ¡Recuerde `npm init` e instalar dependencias!  
@@ -276,12 +301,12 @@ Puede implementar su aplicación usando los componentes de apoyo de renderizado 
 
 ## 8.8: Vista de autores
 
-Implemente una vista de Autores para mostrar los detalles de todos los autores en una página de la siguiente manera:
+Implemente una vista de Autores para mostrar los detalles de todos los autores en una página de la siguiente manera:  
 <img src="./imagenes/vista-autores.png" alt="Vista de autores">
 
 ## 8.9: Vista de Libros
 
-Implemente una vista de Libros para mostrar en una página todos los demás detalles de todos los libros, excepto sus géneros.
+Implemente una vista de Libros para mostrar en una página todos los demás detalles de todos los libros, excepto sus géneros.  
 <img src="./imagenes/vista-libros.png" alt="Vista de libros">
 
 ## 8.10: Agregar un libro
@@ -300,8 +325,8 @@ Asegúrese de que la vista Autores se mantenga actualizada después de establece
 
 ## 8.12: Año de nacimiento del autor avanzado
 
-Cambie el formulario del año de nacimiento para que solo se pueda establecer un año de nacimiento para un autor existente. Utilice la biblioteca [select-tag](https://react.dev/reference/react-dom/components/select), [react-select](https://github.com/JedWatson/react-select) o algún otro mecanismo.  
-Una solución con la librería react-select tiene el siguiente aspecto:
+Cambie el formulario del año de nacimiento para que solo se pueda establecer un año de nacimiento para un autor existente. Utilice la biblioteca [select-tag](https://react.dev/reference/react-dom/components/select), [react-select](https://github.com/JedWatson/react-select) o algún otro mecanismo.    
+Una solución con la librería react-select tiene el siguiente aspecto:  
 <img src="./imagenes/año-nacimiento-avanzado.png" alt="Nuevo formulario del año de nacimiento">
 
 # Ejercicios 8.13. - 8.16
@@ -412,7 +437,7 @@ Cuando un usuario inicia sesión, la navegación cambia para mostrar las funcion
 
 ## 8.19 Libros por género, parte 1
 
-Complete su solicitud para filtrar la lista de libros por género. Su solución podría verse así:
+Complete su solicitud para filtrar la lista de libros por género. Su solución podría verse así:  
 <img src="./imagenes/filtrar-lista-libros.png" alt="Filtración en la lista de libros por género">  
 En este ejercicio, el filtrado se puede hacer usando solo React.
 
