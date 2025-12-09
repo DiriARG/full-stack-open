@@ -20,6 +20,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 6: Gestión avanzada del estado](#parte-6-gestión-avanzada-del-estado)
 - [Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack](#parte-7-react-router-custom-hooks-estilando-la-aplicación-con-css-y-webpack)
 - [Parte 8: GraphQL](#parte-8-graphql)
+- [Parte 9: TypeScript](#parte-9-typescript)
 - [Certificados del curso](#certificados-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
@@ -77,6 +78,16 @@ La séptima parte del curso aborda varios temas diferentes. Primero, nos familia
 Esta parte del curso trata sobre GraphQL, la alternativa de Facebook a REST para la comunicación entre navegador y servidor.
 
 <img src="./imagenes/parte-8.png" alt="Imagen parte 8" width="250">
+
+## Parte 9: TypeScript:
+
+Esta parte trata sobre TypeScript: un superconjunto de JavaScript de código abierto desarrollado por Microsoft que se compila en JavaScript simple.
+
+En esta parte, utilizaremos las herramientas introducidas anteriormente para añadir funcionalidades end-to-end a un ecosistema existente, con linters predefinidos y una base de código existente, mientras escribimos TypeScript. Después de hacer esta parte, deberías poder comprender, desarrollar y configurar proyectos utilizando TypeScript.
+
+Esta parte fue creada por [Tuomo Torppa](https://www.linkedin.com/in/tuomotorppa), [Tuukka Peuraniemi](https://www.linkedin.com/in/tuukkapeuraniemi/) y [Jani Rapo](https://www.linkedin.com/in/jani-rapo-5520817b/), los increíbles desarrolladores de [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health), el proveedor de servicios de salud privado más grande de Finlandia. La red nacional de Terveystalo cubre 300 ubicaciones en Finlandia. La red de clínicas se complementa con servicios digitales 24/7.
+
+<img src="./imagenes/parte-9.png" alt="Imagen parte 9" width="250">
 
 ## Certificados del curso 😁
 
