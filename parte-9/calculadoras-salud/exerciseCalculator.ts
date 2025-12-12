@@ -11,6 +11,31 @@ interface ResultadoDelEjercicio {
   promedio: number;
 }
 
+interface ValoresEjercicio {
+  objetivo: number;
+  horas: number[];
+}
+
+const analizarArgumentosEjercicio = (args: string[]): ValoresEjercicio => {
+  if (args.length < 4) {
+    throw new Error(
+      "Debes ingresar el valor objetivo seguido de los registros de horas de ejercicio"
+    );
+  }
+
+  const objetivo = Number(args[2]);
+  if (isNaN(objetivo)) throw new Error("El objetivo debe ser un número");
+
+  // Crea un nuevo array omitiendo los primeros 3 elementos (node, exerciseCalculator.ts, objetivo) y convierte cada string en un número.
+  const horas = args.slice(3).map(Number);
+  // Verifica si "al menos uno" de los elementos del nuevo array (gracias a "some") es NaN (no es un número).
+  if (horas.some((h) => isNaN(h))) {
+    throw new Error("Todas las horas diarias deben ser números");
+  }
+
+  return { objetivo, horas };
+};
+
 const calculateExercises = (
   horasDiarias: number[],
   objetivo: number
@@ -32,9 +57,9 @@ const calculateExercises = (
     calificacion = 3;
     descripcionCalificacion =
       "¡Excelente! Alcanzaste tu objetivo de promedio diario";
-  } 
+  }
   // Calificación 2: Entre el 80% y el 99.9...%.
-  else if (promedio >= objetivo * 0.80) {
+  else if (promedio >= objetivo * 0.8) {
     calificacion = 2;
     descripcionCalificacion =
       "Muy bien!!!, te falta muy poco para poder alcanzar la meta completa";
@@ -43,7 +68,7 @@ const calculateExercises = (
     descripcionCalificacion =
       "Necesitas trabajar más. Esforzate por superar el 80% del objetivo";
   }
-  
+
   // Se devuelve el objeto con todas las propiedades calculadas.
   return {
     periodoLongitud,
@@ -56,4 +81,13 @@ const calculateExercises = (
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const { objetivo, horas } = analizarArgumentosEjercicio(process.argv);
+  console.log(calculateExercises(horas, objetivo));
+} catch (error: unknown) {
+  let mensaje = "Ocurrió un error.";
+  if (error instanceof Error) {
+    mensaje += " Detalles: " + error.message;
+  }
+  console.error(mensaje);
+}
