@@ -23,7 +23,7 @@ const analizarArgumentosIMC = (args: string[]): ValoresIMC => {
 };
 
 // Función que calcula el índice de masa corporal (IMC).
-const calculateBmi = (alturaCm: number, pesoKg: number): string => {
+export const calculateBmi = (alturaCm: number, pesoKg: number): string => {
   // Se convierte la altura de centímetros a metros.
   const alturaM = alturaCm / 100;
 
@@ -41,18 +41,23 @@ const calculateBmi = (alturaCm: number, pesoKg: number): string => {
   }
 };
 
-try {
-  // Analiza los argumentos de línea de comando y los extrae si son válidos.
-  const { altura, peso } = analizarArgumentosIMC(process.argv);
-  // Se pasan los valores (argumentos) a la función de imc para que ejecute el cálculo y muestre el resultado en consola.
-  console.log(calculateBmi(altura, peso));
-} catch (error: unknown) {
-  // Valor por defecto del parámetro error en el catch es unknown, más seguro que "any" ya que obliga a validar el tipo.
-  let mensaje = "Ocurrió un error.";
-  // Guardia de tipo (Type guard): Verifica si el objeto es una instancia de la clase "Error" para acceder a sus propiedades.
-  if (error instanceof Error) {
-    // Si es así, ts permite acceder de forma segura a ".message".
-    mensaje += " Detalles: " + error.message;
+
+// Este if sirve para evitar que Express ejecute este código e intente leer argumentos de la terminal que no existen. Este bloque solo se ejecuta cuando se ejecuta este archivo directamente.
+if (require.main === module) {
+  try {
+    // Analiza los argumentos de línea de comando y los extrae si son válidos.
+    const { altura, peso } = analizarArgumentosIMC(process.argv);
+    // Se pasan los valores (argumentos) a la función de imc para que ejecute el cálculo y muestre el resultado en consola.
+    console.log(calculateBmi(altura, peso));
+  } catch (error: unknown) {
+    // Valor por defecto del parámetro error en el catch es unknown, más seguro que "any" ya que obliga a validar el tipo.
+    let mensaje = "Ocurrió un error.";
+    // Guardia de tipo (Type guard): Verifica si el objeto es una instancia de la clase "Error" para acceder a sus propiedades.
+    if (error instanceof Error) {
+      // Si es así, ts permite acceder de forma segura a ".message".
+      mensaje += " Detalles: " + error.message;
+    }
+    console.error(mensaje);
   }
-  console.error(mensaje);
 }
+
