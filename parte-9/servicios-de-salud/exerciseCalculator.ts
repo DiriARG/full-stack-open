@@ -1,4 +1,4 @@
-interface ResultadoDelEjercicio {
+export interface ResultadoDelEjercicio {
   // Número total de días analizados.
   periodoLongitud: number;
   diasEntrenamiento: number;
@@ -29,14 +29,14 @@ const analizarArgumentosEjercicio = (args: string[]): ValoresEjercicio => {
   // Crea un nuevo array omitiendo los primeros 3 elementos (node, exerciseCalculator.ts, objetivo) y convierte cada string en un número.
   const horas = args.slice(3).map(Number);
   // Verifica si "al menos uno" de los elementos del nuevo array (gracias a "some") es NaN (no es un número).
-  if (horas.some((h) => isNaN(h))) {
+  if (horas.some((hora) => isNaN(hora))) {
     throw new Error("Todas las horas diarias deben ser números");
   }
 
   return { objetivo, horas };
 };
 
-const calculateExercises = (
+export const calculateExercises = (
   horasDiarias: number[],
   objetivo: number
 ): ResultadoDelEjercicio => {
@@ -81,13 +81,15 @@ const calculateExercises = (
   };
 };
 
-try {
-  const { objetivo, horas } = analizarArgumentosEjercicio(process.argv);
-  console.log(calculateExercises(horas, objetivo));
-} catch (error: unknown) {
-  let mensaje = "Ocurrió un error.";
-  if (error instanceof Error) {
-    mensaje += " Detalles: " + error.message;
+if (require.main === module) {
+  try {
+    const { objetivo, horas } = analizarArgumentosEjercicio(process.argv);
+    console.log(calculateExercises(horas, objetivo));
+  } catch (error: unknown) {
+    let mensaje = "Ocurrió un error.";
+    if (error instanceof Error) {
+      mensaje += " Detalles: " + error.message;
+    }
+    console.error(mensaje);
   }
-  console.error(mensaje);
 }
