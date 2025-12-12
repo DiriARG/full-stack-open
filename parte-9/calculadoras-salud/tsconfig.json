@@ -1,6 +1,0 @@
-{
-  "compilerOptions": {
-    // Obliga a TypeScript a exigir que todas las variables y parámetros tengan un tipo explícito, evitando el tipo "any" implícito (párametros de función sin tipo explícito, variables locales no inicializadas, etc).
-    "noImplicitAny": true
-  }
-}
