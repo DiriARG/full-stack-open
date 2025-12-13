@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    // Indica dónde debe colocarse el código JS compilado.
+    "outDir": "./build/",
+    "module": "commonjs",
+    // Abreviatura de varias opciones independientes ej: noInplicitAny, noImplicitThis, etc. El uso de "strict" es segurido por la documentación oficial.
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    // Permite la interoperatividad (que funcionen bien juntos) entre los módulos CommonJS y ES.
+    "esModuleInterop": true
+  }
+}
