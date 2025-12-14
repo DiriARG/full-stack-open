@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import rutaDiagnosticos from "./rutas/diagnosticos";
+import rutaPacientes from "./rutas/pacientes";
+
 const app = express();
 
 app.use(cors());
@@ -13,6 +15,8 @@ app.get("/api/ping", (_req, res) => {
 });
 
 app.use("/api/diagnoses", rutaDiagnosticos);
+
+app.use("/api/patients", rutaPacientes);
 
 app.listen(PUERTO, () => {
   console.log(`Servidor corriendo en http://localhost:${PUERTO}`);
