@@ -1,5 +1,6 @@
+import { v1 as uuid } from "uuid";
 import pacientes from "../data/pacientesTipados";
-import { PacienteSinSsn } from "../tipos";
+import { PacienteSinSsn, NuevoPaciente, Paciente } from "../tipos";
 
 const obtenerPacientes = (): PacienteSinSsn[] => {
   /* Se desestructura el objeto "Paciente" (viene de pacientesTipados.ts);
@@ -8,6 +9,17 @@ const obtenerPacientes = (): PacienteSinSsn[] => {
   return pacientes.map(({ ssn: _ssn, ...restoPaciente }) => restoPaciente);
 };
 
+const agregarPaciente = (datos: NuevoPaciente): Paciente => {
+  const nuevoPaciente: Paciente = {
+    id: uuid(),
+    ...datos,
+  };
+
+  pacientes.push(nuevoPaciente);
+  return nuevoPaciente;
+};
+
 export default {
   obtenerPacientes,
+  agregarPaciente,
 };

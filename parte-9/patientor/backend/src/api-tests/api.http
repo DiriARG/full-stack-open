@@ -1,0 +1,20 @@
+### Ruta que devuelve "pong".
+GET http://localhost:3001/api/ping
+
+### Ruta que devuelve todos los diagnósticos posibles.
+GET http://localhost:3001/api/diagnoses
+
+### Ruta que devuelve todos los pacientes.
+GET http://localhost:3001/api/patients
+
+### Ruta para agregar nuevo paciente.
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Paciente de prueba",
+    "dateOfBirth": "14/12/2025",
+    "ssn": "12346",
+    "gender":"hombre",
+    "occupation": "idk"
+}

@@ -17,3 +17,5 @@ export interface Paciente {
 /* Con "type" se aplica un alias de tipo para mejorar la legibilidad.
 Se utiliza el tipo de utilidad "Omit", para crear un tipo seguro que excluye los campos que se quieren excluir, en este caso, el campo "ssn". */
 export type PacienteSinSsn = Omit<Paciente, "ssn">;
+
+export type NuevoPaciente = Omit<Paciente, "id">;
