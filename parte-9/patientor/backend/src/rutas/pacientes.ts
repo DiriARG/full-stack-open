@@ -1,5 +1,6 @@
 import express from "express";
 import servicioPaciente from "../servicios/servicioPaciente";
+import { construirNuevoPaciente } from "../utilidades";
 
 const router = express.Router();
 
@@ -9,23 +10,17 @@ router.get("/", (_req, res) => {
 
 router.post("/", (req, res) => {
   try {
-    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-
-    if (!name || !dateOfBirth || !ssn || !gender || !occupation) {
-      return res.status(400).json({ error: "Faltan campos" });
+    // Acá se valida para asegurar que lo que ingresa en req.body cumple con el esquema de "NuevoPaciente".
+    const nuevoPaciente = construirNuevoPaciente(req.body);
+    // Si la validación fue exitosa, se agrega al paciente a través del servicio asignandole un id y guardandolo.
+    const pacienteAgregado = servicioPaciente.agregarPaciente(nuevoPaciente);
+    res.status(201).json(pacienteAgregado);
+  } catch (error: unknown) {
+    let mensaje = "Error al crear paciente";
+    if (error instanceof Error) {
+      mensaje += `: ${error.message}`;
     }
-
-    const nuevoPaciente = servicioPaciente.agregarPaciente({
-      name,
-      dateOfBirth,
-      ssn,
-      gender,
-      occupation,
-    });
-
-    return res.status(201).json(nuevoPaciente);
-  } catch {
-    return res.status(400).json({ error: "Datos no válidos" });
+    res.status(400).json({ error: mensaje });
   }
 });
 

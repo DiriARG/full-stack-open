@@ -10,8 +10,15 @@ export interface Paciente {
   name: string;
   dateOfBirth: string;
   ssn: string;
-  gender: string;
+  gender: Genero;
   occupation: string;
+}
+
+// "Enum" sirve para restringir el género a un conjunto finito de valores válidos.
+export enum Genero {
+  Hombre = "male",
+  Mujer = "female",
+  Otro = "other"
 }
 
 /* Con "type" se aplica un alias de tipo para mejorar la legibilidad.

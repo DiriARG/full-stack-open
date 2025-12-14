@@ -12,9 +12,9 @@ POST http://localhost:3001/api/patients
 Content-Type: application/json
 
 {
-    "name": "Paciente de prueba",
-    "dateOfBirth": "14/12/2025",
+    "name": "Paciente E13",
+    "dateOfBirth": "2025/12/24",
     "ssn": "12346",
-    "gender":"hombre",
+    "gender":"male",
     "occupation": "idk"
 }
