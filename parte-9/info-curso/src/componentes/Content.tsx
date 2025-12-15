@@ -1,16 +1,16 @@
-import type { PartesDelCurso } from "../tipos";
+import type { CoursePart } from "../tipos";
+import Part from "./Part";
 
 interface ContentProp {
-  partes: PartesDelCurso[];
+  partes: CoursePart[];
 }
 
 const Content = ({ partes }: ContentProp) => {
   return (
     <div>
       {partes.map((parte) => (
-        <p key={parte.name}>
-          {parte.name} {parte.exerciseCount}
-        </p>
+        // parte={parte}: se pasa una parte del curso (CoursePart) al componente "Part", que luego usa "parte.kind" para decidir qué mostrar.
+        <Part key={parte.name} parte={parte} />
       ))}
     </div>
   );
