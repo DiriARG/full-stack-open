@@ -5,3 +5,5 @@ export interface Diario {
   visibility: string;
   comment: string;
 }
+
+export type NuevoDiario = Omit<Diario, "id">;
