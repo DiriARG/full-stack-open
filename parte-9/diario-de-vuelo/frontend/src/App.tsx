@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import type { Diario } from "./tipos";
+import type { Diario, Weather, Visibility } from "./tipos";
 import { obtenerTodosLosDiarios, crearDiario } from "./servicios/diarios";
 
 const App = () => {
@@ -8,8 +8,9 @@ const App = () => {
   Esto permite que ts valide el uso de "diarios" y nos avise si intentamos acceder a propiedades inexistentes o guardar datos con una forma incorrecta. */
   const [diarios, setDiarios] = useState<Diario[]>([]);
   const [fecha, setFecha] = useState("");
-  const [clima, setClima] = useState("");
-  const [visibilidad, setVisibilidad] = useState("");
+
+  const [clima, setClima] = useState<Weather>("sunny");
+  const [visibilidad, setVisibilidad] = useState<Visibility>("great");
   const [comentario, setComentario] = useState("");
   // El estado espera un string (cuando hay error --> debe mostrar txt), o un null (no hay error).
   const [error, setError] = useState<string | null>(null);
@@ -40,9 +41,10 @@ const App = () => {
       // Se lo agrega al estado sin mutar al array original.
       setDiarios(diarios.concat(diarioCreado));
 
+      // Reseteamos los campos. Clima y visibilidad por defecto vuelven a "sunny" y "great" correspondientemente.
       setFecha("");
-      setClima("");
-      setVisibilidad("");
+      setClima("sunny");
+      setVisibilidad("great");
       setComentario("");
     } catch (error: unknown) {
       // "isAxiosError" es un "typeguard" provisto por Axios. A partir de acá, ts sabe que "error" es un AxiosError y habilita el acceso seguro a propiedades como "error.response", "error.request", etc.
@@ -76,6 +78,7 @@ const App = () => {
         <div>
           Fecha
           <input
+            type="date"
             value={fecha}
             onChange={(evento) => setFecha(evento.target.value)}
           />
@@ -83,18 +86,43 @@ const App = () => {
 
         <div>
           Visibilidad
-          <input
-            value={visibilidad}
-            onChange={(evento) => setVisibilidad(evento.target.value)}
-          />
+          {/* Se define explicitamente el array de valores: ["great", "good", "ok", "poor"]. 
+          "as Visibility[]" le asegura a ts (Type Assertion) que este array de strings de texto coincide exactamente con el tipo "Visibility" definido en "tipos.ts".
+          Se utiliza map para generar un bloque de código JSX por cada valor en el array. 
+          Atributos del input:
+          - "name": agrupa los radio buttons que contengan el mismo "name". 
+          - "value": El valor de este input es el string actual (great, good, etc).
+          - "checked": Si el valor actual del estado (visibilidad) es igual al valor de este input (valor), entonces el botón se marca como seleccionado. Esto hace que el input esté "controlado" por React. */}
+          {(["great", "good", "ok", "poor"] as Visibility[]).map((valor) => (
+            <label key={valor}>
+              <input
+                type="radio"
+                value={valor}
+                checked={visibilidad === valor}
+                onChange={() => setVisibilidad(valor)}
+              />
+              {/* Muestra el texto del radio button, osea directamente el valor (great, good, etc). */}
+              {valor}
+            </label>
+          ))}
         </div>
 
         <div>
           Clima
-          <input
-            value={clima}
-            onChange={(evento) => setClima(evento.target.value)}
-          />
+          {(["sunny", "rainy", "cloudy", "stormy", "windy"] as Weather[]).map(
+            (valor) => (
+              <label key={valor}>
+                <input
+                  type="radio"
+                  name="clima"
+                  value={valor}
+                  checked={clima === valor}
+                  onChange={() => setClima(valor)}
+                />
+                {valor}
+              </label>
+            )
+          )}
         </div>
 
         <div>
