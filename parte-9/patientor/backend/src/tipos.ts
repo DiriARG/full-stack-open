@@ -5,6 +5,11 @@ export interface Diagnostico {
   latin?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Entry {
+
+}
+
 export interface Paciente {
   id: string;
   name: string;
@@ -12,17 +17,18 @@ export interface Paciente {
   ssn: string;
   gender: Genero;
   occupation: string;
+  entries: Entry[];
 }
 
 // "Enum" sirve para restringir el género a un conjunto finito de valores válidos.
 export enum Genero {
   Hombre = "male",
   Mujer = "female",
-  Otro = "other"
+  Otro = "other",
 }
 
 /* Con "type" se aplica un alias de tipo para mejorar la legibilidad.
 Se utiliza el tipo de utilidad "Omit", para crear un tipo seguro que excluye los campos que se quieren excluir, en este caso, el campo "ssn". */
-export type PacienteSinSsn = Omit<Paciente, "ssn">;
+export type PacienteSinSsn = Omit<Paciente, "ssn" | "entries">; // Ahora también excluye "entries".
 
-export type NuevoPaciente = Omit<Paciente, "id">;
+export type NuevoPaciente = Omit<Paciente, "id" | "entries">;

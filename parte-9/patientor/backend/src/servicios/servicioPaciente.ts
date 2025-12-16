@@ -12,6 +12,8 @@ const obtenerPacientes = (): PacienteSinSsn[] => {
 const agregarPaciente = (datos: NuevoPaciente): Paciente => {
   const nuevoPaciente: Paciente = {
     id: uuid(),
+    // Siempre empieza vacío.
+    entries: [],
     ...datos,
   };
 
@@ -19,7 +21,12 @@ const agregarPaciente = (datos: NuevoPaciente): Paciente => {
   return nuevoPaciente;
 };
 
+const obtenerPacientePorID = (id: string): Paciente | undefined => {
+  return pacientes.find((paciente) => paciente.id === id);
+};
+
 export default {
   obtenerPacientes,
   agregarPaciente,
+  obtenerPacientePorID,
 };
