@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import type { Diario } from "./tipos";
 import { obtenerTodosLosDiarios, crearDiario } from "./servicios/diarios";
@@ -10,6 +11,8 @@ const App = () => {
   const [clima, setClima] = useState("");
   const [visibilidad, setVisibilidad] = useState("");
   const [comentario, setComentario] = useState("");
+  // El estado espera un string (cuando hay error --> debe mostrar txt), o un null (no hay error).
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     obtenerTodosLosDiarios().then((data) => {
@@ -22,30 +25,52 @@ const App = () => {
      En React/JS se hacía: (evento) => evento.preventDefault().
      En TS + React: (evento: React.SyntheticEvent) => evento.preventDefault(). 
   */
-  const creacionDeDiario = (evento: React.SyntheticEvent) => {
+  const creacionDeDiario = async (evento: React.SyntheticEvent) => {
     evento.preventDefault();
 
-    crearDiario({
-      // Se mapean ("Data Mapping") los estados en español a los nombres que espera el backend.
-      date: fecha,
-      weather: clima,
-      visibility: visibilidad,
-      comment: comentario,
-      // El back devuelve el diario completo (con id).
-    }).then((diarioCreado) => {
+    try {
+      const diarioCreado = await crearDiario({
+        // Se mapean ("Data Mapping") los estados en español a los nombres que espera el backend.
+        date: fecha,
+        weather: clima,
+        visibility: visibilidad,
+        comment: comentario,
+      });
+
       // Se lo agrega al estado sin mutar al array original.
       setDiarios(diarios.concat(diarioCreado));
-    });
 
-    setFecha("");
-    setClima("");
-    setVisibilidad("");
-    setComentario("");
+      setFecha("");
+      setClima("");
+      setVisibilidad("");
+      setComentario("");
+    } catch (error: unknown) {
+      // "isAxiosError" es un "typeguard" provisto por Axios. A partir de acá, ts sabe que "error" es un AxiosError y habilita el acceso seguro a propiedades como "error.response", "error.request", etc.
+      if (axios.isAxiosError(error)) {
+        // Si el backend respondió con un error y el cuerpo del error es un string...
+        if (error.response && typeof error.response.data === "string") {
+          // Se lo muestra al usuario.
+          setError(error.response.data);
+        } else {
+          setError("Error desconocido al crear el diario");
+        }
+      }
+      // Si el error no viene de axios...
+      else {
+        setError("Error inesperado");
+      }
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
   };
 
   return (
     <div>
       <h2>Añadir nueva entrada</h2>
+
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       <form onSubmit={creacionDeDiario}>
         <div>
