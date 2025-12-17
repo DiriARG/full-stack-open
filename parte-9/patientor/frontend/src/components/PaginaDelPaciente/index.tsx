@@ -30,6 +30,35 @@ const PaginaDelPaciente = () => {
 
       <div>ssn: {paciente.ssn}</div>
       <div>ocupación: {paciente.occupation}</div>
+
+      <h3>entradas</h3>
+      {paciente.entries.map((entrada) => (
+        <div key={entrada.id} style={{ marginBottom: "1rem" }}>
+          <div>
+            <strong>{entrada.date}</strong>{" "}
+            <span
+              style={{
+                /* - fontFamily: "sans-serif" define el tipo de letra (familia tipográfico); la familia da el aspecto general de la letra.
+                - fontStyle: "italic": define el estilo del texto dentro de esa fuente, osea como se presenta esa letra. */
+                fontStyle: "italic",
+                fontFamily: "sans-serif",
+                fontSize: "14px",
+              }}
+            >
+              {entrada.description}
+            </span>
+          </div>
+
+          {/* "diagnosisCodes" se renderiza solo si existe. */}
+          {entrada.diagnosisCodes && (
+            <ul>
+              {entrada.diagnosisCodes.map((codigo) => (
+                <li key={codigo}>{codigo}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
