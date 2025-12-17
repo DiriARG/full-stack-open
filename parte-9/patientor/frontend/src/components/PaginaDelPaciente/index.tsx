@@ -1,10 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Patient } from "../../types";
+import { Patient, Diagnosis } from "../../types";
 import { Male, Female, HelpOutline } from "@mui/icons-material";
 import servicioDePacientes from "../../services/patients";
 
-const PaginaDelPaciente = () => {
+// Prop que recibe desde App.tsx.
+interface Prop {
+  diagnosticos: Diagnosis[];
+}
+
+const PaginaDelPaciente = ({ diagnosticos }: Prop) => {
   const { id } = useParams<{ id: string }>();
   const [paciente, setPaciente] = useState<Patient | null>(null);
 
@@ -52,9 +57,17 @@ const PaginaDelPaciente = () => {
           {/* "diagnosisCodes" se renderiza solo si existe. */}
           {entrada.diagnosisCodes && (
             <ul>
-              {entrada.diagnosisCodes.map((codigo) => (
-                <li key={codigo}>{codigo}</li>
-              ))}
+              {entrada.diagnosisCodes.map((codigo) => {
+                // Se busca el objeto "Diagnosis" cuyo "code" coincida.
+                const diagnostico = diagnosticos.find((d) => d.code === codigo);
+
+                return (
+                  <li key={codigo}>
+                    {/* Si existe se muestra el nombre, caso contrario undefined. */}
+                    {codigo} {diagnostico ? diagnostico.name : ""}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
