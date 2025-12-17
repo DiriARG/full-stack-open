@@ -5,10 +5,57 @@ export interface Diagnostico {
   latin?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Entry {
-
+// "Enum" sirve para restringir el género a un conjunto finito de valores válidos.
+export enum Genero {
+  Hombre = "male",
+  Mujer = "female",
+  Otro = "other",
 }
+
+/* "BaseEntry", "HealthCheckRating", "HealthCheckEntry" y "Entry" fueron copiados directamente desde el material de lectura. */
+export interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  // Se usa Diagnostico["code"] para asegurar que los códigos de diagnóstico siempre coincidan con el tipo definido en Diagnostico. Si cambia en el futuro, se actualiza este campo automáticamente.
+  diagnosisCodes?: Array<Diagnostico["code"]>;
+}
+
+export interface HospitalEntry extends BaseEntry {
+  type: "Hospital";
+  discharge: {
+    date: string;
+    criteria: string;
+  };
+}
+
+export interface OccupationalHealthcareEntry extends BaseEntry {
+  type: "OccupationalHealthcare";
+  employerName: string;
+  sickLeave?: {
+    startDate: string;
+    endDate: string;
+  };
+}
+
+export enum HealthCheckRating {
+  Healthy = 0,
+  LowRisk = 1,
+  HighRisk = 2,
+  CriticalRisk = 3,
+}
+
+export interface HealthCheckEntry extends BaseEntry {
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
+}
+
+// Ahora ts puede saber el tipo correcto según el valor del campo "type".
+export type Entry =
+  | HospitalEntry
+  | OccupationalHealthcareEntry
+  | HealthCheckEntry;
 
 export interface Paciente {
   id: string;
@@ -18,13 +65,6 @@ export interface Paciente {
   gender: Genero;
   occupation: string;
   entries: Entry[];
-}
-
-// "Enum" sirve para restringir el género a un conjunto finito de valores válidos.
-export enum Genero {
-  Hombre = "male",
-  Mujer = "female",
-  Otro = "other",
 }
 
 /* Con "type" se aplica un alias de tipo para mejorar la legibilidad.
