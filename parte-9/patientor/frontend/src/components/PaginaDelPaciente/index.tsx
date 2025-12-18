@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Patient, Diagnosis } from "../../types";
 import { Male, Female, HelpOutline } from "@mui/icons-material";
 import servicioDePacientes from "../../services/patients";
+import DetallesDeLaEntrada from "../DetallesDeLaEntrada";
 
 // Prop que recibe desde App.tsx.
 interface Prop {
@@ -39,20 +40,7 @@ const PaginaDelPaciente = ({ diagnosticos }: Prop) => {
       <h3>entradas</h3>
       {paciente.entries.map((entrada) => (
         <div key={entrada.id} style={{ marginBottom: "1rem" }}>
-          <div>
-            <strong>{entrada.date}</strong>{" "}
-            <span
-              style={{
-                /* - fontFamily: "sans-serif" define el tipo de letra (familia tipográfico); la familia da el aspecto general de la letra.
-                - fontStyle: "italic": define el estilo del texto dentro de esa fuente, osea como se presenta esa letra. */
-                fontStyle: "italic",
-                fontFamily: "sans-serif",
-                fontSize: "14px",
-              }}
-            >
-              {entrada.description}
-            </span>
-          </div>
+          <DetallesDeLaEntrada entrada={entrada} />
 
           {/* "diagnosisCodes" se renderiza solo si existe. */}
           {entrada.diagnosisCodes && (
