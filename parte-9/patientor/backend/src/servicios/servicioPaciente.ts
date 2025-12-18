@@ -1,6 +1,6 @@
 import { v1 as uuid } from "uuid";
 import pacientes from "../data/pacientesTipados";
-import { PacienteSinSsn, NuevoPaciente, Paciente } from "../tipos";
+import { PacienteSinSsn, NuevoPaciente, Paciente, Entry, NuevaEntrada } from "../tipos";
 
 const obtenerPacientes = (): PacienteSinSsn[] => {
   /* Se desestructura el objeto "Paciente" (viene de pacientesTipados.ts);
@@ -25,8 +25,31 @@ const obtenerPacientePorID = (id: string): Paciente | undefined => {
   return pacientes.find((paciente) => paciente.id === id);
 };
 
+const agregarEntradaAPaciente = (
+  pacienteId: string,
+  // Es una de las variantes válidas, osea: Hospital | OccupationalHealthcare | HealthCheck pero sin id.  
+  entrada: NuevaEntrada
+): Entry => {
+  const paciente = obtenerPacientePorID(pacienteId);
+
+  if (!paciente) {
+    throw new Error("Paciente no encontrado");
+  }
+
+  const nuevaEntrada: Entry = {
+    // Se le agrega el id para que se convierta en una "Entry".
+    id: uuid(),
+    ...entrada,
+  };
+
+  paciente.entries.push(nuevaEntrada);
+  return nuevaEntrada;
+};
+
+
 export default {
   obtenerPacientes,
   agregarPaciente,
   obtenerPacientePorID,
+  agregarEntradaAPaciente
 };

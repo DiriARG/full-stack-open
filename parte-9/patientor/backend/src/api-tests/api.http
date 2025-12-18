@@ -18,3 +18,18 @@ Content-Type: application/json
     "gender":"male",
     "occupation": "idk"
 }
+
+### Ruta para agregar una entrada para un paciente. 
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "type": "Hospital",
+  "description": "Cirugía de apéndice",
+  "date": "2023-09-15",
+  "specialist": "Dr. Grey",
+  "discharge": {
+    "date": "2023-09-20",
+    "criteria": "Paciente estable"
+  }
+}

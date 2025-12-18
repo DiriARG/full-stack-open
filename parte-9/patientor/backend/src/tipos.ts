@@ -72,3 +72,15 @@ Se utiliza el tipo de utilidad "Omit", para crear un tipo seguro que excluye los
 export type PacienteSinSsn = Omit<Paciente, "ssn" | "entries">; // Ahora también excluye "entries".
 
 export type NuevoPaciente = Omit<Paciente, "id" | "entries">;
+
+/* "OmitirUnion" sirve para trabajar con uniones de tipos (Entry). PropertyKey representa cualquier clave válida de un objeto en JS, se coloca para que ESlint no joda.
+- T reresenta la unión de tipos (HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry).  
+- K es la propiedad que se quiere remover, en este caso, "id". 
+"T extends unknown" se utiliza para:
+- Activar la "distribución": ts procesa cada miembro de la unión por separado.
+- Mantiene la integridad: Sin esto, al omitir "id", se perderían los campos específicos de cada tipo (como "sickLeave" o "healthCheckRating") porque Omit solo vería los campos compartidos en "BaseEntry".   
+Eñ resultado es una nueva unión donde cada interfaz conserva su "type" y sus campos únicos pero ya no tienen el "id". */
+type OmitirUnion<T, K extends PropertyKey> =
+  T extends unknown ? Omit<T, K> : never;
+
+export type NuevaEntrada = OmitirUnion<Entry, "id">;

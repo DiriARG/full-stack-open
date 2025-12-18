@@ -1,9 +1,28 @@
-import { NuevoPaciente, Genero } from "./tipos";
+import {
+  NuevoPaciente,
+  Genero,
+  NuevaEntrada,
+  HealthCheckRating,
+  Diagnostico,
+} from "./tipos";
 
 /* Se coloca "unknown" ya que es el tipo más seguro para representar un valor de entrada cuyo tipo no se conoce.
 Además obliga a que se realicen verificaciones de tipo explícitas antes de usar el valor, garantizando seg. y permitiendo que la función se aplique a cualquier tipo de dato. */
 const esString = (texto: unknown): texto is string => {
   return typeof texto === "string" || texto instanceof String;
+};
+
+const validarString = (valor: unknown, campo: string): string => {
+  if (!esString(valor)) {
+    throw new Error(`Campo inválido o faltante: ${campo}`);
+  }
+  return valor;
+};
+
+// "Record<string, unknown>" es una forma elegante de representar un objeto del cual aún no se conoce su estructura.
+const validarObject = (valor: unknown): valor is Record<string, unknown> => {
+  // Comprobación de que el tipo sea un objeto y que no de un falso positivo con valores nulos.
+  return typeof valor === "object" && valor !== null;
 };
 
 // Valida y retorna un nombre válido.
@@ -65,7 +84,7 @@ export const construirNuevoPaciente = (objeto: unknown): NuevoPaciente => {
     "gender" in objeto &&
     "occupation" in objeto
   ) {
-    // Se crea el objeto final, usando las funciones auxiliares para validar. 
+    // Se crea el objeto final, usando las funciones auxiliares para validar.
     const nuevoPaciente: NuevoPaciente = {
       name: validarNombre(objeto.name),
       dateOfBirth: validarFecha(objeto.dateOfBirth),
@@ -79,4 +98,94 @@ export const construirNuevoPaciente = (objeto: unknown): NuevoPaciente => {
   }
 
   throw new Error("Faltan campos obligatorios");
+};
+
+const parseDiagnosisCodes = (object: unknown): Array<Diagnostico["code"]> => {
+  if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
+    return [] as Array<Diagnostico["code"]>;
+  }
+
+  return object.diagnosisCodes as Array<Diagnostico["code"]>;
+};
+
+export const construirNuevaEntrada = (objeto: unknown): NuevaEntrada => {
+  if (!validarObject(objeto)) {
+    throw new Error("Datos inválidos o faltantes");
+  }
+
+  // Todas las entradas deben tener un campo "type" y deben ser un string válido.
+  if (!("type" in objeto) || !esString(objeto.type)) {
+    throw new Error("Falta o es inválido el tipo de entrada");
+  }
+
+  // Campos comunes a todas las entradas (los que están definidos en "BaseEntry").
+  const base = {
+    description: validarString(objeto.description, "description"),
+    date: validarFecha(objeto.date),
+    specialist: validarString(objeto.specialist, "specialist"),
+    diagnosisCodes: parseDiagnosisCodes(objeto),
+  };
+
+  // El renderizado esta basado en el discriminante "type".
+  switch (objeto.type) {
+    case "Hospital":
+      // "HospitalEntry" requiere obligatoriamente "discharge".
+      if (
+        !("discharge" in objeto) ||
+        !validarObject(objeto.discharge)
+      ) {
+        throw new Error("Falta información de discharge");
+      }
+
+      return {
+        type: "Hospital",
+        ...base,
+        discharge: {
+          date: validarFecha(objeto.discharge.date),
+          criteria: validarString(
+            objeto.discharge.criteria,
+            "criteria"
+          ),
+        },
+      };
+
+    case "OccupationalHealthcare":
+      return {
+        type: "OccupationalHealthcare",
+        ...base,
+        employerName: validarString(
+          objeto.employerName,
+          "employerName"
+        ),
+        // Opcional.
+        sickLeave:
+          validarObject(objeto.sickLeave)
+            ? {
+                startDate: validarFecha(objeto.sickLeave.startDate),
+                endDate: validarFecha(objeto.sickLeave.endDate),
+              }
+            : undefined,
+      };
+
+    case "HealthCheck":
+      // "HealthCheckEntry" require un "healthCheckRating" válido.
+      if (
+        !("healthCheckRating" in objeto) ||
+        typeof objeto.healthCheckRating !== "number" ||
+        !Object.values(HealthCheckRating).includes(
+          objeto.healthCheckRating
+        )
+      ) {
+        throw new Error("healthCheckRating inválido");
+      }
+
+      return {
+        type: "HealthCheck",
+        ...base,
+        healthCheckRating: objeto.healthCheckRating,
+      };
+
+    default:
+      throw new Error("Tipo de entrada desconocido");
+  }
 };

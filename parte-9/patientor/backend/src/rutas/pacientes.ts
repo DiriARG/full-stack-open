@@ -1,6 +1,6 @@
 import express from "express";
 import servicioPaciente from "../servicios/servicioPaciente";
-import { construirNuevoPaciente } from "../utilidades";
+import { construirNuevoPaciente, construirNuevaEntrada } from "../utilidades";
 
 const router = express.Router();
 
@@ -34,4 +34,22 @@ router.get("/:id", (req, res) => {
 
   return res.json(paciente);
 });
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    const nuevaEntrada = construirNuevaEntrada(req.body);
+    const entradaAgregada = servicioPaciente.agregarEntradaAPaciente(
+      req.params.id,
+      nuevaEntrada
+    );
+    res.status(201).json(entradaAgregada);
+  } catch (error: unknown) {
+    let mensaje = "No se pudo agregar la entrada";
+    if (error instanceof Error) {
+      mensaje += `: ${error.message}`;
+    }
+    res.status(400).json({ error: mensaje });
+  }
+});
+
 export default router;
