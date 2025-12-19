@@ -13,7 +13,8 @@ const esString = (texto: unknown): texto is string => {
 };
 
 const validarString = (valor: unknown, campo: string): string => {
-  if (!esString(valor)) {
+  // Valida que el string no esté vacío ni contenga solo espacios (gracias al .trim(), si el usuario escribe " ", el método elimina esos espacios, el resultado es un string de longitud 0 y la validación falla como debe ser).
+  if (!esString(valor) || valor.trim().length === 0) {
     throw new Error(`Campo inválido o faltante: ${campo}`);
   }
   return valor;
