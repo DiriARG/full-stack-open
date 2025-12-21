@@ -1,6 +1,16 @@
 import { useState } from "react";
-import { Button, TextField, Box, Alert, MenuItem } from "@mui/material";
-import { NuevaEntrada, HealthCheckRating } from "../../types";
+import {
+  Button,
+  TextField,
+  Box,
+  Alert,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  OutlinedInput,
+} from "@mui/material";
+import { NuevaEntrada, HealthCheckRating, Diagnosis } from "../../types";
 
 interface Props {
   // Función que recibe la nueva entrada y la envía al backend.
@@ -9,9 +19,15 @@ interface Props {
   alCancelar: () => void;
   // Mensaje de error devuelto por el backend (opcional).
   error?: string;
+  diagnosticos: Diagnosis[];
 }
 
-const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
+const FormularioNuevaEntrada = ({
+  alEnviar,
+  alCancelar,
+  error,
+  diagnosticos,
+}: Props) => {
   // Este estado indica qué tipo de entrada médica el usuario quiere crear (ts solo permitirá estos 3 valores). Cuando el form. se abre, por defecto muestra el form. de HealthCheck.
   const [tipo, setTipo] = useState<
     "HealthCheck" | "Hospital" | "OccupationalHealthcare"
@@ -21,10 +37,12 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
   const [descripcion, setDescripcion] = useState("");
   const [fecha, setFecha] = useState("");
   const [especialista, setEspecialista] = useState("");
-  const [codigosDiagnostico, setCodigosDiagnostico] = useState("");
+  const [codigosDiagnostico, setCodigosDiagnostico] = useState<string[]>([]);
 
-  // HealthCheck.
-  const [healthCheckRating, setHealthCheckRating] = useState("");
+  // HealthCheck; espera un valor del Enum "HealthCheckRating".
+  const [ratingDeSalud, setRatingDeSalud] = useState<HealthCheckRating>(
+    HealthCheckRating.Healthy // Valor inicial: 0.
+  );
 
   // Hospital.
   const [fechaAlta, setFechaAlta] = useState("");
@@ -43,13 +61,7 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
       description: descripcion,
       date: fecha,
       specialist: especialista,
-      /* Operación ternaria: Si existe, el usuario ingresa los códigos como un string separados por comas ej: "Z57.1, N30.0";
-      Luego con el split(",") se convierte ese string en un array: ["Z57.1", "N30.0"].
-      Por ultimo el map y trim es para eliminar espacios extra en cada código. */
-      diagnosisCodes: codigosDiagnostico
-        ? codigosDiagnostico.split(",").map((codigo) => codigo.trim())
-        : // Si el campo está vacio, se envia un array vacío [], ya que el backend admite diagnosisCodes como opcional.
-          [],
+      diagnosisCodes: codigosDiagnostico,
     };
 
     switch (tipo) {
@@ -57,7 +69,7 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
         alEnviar({
           type: "HealthCheck",
           ...base,
-          healthCheckRating: Number(healthCheckRating) as HealthCheckRating,
+          healthCheckRating: ratingDeSalud,
         });
         break;
 
@@ -100,7 +112,7 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
       onSubmit={enviarFormulario}
       sx={{ border: "1px dashed gray", padding: 2, marginBottom: 2 }}
     >
-      <h3>Nueva entrada HealthCheck</h3>
+      <h3>Nueva entrada {tipo}</h3>
 
       {/* Error del backend. */}
       {error && <Alert severity="error">{error}</Alert>}
@@ -136,9 +148,11 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
 
       <TextField
         label="Fecha"
-        placeholder="YYYY-MM-DD"
+        type="date"
         fullWidth
         margin="normal"
+        // Evita problemas visuales con inputs "date".
+        InputLabelProps={{ shrink: true }}
         value={fecha}
         onChange={(evento) => setFecha(evento.target.value)}
       />
@@ -151,24 +165,56 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
         onChange={(evento) => setEspecialista(evento.target.value)}
       />
 
-      <TextField
-        label="Códigos de diagnóstico"
-        placeholder="Z57.1, N30.0"
-        fullWidth
-        margin="normal"
-        value={codigosDiagnostico}
-        onChange={(evento) => setCodigosDiagnostico(evento.target.value)}
-      />
+      {/* Diagnósticos (Select múltiple). */}
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Códigos de diagnóstico</InputLabel>
+        <Select
+          multiple
+          value={codigosDiagnostico}
+          onChange={(evento) => setCodigosDiagnostico(evento.target.value as string[])}
+          input={<OutlinedInput label="Códigos de diagnóstico" />}
+        >
+          {/*Se renderiza una opción por cada diagnóstico disponible recibido desde el backend.
+          - value: Lo que se guarda en el estado --> codigosDiagostico (solo el código).
+          El texto visible es el código y el nombre para poder ayudar al usuario. */}
+          {diagnosticos.map((diagnostico) => (
+            <MenuItem key={diagnostico.code} value={diagnostico.code}>
+              {diagnostico.code} — {diagnostico.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       {/* HealthCheck. */}
       {tipo === "HealthCheck" && (
         <TextField
-          label="HealthCheck rating (0–3)"
+          select
+          label="Rating de salud"
           fullWidth
           margin="normal"
-          value={healthCheckRating}
-          onChange={(evento) => setHealthCheckRating(evento.target.value)}
-        />
+          value={ratingDeSalud}
+          /* "evento.target.value"  SIEMPRE llega como string desde un <select>, incluso si el <MenuItem value={0}> parece un número.
+          Ejemplo real:
+          - El usuario elige "Riesgo alto".
+          - value del MenuItem = 2.
+          - evento.target.value === "2"  ← es un string, NO un number.
+          Por lo tanto:
+         - Se convierte explícitamente el string a número usando Number(...).
+         - Se le dice  a TypeScript que ese número pertenece al enum HealthCheckRating.
+         Esto es necesario porque:
+        - El estado "ratingDeSalud" espera un HealthCheckRating.
+        - Ts no puede inferir automáticamente que "2" es un valor válido del enum. */
+          onChange={(evento) =>
+            setRatingDeSalud(
+              Number(evento.target.value) as HealthCheckRating
+            )
+          }
+        >
+          <MenuItem value={0}>Saludable</MenuItem>
+          <MenuItem value={1}>Riesgo bajo</MenuItem>
+          <MenuItem value={2}>Riesgo alto</MenuItem>
+          <MenuItem value={3}>Riesgo crítico</MenuItem>
+        </TextField>
       )}
 
       {/* Hospital. */}
@@ -178,9 +224,10 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
         En HealthCheck no es necesario porque un solo TextField ya actúa como la unidad de retorno. */}
           <TextField
             label="Fecha de alta"
-            placeholder="YYYY-MM-DD"
+            type="date"
             fullWidth
             margin="normal"
+            InputLabelProps={{ shrink: true }}
             value={fechaAlta}
             onChange={(evento) => setFechaAlta(evento.target.value)}
           />
@@ -207,19 +254,21 @@ const FormularioNuevaEntrada = ({ alEnviar, alCancelar, error }: Props) => {
           />
 
           <TextField
-            label="Inicio licencia"
-            placeholder="YYYY-MM-DD"
+            label="Inicio de licencia"
+            type="date"
             fullWidth
             margin="normal"
+            InputLabelProps={{ shrink: true }}
             value={inicioLicencia}
             onChange={(evento) => setInicioLicencia(evento.target.value)}
           />
 
           <TextField
-            label="Fin licencia"
-            placeholder="YYYY-MM-DD"
+            label="Fin de licencia"
+            type="date"
             fullWidth
             margin="normal"
+            InputLabelProps={{ shrink: true }}
             value={finLicencia}
             onChange={(evento) => setFinLicencia(evento.target.value)}
           />

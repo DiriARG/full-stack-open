@@ -82,6 +82,8 @@ const PaginaDelPaciente = ({ diagnosticos }: Prop) => {
           alEnviar={agregarNuevaEntrada}
           alCancelar={() => setMostrarFormulario(false)}
           error={error}
+          // Se le pasan los diagnósticos al formulario.
+          diagnosticos={diagnosticos}
         />
       )}
 
