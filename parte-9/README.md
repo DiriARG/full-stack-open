@@ -1,3 +1,21 @@
+> [!IMPORTANT]  
+> **Índice de masa corporal** → Ejercicio 9.1 → Carpeta llamada **"servicios-de-salud"**.         
+> **Calculadora de ejercicio** → Ejercicio 9.2 → Carpeta llamada **"servicios-de-salud"**.   
+> **Línea de comando** → Ejercicio 9.3 → Carpeta llamada **"servicios-de-salud"**.       
+> **Express** → Ejercicio 9.4 → Carpeta llamada **"servicios-de-salud"**.  
+> **WebBMI** → Ejercicio 9.5 → Carpeta llamada **"servicios-de-salud"**.  
+> **ESlint** → Ejercicio 9.6 → Carpeta llamada **"servicios-de-salud"**.       
+> **WebExercises** → Ejercicio 9.7 → Carpeta llamada **"servicios-de-salud"**.     
+> **Patientor backend** → Ejercicios 9.8, 9.9, 9.10, 9.11, 9.12, 9.13 → Carpeta llamada **"patientor/backend"**.       
+> **9.14** → Ejercicio 9.14 → Carpeta llamada **"info-curso"**.  
+> **9.15** → Ejercicio 9.15 → Carpeta llamada **"info-curso"**.    
+> **9.16** → Ejercicio 9.16 → Carpetas: **"diario-de-vuelo/frontend" y "diario-de-vuelo/backend"**.       
+> **9.17** → Ejercicio 9.17 → Carpeta llamada **"diario-de-vuelo/frontend"**.  
+> **9.18** → Ejercicio 9.18 → Carpeta llamada **"diario-de-vuelo/frontend"**.  
+> **9.19** → Ejercicio 9.19 → Carpeta llamada **"diario-de-vuelo/frontend"**.  
+> **Patientor** → Ejercicios 9.20, 9.21, 9.22, 9.23, 9.24, 9.25, 9.26, 9.27, 9.28, 9.29 → Carpetas: **"patientor/backend" y "patientor/frontend"**.    
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md. 
+
 # Ejercicios 9.1. - 9.3.
 
 **setup**  
