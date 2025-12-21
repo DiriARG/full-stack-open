@@ -98,3 +98,7 @@ Esta parte fue creada por [Tuomo Torppa](https://www.linkedin.com/in/tuomotorppa
 ### Certificado GraphQL (Parte 8):
 
 <img src="./imagenes/certificado-graphql.png" alt="Certificado del curso sobre GraphQL">
+
+### Certificado TypeScript (Parte 9):
+
+<img src="./imagenes/certificado-typescript.png" alt="Certificado del curso sobre TypeScript">
