@@ -21,6 +21,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 7: React router, custom hooks, estilando la aplicación con CSS y webpack](#parte-7-react-router-custom-hooks-estilando-la-aplicación-con-css-y-webpack)
 - [Parte 8: GraphQL](#parte-8-graphql)
 - [Parte 9: TypeScript](#parte-9-typescript)
+- [Parte 10: React Native](#parte-10-react-native)
 - [Certificados del curso](#certificados-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
@@ -88,6 +89,12 @@ En esta parte, utilizaremos las herramientas introducidas anteriormente para añ
 Esta parte fue creada por [Tuomo Torppa](https://www.linkedin.com/in/tuomotorppa), [Tuukka Peuraniemi](https://www.linkedin.com/in/tuukkapeuraniemi/) y [Jani Rapo](https://www.linkedin.com/in/jani-rapo-5520817b/), los increíbles desarrolladores de [Terveystalo](https://www.terveystalo.com/fi/Yritystietoa/Terveystalo-tyontantajana/Digital-Health), el proveedor de servicios de salud privado más grande de Finlandia. La red nacional de Terveystalo cubre 300 ubicaciones en Finlandia. La red de clínicas se complementa con servicios digitales 24/7.
 
 <img src="./imagenes/parte-9.png" alt="Imagen parte 9" width="250">
+
+## Parte 10: React Native:
+
+En esta parte, aprenderemos cómo compilar Android nativo y aplicaciones móviles iOS con JavaScript y React usando el marco React Native. Nos sumergiremos en el ecosistema React Native desarrollando una aplicación móvil completa desde cero. En el camino, aprenderemos conceptos tales como cómo renderizar componentes de interfaz de usuario nativos con React Native, cómo crear hermosas interfaces de usuario, cómo comunicarse con un servidor y cómo probar una aplicación React Native.
+
+<img src="./imagenes/parte-10.png" alt="Imagen parte 10" width="250">
 
 ## Certificados del curso 😁
 
