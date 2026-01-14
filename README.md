@@ -22,6 +22,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 8: GraphQL](#parte-8-graphql)
 - [Parte 9: TypeScript](#parte-9-typescript)
 - [Parte 10: React Native](#parte-10-react-native)
+- [Parte 12: Contenedores](#parte-12-contenedores)
 - [Certificados del curso](#certificados-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
@@ -97,8 +98,18 @@ En esta parte, aprenderemos cómo compilar Android nativo y aplicaciones móvile
 <img src="./imagenes/parte-10.png" alt="Imagen parte 10" width="250">
 
 > [!IMPORTANT]
-> La parte 11 del curso no fue realizada porque, al momento de redactar este README, no se encontraba disponible en español, únicamente en inglés.
+> La parte 11 del curso no fue realizada porque, al momento de redactar este README, no se encontraba disponible en español, únicamente en inglés.  
 > <img src="/imagenes/parte-11.png" alt="Imagen parte 11" width="250">
+
+## Parte 12: Contenedores:
+
+En esta parte, aprenderemos como empaquetar el código en unidades de software estandarizadas llamadas contenedores. Estos contenedores pueden ayudarnos a desarrollar software más rápido y fácil que antes. Durante el camino exploraremos un punto de vista completamente nuevo del desarrollo web, alejado de los ya familiares Node.js y React.
+
+Utilizaremos contenedores para crear entornos de ejecución inmutables para nuestros proyectos de Node.js y React. Los contenedores también simplifican la inclusión de múltiples servicios en nuestros proyectos. Con su flexibilidad, exploraremos y experimentaremos con muchas herramientas populares al utilizar los contenedores.
+
+Esta sección ha sido creada por [Jami Kousa](https://github.com/jakousa) en colaboración con el equipo Services Fundation de Unity radicado en Helsinki. El equipo Services Fundation trabaja como proveedor de plataformas para el resto de los equipos de Unity en su misión de construir excelentes servicios para sus clientes. El equipo está enfocado en mejorar la experiencia de los desarrolladores de Unity y trabaja en herramientas como el Unity Dashboard, el Unity Editor y [Unity.com](https://unity.com/).
+
+<img src="./imagenes/parte-12.png" alt="Imagen parte 12" width="250">
 
 ## Certificados del curso 😁:
 
