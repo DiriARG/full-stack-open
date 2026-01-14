@@ -96,6 +96,10 @@ En esta parte, aprenderemos cómo compilar Android nativo y aplicaciones móvile
 
 <img src="./imagenes/parte-10.png" alt="Imagen parte 10" width="250">
 
+> [!IMPORTANT]
+> La parte 11 del curso no fue realizada porque, al momento de redactar este README, no se encontraba disponible en español, únicamente en inglés.
+> <img src="/imagenes/parte-11.png" alt="Imagen parte 11" width="250">
+
 ## Certificados del curso 😁:
 
 ### Certificado Full Stack (Parte 0 - Parte 7):
