@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> La resolución de **todos los ejercicios de esta parte (del 10.1 al 10.27)** se encuentra en el siguiente repositorio: [rate-repository-app](https://github.com/DiriARG/rate-repository-app).  
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.
+
 # Ejercicio 10.1: inicialización de la aplicación
 
 Inicialice su aplicación con la interfaz de línea de comandos de Expo y configure el entorno de desarrollo utilizando un emulador o la aplicación móvil de Expo. Se recomienda probar ambos y averiguar qué entorno de desarrollo es el más adecuado para usted. El nombre de la aplicación no es tan relevante. Puede, por ejemplo, usar _rate-repository-app_.
@@ -285,7 +289,7 @@ Este ejercicio se completa una vez que puede registrar el resultado de las mutac
 Ahora que podemos obtener el token de acceso, necesitamos almacenarlo. Cree un archivo _authStorage.js_ en el directorio _utils_ con el siguiente contenido:
 
 ```javascript
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStorage {
   constructor(namespace = "auth") {
@@ -590,7 +594,7 @@ En este momento, los repositorios de la lista de repositorios revisados ​​es
 - Repositorios mejor calificados. El repositorio con la calificación promedio _más alta_ está en la parte superior de la lista.
 - Repositorios de menor calificación. El repositorio con la calificación promedio _más baja_ está en la parte superior de la lista.
 
-La consulta `repositories` que se utiliza para obtener los repositorios revisados ​​tiene un argumento llamado `orderBy`, que puede utilizar para definir el principio de ordenación. El argumento tiene dos valores permitidos: `CREATEDAT` (ordenar por la fecha de la primera revisión del repositorio) y `RATINGAVERAGE`, (ordenar por la calificación promedio del repositorio). La consulta también tiene un argumento llamado `orderDirection` que puede usarse para cambiar la dirección del pedido. El argumento tiene dos valores permitidos: `ASC` (ascendente, el valor más pequeño primero) y `DESC` (descendente, el valor más grande primero).
+La consulta `repositories` que se utiliza para obtener los repositorios revisados ​​tiene un argumento llamado `orderBy`, que puede utilizar para definir el principio de ordenación. El argumento tiene dos valores permitidos: `CREATED_AT` (ordenar por la fecha de la primera revisión del repositorio) y `RATING_AVERAGE`, (ordenar por la calificación promedio del repositorio). La consulta también tiene un argumento llamado `orderDirection` que puede usarse para cambiar la dirección del pedido. El argumento tiene dos valores permitidos: `ASC` (ascendente, el valor más pequeño primero) y `DESC` (descendente, el valor más grande primero).
 
 El estado del principio de orden seleccionado se puede mantener, por ejemplo, usando el hook [useState](https://react.dev/reference/react/useState) de React. Las variables utilizadas en la consulta `repositories` se pueden proporcionar al hook `useRepositories` como argumento.
 
@@ -693,6 +697,26 @@ Aquí hay un ejemplo de consulta:
 }
 ```
 
+La política de campo de la caché puede ser similar a la de la consulta de `repositories`:
+
+```javascript
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        repositories: relayStylePagination(),
+      },
+    },
+
+    Repository: {
+      fields: {
+        reviews: relayStylePagination(),
+      },
+    },
+  },
+});
+```
+
 Al igual que con la lista de repositorios revisada, use un valor de argumento `first` relativamente pequeño mientras está probando el desplazamiento infinito. Es posible que deba crear algunos usuarios nuevos y usarlos para crear algunas reseñas nuevas para que la lista de reseñas sea lo suficientemente larga como para desplazarse. Establezca el valor del argumento `first` lo suficientemente alto para que el controlador `onEndReach` no se llame inmediatamente después de que se cargue la vista, pero lo suficientemente bajo para que pueda ver que más reseñas se recuperan una vez que llega al final de la lista. Una vez que todo funcione según lo previsto, puede utilizar un valor mayor para el argumento `first`.
 
 ## Ejercicio 10.26: vista de reseñas de usuarios
@@ -739,9 +763,9 @@ El argumento `includeReviews` tiene un valor predeterminado de `false`, porque n
 
 ## Ejercicio 10.27: revisar acciones
 
-Ahora que el usuario puede ver sus reseñas, agreguemos algunas acciones a las reseñas. Debajo de cada revisión en la lista de revisión, debe haber dos botones. Un botón es para ver el repositorio de la revisión. Presionar este botón debería llevar al usuario a la revisión del repositorio único implementada en el ejercicio anterior. El otro botón es para eliminar el repositorio. Al presionar este botón se debería eliminar la revisión. Así es como deberían verse las acciones:
-<img src="./imagenes/botones-reseñas.png" alt="Botones de acciones debajo de cada reseña">  
+Ahora que el usuario puede ver sus reseñas, agreguemos algunas acciones a las reseñas. Debajo de cada revisión en la lista de revisión, debe haber dos botones. Un botón es para ver el repositorio de la revisión. Presionar este botón debería llevar al usuario a la revisión del repositorio único implementada en el ejercicio anterior. El otro botón es para eliminar el repositorio. Al presionar este botón se debería eliminar la revisión. Así es como deberían verse las acciones:  
+<img src="./imagenes/botones-reseñas.png" alt="Botones de acciones debajo de cada reseña">    
 Al presionar el botón delete debe seguir una alerta de confirmación. Si el usuario confirma la eliminación, la revisión se elimina. De lo contrario, la eliminación se descarta. Puede implementar la confirmación utilizando el módulo [Alerta](https://reactnative.dev/docs/alert). Tenga en cuenta que llamar al método `Alert.alert` no abrirá ninguna ventana en la vista previa web de Expo. Use la aplicación móvil Expo o un emulador para ver cómo se ve la ventana de alerta.  
-Aquí está la alerta de confirmación que debería aparecer una vez que el usuario presione el botón delete:  
-<img src="./imagenes/alerta-eliminar.png" alt="Alerta de confirmación al presionar el botón delete">  
+Aquí está la alerta de confirmación que debería aparecer una vez que el usuario presione el botón delete:    
+<img src="./imagenes/alerta-eliminar.png" alt="Alerta de confirmación al presionar el botón delete">    
 Puede eliminar una revisión mediante la mutación `deleteReview`. Esta mutación tiene un solo argumento, que es el id de la revisión que se eliminará. Una vez realizada la mutación, la forma más sencilla de actualizar la consulta de la lista de revisión es llamar a la función [refetch](https://www.apollographql.com/docs/react/data/queries#refetching).
