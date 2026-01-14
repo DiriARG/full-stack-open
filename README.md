@@ -96,7 +96,7 @@ En esta parte, aprenderemos cómo compilar Android nativo y aplicaciones móvile
 
 <img src="./imagenes/parte-10.png" alt="Imagen parte 10" width="250">
 
-## Certificados del curso 😁
+## Certificados del curso 😁:
 
 ### Certificado Full Stack (Parte 0 - Parte 7):
 
@@ -109,3 +109,7 @@ En esta parte, aprenderemos cómo compilar Android nativo y aplicaciones móvile
 ### Certificado TypeScript (Parte 9):
 
 <img src="./imagenes/certificado-typescript.png" alt="Certificado del curso sobre TypeScript">
+
+### Certificado React Native (Parte 10):
+
+<img src="./imagenes/certificado-reactnative.png" alt="Certificado del curso sobre React Native">
