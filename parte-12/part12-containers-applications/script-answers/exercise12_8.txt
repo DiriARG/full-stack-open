@@ -1,0 +1,86 @@
+Script started on 2026-01-16 18:45:16+00:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="228" LINES="22"]
+[?2004h]0;i_isio@DESKTOP-3KIMCOJ: /mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[01;32mi_isio@DESKTOP-3KIMCOJ[00m:[01;34m/mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[00m$ docker compose -f todo-app/todo-backend/docker-compose.dev.yml up -d
+[?2004l[33mWARN[0m[0000] Found orphan containers ([todo-backend-todo-backend-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up. 
+[?2004h]0;i_isio@DESKTOP-3KIMCOJ: /mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[01;32mi_isio@DESKTOP-3KIMCOJ[00m:[01;34m/mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[00m$ dockerp[K ps
+[?2004lCONTAINER ID   IMAGE     COMMAND                  CREATED             STATUS         PORTS                                           NAMES
+b05130e29368   mongo     "docker-entrypoint.s…"   About an hour ago   Up 3 minutes   0.0.0.0:3456->27017/tcp, [::]:3456->27017/tcp   todo-backend-mongo-1
+[?2004h]0;i_isio@DESKTOP-3KIMCOJ: /mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[01;32mi_isio@DESKTOP-3KIMCOJ[00m:[01;34m/mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[00m$ docker exec -it todo-backend-mongo-1 bash
+[?2004l[?2004hroot@b05130e29368:/# mongosh -u root -p example
+[?2004l
+]0;mongosh mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000Current Mongosh Log ID:	696a87f59001d411938ce5af
+Connecting to:		[1m[32mmongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.6.0[0m
+Using MongoDB:		8.2.3
+[1m[33mUsing Mongosh[0m:		2.6.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+[1G[0J [1G[?2004h[1m[33m------[0m
+   [1m[33mThe server generated these startup warnings when booting[0m
+   2026-01-16T18:43:15.989+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2026-01-16T18:43:17.545+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-01-16T18:43:17.545+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-01-16T18:43:17.545+00:00: We suggest setting the contents of sysfsFile to 0.
+   2026-01-16T18:43:17.546+00:00: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+[1m[33m------[0m
+
+[1G[0Jtest> [7G
+
+[1G[0Jtest> [7Gshow dbs
+[1madmin[0m         100.00 KiB
+[1mconfig[0m         48.00 KiB
+[1mlocal[0m          64.00 KiB
+[1mthe_database[0m   56.00 KiB
+[1G[0Jtest> [7Guse the_database
+switched to db the_database
+[1G[0Jthe_database> [15Gshow collections
+[1mtodos[0m
+[1G[0Jthe_database> [15Gdb.todos.find({})
+[
+  {
+    _id: ObjectId([32m'696a76922f54c56ac78ce5b0'[39m),
+    text: [32m'Completar el ejercicio 12.7'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'696a76922f54c56ac78ce5b1'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gdb.todos.insertOne({
+[1G[0J... [5G  text: [32m"[39m[32mI[39m[32mn[39m[32mc[39m[32mr[39m[32me[39m[32ma[39m[32ms[39m[32me[39m [32mt[39m[32mh[39m[32me[39m [32mn[39m[32mu[39m[32mm[39m[32mb[39m[32me[39m[32mr[39m [32mo[39m[32mf[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m[32ms[39m [32mi[39m[32mn[39m [32mm[39m[32my[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m [32mb[39m[32me[39m[32ml[39m[32mt[39m[32m"[39m,
+[1G[0J... [5G  d[36mdo[39mdone: fals[33mfalse[39m
+[1G[0J... [5G})
+{
+  acknowledged: [33mtrue[39m,
+  insertedId: ObjectId([32m'696a883d9001d411938ce5b0'[39m)
+}
+[1G[0Jthe_database> [15Gdb.todos.find({})
+[
+  {
+    _id: ObjectId([32m'696a76922f54c56ac78ce5b0'[39m),
+    text: [32m'Completar el ejercicio 12.7'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'696a76922f54c56ac78ce5b1'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  },
+  {
+    _id: ObjectId([32m'696a883d9001d411938ce5b0'[39m),
+    text: [32m'Increase the number of tools in my tool belt'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gexit
+[?2004l]0;[?2004hroot@b05130e29368:/# exit
+[?2004lexit
+[?2004h]0;i_isio@DESKTOP-3KIMCOJ: /mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[01;32mi_isio@DESKTOP-3KIMCOJ[00m:[01;34m/mnt/c/Users/Di Risio/Desktop/full-stack-open/parte-12/part12-containers-applications[00m$ exit
+[?2004lexit
+
+Script done on 2026-01-16 18:52:12+00:00 [COMMAND_EXIT_CODE="0"]
