@@ -1,0 +1,10 @@
+# "services" define los contenedores.
+services:
+  # Nombre del servicio.
+  todo-backend: 
+    # Nombre que tendrá la imagen generada.
+    image: todo-backend
+    # Busca el Dockerfile en la carpeta actual.
+    build: .
+    ports:
+      - 3000:3000
