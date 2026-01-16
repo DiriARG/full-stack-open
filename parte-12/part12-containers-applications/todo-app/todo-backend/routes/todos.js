@@ -1,6 +1,7 @@
 const express = require("express");
 const { Todo } = require("../mongo");
 const router = express.Router();
+const { getAsync, setAsync } = require('../redis')
 
 /* GET todos listing. */
 router.get("/", async (_, res) => {
@@ -14,6 +15,14 @@ router.post("/", async (req, res) => {
     text: req.body.text,
     done: false,
   });
+  
+  // Se obtiene el valor actual de "added_todos".
+  const cuentaActual = await getAsync('added_todos')
+  // Se calcula el nuevo valor, en caso de que no exista empieza en 1. 
+  const nuevaCuenta = cuentaActual ? Number(cuentaActual) + 1 : 1
+  // Se guarda el nuevo valor en Redis.
+  await setAsync('added_todos', nuevaCuenta)
+
   res.send(todo);
 });
 
