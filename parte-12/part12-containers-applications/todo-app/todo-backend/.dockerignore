@@ -1,0 +1,5 @@
+# .dockerignore: Evita que archivos innecesarios o sensibles se copien a la imagen, optimizando el tamaño y la seguridad.
+.dockerignore
+.gitignore
+node_modules
+Dockerfile
