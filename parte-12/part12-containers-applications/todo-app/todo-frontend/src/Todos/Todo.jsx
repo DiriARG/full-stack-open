@@ -12,7 +12,7 @@ const Todo = ({ todo, deleteTodo, completeTodo }) => {
 
   const doneInfo = (
     <>
-      <span>This todo is done</span>
+      <span>Esta tarea esta realizada!</span>
       <span>
         <button onClick={onClickDelete(todo)}> Delete </button>
       </span>

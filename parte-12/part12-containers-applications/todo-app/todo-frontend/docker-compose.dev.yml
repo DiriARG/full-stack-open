@@ -1,0 +1,20 @@
+services:
+  todo-frontend:
+    image: todo-frontend-dev
+    build:
+      # El contexto del build es este directorio (todo-frontend).
+      context: .
+      # Le indica qué dockerfile leer.
+      dockerfile: dev.Dockerfile
+    volumes:
+      # Vincula el código fuente local con el contenedor.
+      # "./" (Origen): Es la carpeta en la pc donde esta abierto el VS Code, osea la raíz de todo-frontend.
+      # ":/usr/src/app" (Destino): Es la carpeta dentro del contenedor donde vive la aplicación.
+      - ./:/usr/src/app
+    ports:
+      - 5173:5173
+    environment:
+      # URL del backend usada por Vite (se inyecta en el "build time").
+      - VITE_BACKEND_URL=http://localhost:3000
+    # Nombre explícito del contenedor.
+    container_name: todo-frontend-dev
