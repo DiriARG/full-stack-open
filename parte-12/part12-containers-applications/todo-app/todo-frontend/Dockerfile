@@ -12,7 +12,7 @@ RUN npm ci
 RUN npm test
 
 # Variable de entorno usada por Vite en "build-time". Se define la variable antes de realizar la build (npm run build).
-ENV VITE_BACKEND_URL=http://localhost:3000
+ENV VITE_BACKEND_URL=/api
 
 RUN npm run build
 
