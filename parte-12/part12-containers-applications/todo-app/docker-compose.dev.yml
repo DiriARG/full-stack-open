@@ -2,6 +2,11 @@
 # Aplicación completa: http://localhost:8080
 # API vía proxy: http://localhost:8080/api/todos
 
+# Anotación: Ejercicio 12.19 realizado previamente en los anteriores ejercicios: 12.17 y 12.18.
+# Checklist: todas las funcionalidades de la aplicación de tareas funcionan ✔️.
+# puedes editar los archivos fuente y los cambios se reflejan al recargar la aplicación ✔️.
+# el frontend debe acceder al backend a través de Nginx, por lo que las solicitudes deben hacerse a http://localhost:8080/api/todos ✔️.
+
 services:
   todo-frontend:
     image: todo-frontend-dev
