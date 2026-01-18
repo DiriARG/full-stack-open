@@ -1,0 +1,50 @@
+# URls:
+# Aplicación completa: http://localhost:8080
+# Frontend directo: http://localhost:5173
+# Backend directo: http://localhost:3003
+# API: http://localhost:8080/api/blogs
+
+# Checklist: todas las funcionalidades de la aplicación de bloglist funcionan ✔️.
+# puedes editar los archivos fuente y los cambios se reflejan al recargar la aplicación  ✔️.
+# el frontend debe acceder al backend a través de Nginx, por lo que las solicitudes deben hacerse a http://localhost:8080/api/blogs ✔️.
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    container_name: bloglist-frontend-dev
+    volumes:
+      - ./frontend:/usr/src/app
+      # Este "volumes" evita que los node_modules de la máquina local (Windows) sobrescriban a los instalados dentro del contenedor (Linux). 
+      # Esto previene errores de compatibilidad de binarios y asegura que las dependencias se mantengan aisladas y correctas.
+      - /usr/src/app/node_modules
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_BACKEND_URL=/api
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    container_name: bloglist-backend-dev
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3003:3003
+    # Se carga el .env donde está la URI de Atlas.
+    env_file:
+      - ./backend/.env
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: bloglist-nginx-dev
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
