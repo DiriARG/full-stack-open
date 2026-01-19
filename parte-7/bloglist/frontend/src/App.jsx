@@ -14,7 +14,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Routes, Route, Link } from 'react-router-dom'
 import Usuarios from './vistas/Usuarios'
 import Usuario from './vistas/Usuario'
-import VistaBlog from './vistas/vistaBlog'
+import VistaBlog from './vistas/VistaBlog'
 import styled from 'styled-components'
 
 // El término styled.div le dice a la librería que cree un nuevo componente de React que, al renderizarse, usará la etiqueta <div> en el DOM (otros ejemplos semánticos son styled.nav o styled.span).

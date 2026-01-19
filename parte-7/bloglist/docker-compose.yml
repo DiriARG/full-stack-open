@@ -1,0 +1,26 @@
+# No hay "ports" en frontend/backend ya que el unico punto de entrada es Nginx (puerto 8080).
+# No hay "volumes" ya que en producción el código no cambia, todo está dentro de la imagen (docker build).
+# Por ultimo no hay "VITE_BACKEND_URL" porque ya se inyectá cuando se realiza la build en el archivo "Dockerfile" del frontend.
+
+services:
+  frontend:
+    image: bloglist-frontend-prod
+    build:
+      context: ./frontend
+
+  backend:
+    image: bloglist-backend-prod
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
