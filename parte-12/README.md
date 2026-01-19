@@ -1,3 +1,12 @@
+> [!IMPORTANT]       
+> Carpeta llamada **"/part12-containers-applications"** → Ejercicio **12.1**.  
+> Carpeta llamada **"script-answers"** → Ejercicios **12.2, 12.3, 12.4, 12.8, 12.11**.  
+> Carpeta llamada **"todo-app"** → Ejercicios **12.17, 12.18, 12.19, 12.20**.  
+> Carpeta llamada **"todo-backend"** → Ejercicios **12.5, 12.6, 12.7, 12.9, 12.10, 12.12, 12.16**.  
+> Carpeta llamada **"todo-frontend"** → Ejercicios **12.13, 12.14, 12.15, 12.20**.  
+> Ejercicios **12.21 y 12.22** → Dentro de la carpeta **/parte-7/bloglist** y sus subcarpetas **"/backend"** y **"/frontend"**.      
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.  
+
 # Ejercicio 12.1
 
 ## _Advertencia_
@@ -449,6 +458,8 @@ todo-app
 └── docker-compose.yml
 ```
 
+> [!NOTE]  
+> Para la realización de los **siguientes dos ejercicios** utilicé el proyecto **"bloglist"** de la **Parte 7** de este mismo curso.
 ## Ejercicio 12.21:
 
 Crea un entorno de desarrollo en contenedores similar para una de tus _propias aplicaciones_, puedes usar las que hayas creado durante el curso o en tu tiempo libre. Debes estructurar la aplicación en tu repositorio de envío de la siguiente manera:
