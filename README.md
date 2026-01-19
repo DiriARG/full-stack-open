@@ -128,3 +128,7 @@ Esta sección ha sido creada por [Jami Kousa](https://github.com/jakousa) en col
 ### Certificado React Native (Parte 10):
 
 <img src="./imagenes/certificado-reactnative.png" alt="Certificado del curso sobre React Native">
+
+### Certificado Contenedores (Parte 12):
+
+<img src="./imagenes/certificado-contenedores.png" alt="Certificado del curso sobre Contenedores">
