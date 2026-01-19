@@ -23,6 +23,7 @@ En este repositorio, se encuentran mis respuestas a los ejercicios del curso [Fu
 - [Parte 9: TypeScript](#parte-9-typescript)
 - [Parte 10: React Native](#parte-10-react-native)
 - [Parte 12: Contenedores](#parte-12-contenedores)
+- [Parte 13: Utilizando bases de datos relacionales](#parte-13-utilizando-bases-de-datos-relacionales)
 - [Certificados del curso](#certificados-del-curso-)
 
 ## Parte 0: Fundamentos de las aplicaciones web:
@@ -110,6 +111,14 @@ Utilizaremos contenedores para crear entornos de ejecución inmutables para nues
 Esta sección ha sido creada por [Jami Kousa](https://github.com/jakousa) en colaboración con el equipo Services Fundation de Unity radicado en Helsinki. El equipo Services Fundation trabaja como proveedor de plataformas para el resto de los equipos de Unity en su misión de construir excelentes servicios para sus clientes. El equipo está enfocado en mejorar la experiencia de los desarrolladores de Unity y trabaja en herramientas como el Unity Dashboard, el Unity Editor y [Unity.com](https://unity.com/).
 
 <img src="./imagenes/parte-12.png" alt="Imagen parte 12" width="250">
+
+## Parte 13: Utilizando bases de datos relacionales:
+
+En las secciones anteriores del curso, usamos MongoDB para almacenar datos. MongoDB es una base de datos llamada NoSQL. Las bases de datos NoSQL se volvieron muy comunes hace poco más de 10 años, cuando el crecimiento de Internet comenzó a producir problemas para las bases de datos relacionales que utilizaban el lenguaje de consulta SQL antiguo.
+
+Las bases de datos relacionales han experimentado desde entonces un nuevo comienzo. Los problemas de escalabilidad se han resuelto parcialmente y también han adoptado algunas de las características de las bases de datos NoSQL. En esta sección exploramos diferentes aplicaciones de NodeJS que usan bases de datos relacionales, nos enfocaremos en usar la base de datos PostgreSQL que es la número uno en el mundo de código abierto.
+
+<img src="./imagenes/parte-13.png" alt="Imagen parte 13" width="250">
 
 ## Certificados del curso 😁:
 
