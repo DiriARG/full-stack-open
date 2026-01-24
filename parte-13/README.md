@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> La resolución de **todos los ejercicios de esta parte (del 13.1 al 13.24)** se encuentra en el siguiente repositorio: [full-stack-open-parte-13](https://github.com/DiriARG/full-stack-open-parte-13).  
+> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.
+
 # Ejercicios 13.1.-13.3.
 
 En las tareas de esta sección, construiremos un backend de aplicación de blog similar a las tareas en la [sección 4](https://fullstackopen.com/es/part4), que debería ser compatible con el frontend en la [sección 5](https://fullstackopen.com/es/part5) excepto por manejo de errores. También agregaremos varias características al backend que el frontend en la sección 5 no sabrá cómo usar.
@@ -46,7 +50,20 @@ Transforme su aplicación en una aplicación web que admita las siguientes opera
 
 ## Ejercicio 13.5.
 
-Cambie la estructura de su aplicación para que coincida con el ejemplo anterior, o alguna otra convención similar.
+Cambie la estructura de su aplicación para que coincida con el ejemplo anterior, o alguna otra convención similar.  
+Estructura recomendada:
+
+```text
+index.js
+util
+  config.js
+  db.js
+models
+  index.js
+  note.js
+controllers
+  notes.js
+```
 
 ## Ejercicio 13.6.
 
@@ -81,7 +98,7 @@ Agregue soporte para usuarios a la aplicación. Además de la identificación, l
 
 A diferencia del material, ahora no impida que Sequelize cree [marcas de tiempo](https://sequelize.org/docs/v6/core-concepts/model-basics/#timestamps) _created_at_ y _updated_at_ para los usuarios
 
-Todos los usuarios pueden tener la misma contraseña que el material. También pueden optar por implementar correctamente las contraseñas como en [parte 4](https://fullstackopen.com/es/part4/administracion_de_usuarios).
+Todos los usuarios pueden tener la misma contraseña que el material (`secret`). También pueden optar por implementar correctamente las contraseñas como en [parte 4](https://fullstackopen.com/es/part4/administracion_de_usuarios).
 
 Implemente las siguientes rutas
 
@@ -138,7 +155,7 @@ Expanda el filtro para buscar una palabra clave en los campos _title_ o _author_
 
 ## Ejercicio 13.15.
 
-Modifique la ruta de los blogs para que devuelva los blogs en función de los likes en orden descendente. Busque la [documentación](https://sequelize.org/docs/v6/core-concepts/model-querying-basics/) para obtener instrucciones sobre cómo realizar pedidos,
+Modifique la ruta de los blogs para que devuelva los blogs en función de los likes en orden descendente. Busque la [documentación](https://sequelize.org/docs/v6/core-concepts/model-querying-basics/) para obtener instrucciones sobre cómo ordenarlos.
 
 ## Ejercicio 13.16.
 
@@ -291,7 +308,7 @@ Implementar funcionalidad en la aplicación para marcar un blog en la lista de l
 
 El usuario solo puede marcar los blogs de su propia lista de lectura como leídos. El usuario se identifica como de costumbre a partir del token que acompaña a la solicitud.
 
-## Ejericio 13.23.
+## Ejercicio 13.23.
 
 Modifique la ruta que devuelve la información de un solo usuario para que la solicitud pueda controlar cuáles de los blogs de la lista de lectura se devuelven:
 
