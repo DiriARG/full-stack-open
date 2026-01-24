@@ -1,6 +1,5 @@
 > [!IMPORTANT]  
 > La resolución de **todos los ejercicios de esta parte (del 13.1 al 13.24)** se encuentra en el siguiente repositorio: [full-stack-open-parte-13](https://github.com/DiriARG/full-stack-open-parte-13).  
-> La carpeta llamada **"imagenes"** contiene únicamente las imágenes que se muestran en este archivo README.md.
 
 # Ejercicios 13.1.-13.3.
 
