@@ -141,3 +141,7 @@ Las bases de datos relacionales han experimentado desde entonces un nuevo comien
 ### Certificado Contenedores (Parte 12):
 
 <img src="./imagenes/certificado-contenedores.png" alt="Certificado del curso sobre Contenedores">
+
+### Certificado sobre bases de datos relacionales (Parte 13):
+
+<img src="./imagenes/certificado-psql.png" alt="Certificado del curso sobre bases de datos relacionales">
